@@ -1,7 +1,8 @@
-Vul hier informatie in...
+Project Fasten Your Seatbelts
 
 Klas: IT 102
-teamleden:
+Team: 5
+Teamleden:
     - Raoul Urusm
     - Jeffrey van Velzen
     - Milo Broerse 
