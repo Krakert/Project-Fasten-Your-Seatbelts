@@ -13,8 +13,10 @@ pwm=GPIO.PWM(11,50)
 pwm.start(5)
 time.sleep(0.2)
 
+#degrees moeten tussen 0 en 200 zijn
 def setServo(degrees):
-    pwm.ChangeDutyCycle(degrees)
+    servoPos = (degrees / 40) + 5
+    pwm.ChangeDutyCycle(servoPos)
 
 # pwm.ChangeDutyCycle(7.5)
 # time.sleep(2)
