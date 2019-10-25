@@ -1,27 +1,56 @@
 #!/usr/bin/env python3
-# NeoPixel library strandtest example
-# Author: Tony DiCola (tony@tonydicola.com)
-#
-# Direct port of the Arduino NeoPixel library strandtest example.  Showcases
-# various animations on a strip of NeoPixels.
 
 import time
 from rpi_ws281x import PixelStrip, Color
 
-# Define functions which animate LEDs in various ways.
-def colorWipe(strip, color, wait_ms=1):
+#color code hexdecimal
+COLORS = [  0x000000,   # black
+            0x200000,   # red
+			0x201000,   # orange
+			#0x202000,  # yellow
+			0x002000,   # green
+			#0x002020,  # light-blue
+			0x000020,   # blue
+			0x100010,   # purple
+			#0x200010,  # pink
+            0x202020, ] # white
+
+# this function can be used to turn all the leds off
+def colorWipe(strip, wait_ms=1):
     """Wipe color across display a pixel at a time."""
     for i in range(strip.numPixels()):
-        strip.setPixelColor(i, color)
+        strip.setPixelColor(i, COLORS[0]) # set all colors to black aka off
         strip.show()
         time.sleep(wait_ms / 1000.0)
 
+# this function can be used to turn on a led with a wanted color
 def setPixelColor(strip, pixelNum, color):
         """Set color for a pixel"""
         strip.setPixelColor(pixelNum, color)
         strip.show()
 
+# this function can be displayed if the sequence wass guessed wrong
+def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations=3):
+    for i in range(iterations):
+        for j in range(NUMBER_OF_BOARD_PANELS):
+            setPixelColor(strip, j, COLORS[1]) # set all pixels to red
 
+        strip.show()
+        time.sleep(1) # Needs fixing, dont use the sleep fuction!
+
+        for j in range(NUMBER_OF_BOARD_PANELS):
+            setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+
+        strip.show()
+        time.sleep(1) # Needs fixing, dont use the sleep fuction!
+
+
+#this can show a rainbow with the WS2812 LEDs
+# NeoPixel library strandtest example
+# Author: Tony DiCola (tony@tonydicola.com)
+#
+# Direct port of the Arduino NeoPixel library strandtest example.  Showcases
+# various animations on a strip of NeoPixels.
 def wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
     if pos < 85:
