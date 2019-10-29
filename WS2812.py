@@ -44,6 +44,15 @@ def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations=3):
         strip.show()
         time.sleep(1) # Needs fixing, dont use the sleep fuction!
 
+def showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip):
+    for i in range(NUMBER_OF_BOARD_PANELS):
+        setPixelColor(strip, i, COLORS[4]) # set all pixels to red
+    strip.show()
+    time.sleep(0.1) # Needs fixing, dont use the sleep fuction!
+    for j in range(NUMBER_OF_BOARD_PANELS):
+        setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+    strip.show()
+    #time.sleep(1) # Needs fixing, dont use the sleep fuction!
 
 #this can show a rainbow with the WS2812 LEDs
 # NeoPixel library strandtest example

@@ -70,9 +70,9 @@ try:
         if case == GEN_SEQUENCE:
             #case 1
             newSequence, randomPanel = addToSequence(previousRandomNumber)  # add random number (1 t/m 6) to sequence
-            previousRandomNumber = randomPanel                              # prevents generating the same number 
+            previousRandomNumber = randomPanel                              # prevents generating the same number
             case = SHOW_SEQUENCE
-        
+
         if case == SHOW_SEQUENCE:
             # case 2
             showSequence(newSequence)                                       # show sequence to the player
@@ -95,10 +95,10 @@ try:
         if case == WRONG_SEQUENCE:
             print("Incorrect! jammer joh...\n")
             newSequence.clear()                                             # clear array
-            WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         #show blinking red LEDs                    
+            WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs                    
             case = GEN_SEQUENCE                                             # if the sequence was incorrect, generate new sequence
-        
+
         # WS2812.rainbow(strip)
 
-except KeyboardInterrupt:  
-    GPIO.cleanup()       # clean up GPIO on CTRL+C exit 
+except KeyboardInterrupt:
+    GPIO.cleanup()       # clean up GPIO on CTRL+C exit
