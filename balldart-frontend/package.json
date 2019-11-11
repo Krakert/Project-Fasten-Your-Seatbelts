@@ -23,8 +23,10 @@
     "broccoli-asset-rev": "^2.7.0",
     "ember-ajax": "^3.1.0",
     "ember-cli": "~3.4.2",
+    "ember-cli-active-link-wrapper": "^0.5.0",
     "ember-cli-app-version": "^3.2.0",
     "ember-cli-babel": "^6.16.0",
+    "ember-cli-bootstrap-css": "^0.2.0",
     "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-eslint": "^4.2.3",
     "ember-cli-htmlbars": "^3.0.0",
@@ -40,7 +42,6 @@
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-resolver": "^5.0.1",
     "ember-source": "~3.4.0",
-    "ember-welcome-page": "^3.2.0",
     "eslint-plugin-ember": "^5.2.0",
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.7.1"
