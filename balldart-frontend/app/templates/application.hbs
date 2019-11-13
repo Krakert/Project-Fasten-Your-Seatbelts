@@ -1,0 +1,39 @@
+<div class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      {{#link-to "application" class="navbar-brand"}}
+        Balldart
+      {{/link-to}}
+    </div>
+    <div class="navbar-inner">
+      <ul class="nav navbar-nav">
+        {{#active-link}}
+          {{#link-to "game"}}
+            Game
+          {{/link-to}}
+        {{/active-link}}
+        {{#active-link}}
+          {{#link-to "scoreboard"}}
+            Scoreboard
+          {{/link-to}}
+        {{/active-link}}
+        {{#active-link}}
+          {{#link-to "support"}}
+            Support
+          {{/link-to}}
+        {{/active-link}}
+        {{#active-link}}
+          {{#link-to "privacy-policy"}}
+            Privacy Policy
+          {{/link-to}}
+        {{/active-link}}
+        {{#active-link}}
+          {{#link-to "maintenance"}}
+            Maintenance
+          {{/link-to}}
+        {{/active-link}}
+      </ul>
+    </div>
+  </div>
+</div>
+{{outlet}}
