@@ -113,10 +113,14 @@ def guessSequence(newSequence):
         iteration = 0                           # reset
         return INVALID_SEQUENCE
 
+def clearInterrupts():
+    global callbackValue
 
-                                                # this function looks which panel is hit
-                                                # if a panel is hit it will make a bit high in a value
-                                                # by checking which bit is set we can conclude which panel was hit in the interrupt
+    callbackValue = 0
+
+# this function looks which panel is hit
+# if a panel is hit it will make a bit high in a value
+# by checking which bit is set we can conclude which panel was hit in the interrupt
 def lookupSetBit():
     global callbackValue
     temp = 0                                    # define temporary value

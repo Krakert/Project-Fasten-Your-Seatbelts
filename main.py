@@ -76,6 +76,7 @@ try:
         if case == SHOW_SEQUENCE:
             # case 2
             showSequence(newSequence)                                       # show sequence to the player
+            panelDetection.clearInterrupts()                                # clears the interrupts in case someone hit a panel during SHOW_SEQUENCE
             case = DETECT_SEQUENCE
 
         if case == DETECT_SEQUENCE:
