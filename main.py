@@ -34,7 +34,7 @@ case = GEN_SEQUENCE
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA = 10          # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255  # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 50  # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
@@ -70,9 +70,9 @@ try:
         if case == GEN_SEQUENCE:
             #case 1
             newSequence, randomPanel = addToSequence(previousRandomNumber)  # add random number (1 t/m 6) to sequence
-            previousRandomNumber = randomPanel                              # prevents generating the same number
+            previousRandomNumber = randomPanel                              # prevents generating the same number 
             case = SHOW_SEQUENCE
-
+        
         if case == SHOW_SEQUENCE:
             # case 2
             showSequence(newSequence)                                       # show sequence to the player
@@ -89,17 +89,16 @@ try:
 
         if case == CORRECT_SEQUENCE:
             print("Correct!\n")
-            WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
-            time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
+            time.sleep(3)       # Needs fixing, dont use the sleep fuction!
             case = GEN_SEQUENCE                                             # if the sequence was correct, add one to the sequence
 
         if case == WRONG_SEQUENCE:
             print("Incorrect! jammer joh...\n")
             newSequence.clear()                                             # clear array
-            WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs                    
+            WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         #show blinking red LEDs                    
             case = GEN_SEQUENCE                                             # if the sequence was incorrect, generate new sequence
+        
+        # WS2812.rainbow(strip)
 
-
-except KeyboardInterrupt:
-    GPIO.cleanup()       # clean up GPIO on CTRL+C exit
-    WS2812.colorWipe(strip)
+except KeyboardInterrupt:  
+    GPIO.cleanup()       # clean up GPIO on CTRL+C exit 
