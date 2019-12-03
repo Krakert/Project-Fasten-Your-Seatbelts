@@ -20,8 +20,8 @@ def new_user():
         print("Uw wachtwoord komt niet overeen, probeer het opnieuw")
         password = input("Geef een wachtwoord op: ")
         password1 = input("Geef u wachtwoord opnieuw op: ")
-    insertData = '''INSERT INTO user(username, password)
-    VALUES(?,?)'''
+    insertData = '''INSERT INTO User(username, password, score)
+    VALUES(?,?,0)'''
     cursor.execute(insertData, [(username), (password)])
     db.commit()
 

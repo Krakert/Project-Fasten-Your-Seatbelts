@@ -38,7 +38,7 @@ def main():
                                         userID integer PRIMARY KEY,
                                         username varchar(255),
                                         password varchar(255),
-                                        score integer
+                                        score integer;
                                     ); """
      # create a database connection
     conn = create_connection(database)

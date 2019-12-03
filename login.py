@@ -3,7 +3,6 @@ import time
 
 
 def login():
-    while True:
         username = input("Geef u gebruikersnaam op: ")
         password = input("Geef u wachtwoord op: ")
         with sqlite3.connect("databaseBalldart.db") as db:  # create connection to database
@@ -16,12 +15,15 @@ def login():
 
         if results:
             print("Welkom " + username)
-            break
+
+
         else:
             print("Gebruikersnaam en/of wachtwoord onjuist!")
             again = input("Wilt u het opnieuw proberen(j/n): ")
             if again.lower() == "n":
                 print("Tot ziens!")
                 time.sleep(1)
-                break
+
+        return username
+
 
