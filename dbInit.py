@@ -17,4 +17,4 @@ def create_connection(db_file):
 
 
 if __name__ == '__main__':
-    create_connection(r"")  # Put between the quotation marks the path you want to put the file
+    create_connection(r"/home/root/dbBalldart.db")
