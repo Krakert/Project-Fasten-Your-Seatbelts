@@ -1,2 +1,27 @@
 Homepage
+<div class="container">
+  <div class="inbl">
+    {{#link-to "game"}}
+      <img src="./assets/images/BlueSingleplayerCircle.png" alt="Singleplayer" class="singleplayer">
+      <div class="centered">Singleplayer</div>
+    {{/link-to}}
+  </div>
+  <div class="inbl">
+    {{#link-to "game"}}
+      <img src="./assets/images/RedMultiplayerCircle.png" alt="Multiplayer" class="multiplayer">
+      <div class="centered">Multiplayer</div>
+    {{/link-to}}
+  </div>
+</div>
+
+
+
+<div class="footer navbar-fixed-bottom">
+  {{#link-to "support"}}
+    <img src="./assets/images/questionmark.jpg" alt="Support" class="support">
+  {{/link-to}}
+  {{#link-to "privacy-policy"}}
+    <h5>Privacy Policy</h5>
+  {{/link-to}}
+</div>
 {{outlet}}

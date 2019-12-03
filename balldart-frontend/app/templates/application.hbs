@@ -2,34 +2,24 @@
   <div class="container-fluid">
     <div class="navbar-header">
       {{#link-to "application" class="navbar-brand"}}
-        Balldart
+        <img src="./assets/images/vogel.jpg" alt="Logo" class="logo">
       {{/link-to}}
     </div>
     <div class="navbar-inner">
       <ul class="nav navbar-nav">
         {{#active-link}}
-          {{#link-to "game"}}
-            Game
-          {{/link-to}}
-        {{/active-link}}
-        {{#active-link}}
           {{#link-to "scoreboard"}}
-            Scoreboard
+            Scorebord
           {{/link-to}}
         {{/active-link}}
         {{#active-link}}
           {{#link-to "support"}}
-            Support
-          {{/link-to}}
-        {{/active-link}}
-        {{#active-link}}
-          {{#link-to "privacy-policy"}}
-            Privacy Policy
+            Uitleg
           {{/link-to}}
         {{/active-link}}
         {{#active-link}}
           {{#link-to "maintenance"}}
-            Maintenance
+            Onderhoud
           {{/link-to}}
         {{/active-link}}
       </ul>
