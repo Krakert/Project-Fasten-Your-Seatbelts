@@ -1,31 +1,49 @@
-import RPi.GPIO as GPIO                             # Maak gebruik van de RPI.GPIO bibliotheek
-import time                                         # En de Time bibliotheek
+import RPi.GPIO as GPIO
+import time
  
-GPIO.setmode(GPIO.BCM)                              # Maak gebruik van de layout van de Broadcom SOC
- 
-GPIO_TRIGGER = 13                                   # Geef posities van de pinnen op
+GPIO.setmode(GPIO.BCM)
+
+#defines
+GPIO_TRIGGER = 13
 GPIO_ECHO = 26
-MAX_MESURE_DISTANCE = 400                           # Voor langer dan 400 cm is de sonar niet geschikt
+MAX_MESURE_DISTANCE = 400 #cm
+SOUND_OF_SPEED = 34300 #cm/s
+TIMEOUT = 100 #ms
+
+#GPIO setup
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+GPIO.setup(GPIO_ECHO, GPIO.IN)
  
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)                  # De trigger is een output, geeft een pulse
-GPIO.setup(GPIO_ECHO, GPIO.IN)                      # En de echo zal deze ontvangen, dus input
- 
-def distance():                                     # De fucntie die de afstand terug geeft
-    GPIO.output(GPIO_TRIGGER, True)                 # Stuur een pulse van 0.01 ms lang
+#this function returns the measured distance in cm
+#if te returned value= 0 the value is nog valid
+def distance():
+    #send pulse
+    GPIO.output(GPIO_TRIGGER, True)
     time.sleep(0.00001)
     GPIO.output(GPIO_TRIGGER, False)
 
-    while GPIO.input(GPIO_ECHO) == 0:               # Als er nog een singaal is bij de Echo zet de start tijd op nu
-        StartTime = time.time()
+    startTime = 0
+    stopTime = 0
+    currentTime = time.time() * 1000 #used for timeout
+
+    while GPIO.input(GPIO_ECHO) == 0:
+        if((currentTime + TIMEOUT) < (time.time() * 1000)):
+            print('FAILED sonar step 1')
+            return 0
+        startTime = time.time()
  
-    while GPIO.input(GPIO_ECHO) == 1:               # En als het singaal binnen komt stopt de Start tijd en de stoptijd
-        StopTime = time.time()                      # word ook opgeslagen
+    while GPIO.input(GPIO_ECHO) == 1:
+        if((currentTime + TIMEOUT) < (time.time() * 1000)):
+            print('FAILED sonar step 2')
+            return 0
+        stopTime = time.time()
  
-    TimeElapsed = StopTime - StartTime              # haal die twee van elkaar af
-    distance = (TimeElapsed * 34300) / 2            # De afstand kan als volgt worden berekend, de 34300 is het aantal M/S
-                                                    # dat sonar aflegt, en natuurlijk delen door 2, anders hebben we de totale afstand
-    if distance > MAX_MESURE_DISTANCE:              # Is dit buiten de 400 cm, dan hebben we een kleine fout, 
-        distance = 0                                #en geven we 0 terug
+    #calculate the distance
+    distance = ((stopTime - startTime) * 34300) / 2
+
+    #return 0 if the value is not valid
+    if distance > MAX_MESURE_DISTANCE:
+        distance = 0
  
-    return distance                                 # Geef de data aan de rest van het programma
+    return distance
  
