@@ -2,6 +2,8 @@
 from flask import Flask
 from flask import jsonify
 from flask import request, send_from_directory
+import json
+
 
 app = Flask(__name__)
 
@@ -20,16 +22,25 @@ def a(account_id):
     }
 
 # routes for individual entities
-@app.route('/api/accounts/<account_id>')
+@app.route('/api/accounts/<account_id>', methods=['GET','POST','SET'])
 def accounts_by_id(account_id):
+    print("singleAccount")
     return jsonify({"data": a(account_id)})
 
+
 # route for all entities
-@app.route('/api/accounts')
+@app.route('/api/accounts', methods=['GET','POST','SET'])
 def accounts():
-    return jsonify({
-        "data": [a(i) for i in range(0,10)]
-        })
+    # pythonObject = json.loads(request.data)
+    # print(pythonObject["data"]["id"])
+    if request.method == 'POST':
+      pythonObject = json.loads(request.data)
+      print(pythonObject["data"]["id"])
+      return jsonify({"data": a(pythonObject["data"]["id"])})
+    else:
+      return jsonify({
+          "data": [a(i) for i in range(0,10)]
+          })
 
 # default route.
 # flask has to serve a file that will be generated later with ember
