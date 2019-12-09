@@ -14,10 +14,14 @@ export default Controller.extend({
         id: this.get('username'),
         password: this.get('password1')
       });
-      this.router.transitionTo('game',{ queryParams: { gamemode: "singleplayer"}}, newAccount.save());
+      newAccount.save().then(()=>{
+        console.log("na save");
+        this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
+      })
     },
     login(){
 
     }
   }
+  // { queryParams: { gamemode: "singleplayer"}}
 });
