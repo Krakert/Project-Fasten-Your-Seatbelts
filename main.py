@@ -71,6 +71,8 @@ strip.begin()
 
 try:
     while True:
+        
+        #if multiplayer then check the gyro and set the servo
 
         if case == GEN_SEQUENCE:
             #case 1
@@ -105,7 +107,8 @@ try:
             case = GEN_SEQUENCE                                             # if the sequence was correct, add one to the sequence
 
         if case == WRONG_SEQUENCE:
-            print("Incorrect! jammer joh...\n")
+            score = len(newSequence) - 1
+            print("Incorrect! jammer joh... score= %d\n" %(score))
             newSequence.clear()                                             # clear array
             WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs                    
             case = GEN_SEQUENCE                                             # if the sequence was incorrect, generate new sequence
