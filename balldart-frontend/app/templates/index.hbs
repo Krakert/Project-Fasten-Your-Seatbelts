@@ -1,14 +1,14 @@
 Homepage
 <div class="container">
   <div class="inbl">
-    {{#link-to "game"}}
-      <img src="./assets/images/BlueSingleplayerCircle.png" alt="Singleplayer" class="singleplayer">
+    {{#link-to "account" (query-params accountmode=" ")}}
+      <img src="./assets/images/BlueSingleplayerCircle.png" alt="Singleplayer" class="imageSize">
       <div class="centered">Singleplayer</div>
     {{/link-to}}
   </div>
   <div class="inbl">
-    {{#link-to "game"}}
-      <img src="./assets/images/RedMultiplayerCircle.png" alt="Multiplayer" class="multiplayer">
+    {{#link-to "game" (query-params gamemode="multiplayer")}}
+      <img src="./assets/images/RedMultiplayerCircle.png" alt="Multiplayer" class="imageSize">
       <div class="centered">Multiplayer</div>
     {{/link-to}}
   </div>

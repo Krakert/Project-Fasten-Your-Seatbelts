@@ -1,0 +1,62 @@
+{{#if (eq accountmode " ")}}
+  <div class="container">
+    <div class="inbl">
+      {{#link-to "account" (query-params accountmode="create")}}
+        <img src="./assets/images/test1.jpg" alt="Create" class="imageSize">
+      {{/link-to}}
+    </div>
+    <div class="inbl">
+      {{#link-to "account" (query-params accountmode="login")}}
+        <img src="./assets/images/test2.jpg" alt="Login" class="imageSize">
+      {{/link-to}}
+    </div>
+    <div class="inbl">
+      {{#link-to "game" (query-params gamemode="singleplayer")}}
+        <img src="./assets/images/test3.jpg" alt="NoAccount" class="imageSize">
+      {{/link-to}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq accountmode "create")}}
+  <h2>Account Aanmaken</h2>
+  <h5>Gebruikersnaam:</h5>
+  {{input type="text" value=username}}<br>
+  {{username}}
+
+  <h5>Wachtwoord:</h5>
+  {{input type="text" value=password1}}<br>
+
+  <h5>Wachtwoord Opnieuw:</h5>
+  {{input type="text" value=password2}}<br><br>
+
+  {{#if (eq password1 password2)}}
+    {{password1}}
+  {{/if}}
+
+  {{#link-to "game" (query-params gamemode="singleplayer")}}
+    <form {{action "createAccount" on="submit"}}>
+      <button type = "submit">Account Aanmaken</button>
+    </form>
+  {{/link-to}}
+{{/if}}
+
+{{#if (eq accountmode "login")}}
+  <h2>Inloggen Account</h2>
+  <h5>Gebruikersnaam:</h5>
+  {{input type="text" value=username}}<br>
+  {{username}}
+
+  <h5>Wachtwoord:</h5>
+  {{input type="text" value=password1}}<br><br>
+
+  {{#if (eq password1 databaseWachtwoord)}}
+    {{password1}}
+  {{/if}}
+
+  {{#link-to "game" (query-params gamemode="singleplayer")}}
+    <form {{action "login" on="submit"}}>
+      <button type = "submit">Log In</button>
+    </form>
+  {{/link-to}}
+{{/if}}

@@ -5,22 +5,25 @@
   color: black;
 }
 
-.multiplayer{
+.imageSize{
   height: 250px;
   width: 250px;
 }
-.singleplayer{
-  height: 250px;
-  width: 250px;
+.navbar-brand{
+  height: 46px;
+  padding: 0;
+  margin-top: 2px;
+  margin-left: 2px;
+  width: auto;
 }
 .support{
-  height: 10px;
-  width: 10px;
+  height: 50px;
+  width: 50px;
 }
 
 .logo{
-  height: 25px;
-  width: 25px;
+  height: 46px;
+  width: 46px;
 }
 .inbl{
   display: inline-block;
