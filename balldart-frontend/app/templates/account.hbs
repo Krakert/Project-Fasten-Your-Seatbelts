@@ -33,7 +33,7 @@
   {{#if (eq password1 password2)}}
     {{password1}}
   {{/if}}
-
+<!-- if Wachtwoord1 === Wachtwoord2 en Gebruikersnaam = Uniek -->
   {{#link-to "game" (query-params gamemode="singleplayer")}}
     <form {{action "createAccount" on="submit"}}>
       <button type = "submit">Account Aanmaken</button>
@@ -54,6 +54,7 @@
     {{password1}}
   {{/if}}
 
+  <!-- if Wachtwoord belongs to Gebruikersnaam -->
   {{#link-to "game" (query-params gamemode="singleplayer")}}
     <form {{action "login" on="submit"}}>
       <button type = "submit">Log In</button>
