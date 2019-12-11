@@ -10,16 +10,21 @@ import random
 import WS2812
 import panelDetection
 #import servo
+import Sonar
+
+GPIO.setwarnings(False)
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
 SEQUENCE_LED_ON_TIME = 1 #seconds
 SEQUENCE_LED_OFF_TIME = 0.3 #seconds
+MIN_DISTANCE = 50 #distance in cm
 
 #variables
 sequence = []
 sequenseSize = 0
 previousRandomNumber = 0
+distance = MIN_DISTANCE
 
 #enumeratie of 'switch case'
 GEN_SEQUENCE = 1
@@ -66,6 +71,8 @@ strip.begin()
 
 try:
     while True:
+        
+        #if multiplayer then check the gyro and set the servo
 
         if case == GEN_SEQUENCE:
             #case 1
@@ -81,6 +88,11 @@ try:
 
         if case == DETECT_SEQUENCE:
             # case 3
+            distance = (distance * 0.9) + (Sonar.distance() * 0.1)
+            while WS2812.checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
+                distance = (distance * 0.9) + (Sonar.distance() * 0.1)
+                panelDetection.clearInterrupts()
+
             valid = panelDetection.guessSequence(newSequence)               # returns 1 if the sequence was correct, 2 if incorrect
 
             if valid == 1:
@@ -95,7 +107,8 @@ try:
             case = GEN_SEQUENCE                                             # if the sequence was correct, add one to the sequence
 
         if case == WRONG_SEQUENCE:
-            print("Incorrect! jammer joh...\n")
+            score = len(newSequence) - 1
+            print("Incorrect! jammer joh... score= %d\n" %(score))
             newSequence.clear()                                             # clear array
             WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs                    
             case = GEN_SEQUENCE                                             # if the sequence was incorrect, generate new sequence

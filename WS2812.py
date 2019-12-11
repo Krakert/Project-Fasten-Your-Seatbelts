@@ -53,6 +53,20 @@ def showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip):
         setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
     strip.show()
 
+def checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
+    if distance < MIN_DISTANCE:
+        for i in range(NUMBER_OF_BOARD_PANELS):
+            setPixelColor(strip, i, COLORS[2]) # set all pixels to orange
+        strip.show()
+        print('Distance must be greater than %dcm, distance= %dcm' % (MIN_DISTANCE, distance))
+        time.sleep(1) #otherwise the led's will start flashing
+        return True
+    else:
+        for j in range(NUMBER_OF_BOARD_PANELS):
+            setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+        strip.show()
+        return False
+
 #this can show a rainbow with the WS2812 LEDs
 # NeoPixel library strandtest example
 # Author: Tony DiCola (tony@tonydicola.com)
