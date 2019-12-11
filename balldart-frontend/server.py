@@ -3,7 +3,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request, send_from_directory
 import json
-
+import random
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def a(account_id):
         "id": account_id,                        # And some unique identifier
         "attributes": {                          # Here goes actual payload.
             "password": "data" + str(account_id),
-            "total-points": "total",
+            "total-points": random.randint(1,10),
             "highest-points": "highest",
             "number-of-rounds": "rounds",
             "latest-round": "latest",     # the only data we have for each user is "info" field
@@ -31,15 +31,13 @@ def accounts_by_id(account_id):
 # route for all entities
 @app.route('/api/accounts', methods=['GET','POST','SET'])
 def accounts():
-    # pythonObject = json.loads(request.data)
-    # print(pythonObject["data"]["id"])
     if request.method == 'POST':
       pythonObject = json.loads(request.data)
       print(pythonObject["data"]["id"])
       return jsonify({"data": a(pythonObject["data"]["id"])})
     else:
       return jsonify({
-          "data": [a(i) for i in range(0,10)]
+          "data": [a("user" + str(i)) for i in range(0,10)]
           })
 
 # default route.

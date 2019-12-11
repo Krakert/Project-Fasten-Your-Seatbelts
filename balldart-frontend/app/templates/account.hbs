@@ -30,13 +30,14 @@
   <h5>Wachtwoord Opnieuw:</h5>
   {{input type="text" value=password2}}<br><br>
 
-  {{#if (eq password1 password2)}}
-    {{password1}}
+  {{#if (and password1 username)}}
+    {{#if (eq password1 password2)}}
+      {{password1}}
+      <form {{action "createAccount" on="submit"}}>
+        <button type = "submit">Account Aanmaken</button>
+      </form>
+    {{/if}}
   {{/if}}
-<!-- if Wachtwoord1 === Wachtwoord2 en Gebruikersnaam = Uniek -->
-    <form {{action "createAccount" on="submit"}}>
-      <button type = "submit">Account Aanmaken</button>
-    </form>
 {{/if}}
 
 {{#if (eq accountmode "login")}}

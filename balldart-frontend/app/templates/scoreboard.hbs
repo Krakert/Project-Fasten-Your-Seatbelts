@@ -1,8 +1,12 @@
-Scoreboard
-{{#each model as |account|}}
-    <p>{{account.password}}</p>
-    {{account.id}}
-    {{account.latestRound}}
-{{/each}}
+<div class="stefan">
+  <h1> Scorebord </h1> <br>
+
+  {{#each arrangedContent as |account|}}
+    Gebruiker: {{account.id}}<br>
+    Points: {{account.totalPoints}}<br>
+  {{/each}}
+  {{data}}
+  {{sortingProperties}}
+</div>
 
 {{outlet}}

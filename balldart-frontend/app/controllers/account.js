@@ -18,6 +18,9 @@ export default Controller.extend({
         console.log("na save");
         this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
       })
+      this.username = "";
+      this.password1 = "";
+      this.password2 = "";
     },
     login(){
 
