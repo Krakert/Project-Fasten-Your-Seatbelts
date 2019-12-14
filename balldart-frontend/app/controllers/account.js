@@ -7,9 +7,6 @@ export default Controller.extend({
 
   actions: {
     createAccount(){
-      console.log("we komen er");
-      console.log(this.get('username'));
-      console.log(this.get('password1'));
       let newAccount = this.store.createRecord('account',{
         id: this.get('username'),
         password: this.get('password1')
