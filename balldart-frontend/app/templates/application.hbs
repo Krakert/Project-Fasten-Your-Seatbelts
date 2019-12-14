@@ -6,9 +6,9 @@
       {{/link-to}}
     </div>
     <div class="navbar-inner">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav ">
         {{#active-link}}
-          {{#link-to "scoreboard" class="route-margin"}}
+          {{#link-to "scoreboard" (query-params data="totalPoints" sortingOrder="desc") class="route-margin"}}
             <h4>Scorebord</h4>
           {{/link-to}}
         {{/active-link}}
