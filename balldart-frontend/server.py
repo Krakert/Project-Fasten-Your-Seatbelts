@@ -4,20 +4,21 @@ from flask import jsonify
 from flask import request, send_from_directory
 import json
 import random
+import sqlite3
 
 app = Flask(__name__)
 
 # this function returns an object for one user
-def a(account_id):
+def a(row):
     return {
         "type": "accounts",                      # It has to have type
-        "id": account_id,                        # And some unique identifier
+        "id": row[0],                        # And some unique identifier
         "attributes": {                          # Here goes actual payload.
-            "password": "data" + str(account_id),
-            "total-points": random.randint(1,10),
-            "highest-points": "highest",
-            "number-of-rounds": "rounds",
-            "latest-round": "latest",     # the only data we have for each user is "info" field
+            "password": row[1],
+            "total-points": row[2],
+            "highest-points": row[3],
+            "number-of-rounds": row[4],
+            "latest-round": row[5],     # the only data we have for each user is "info" field
         },
     }
 
@@ -36,8 +37,14 @@ def accounts():
       print(pythonObject["data"]["id"])
       return jsonify({"data": a(pythonObject["data"]["id"])})
     else:
+      with sqlite3.connect("/dev/sqlite3/balldart.db") as db:
+          cursor = db.cursor()
+      readData = '''SELECT * FROM account;'''
+      cursor.execute(readData)
+      accountRecord = cursor.fetchall()
+      print(accountRecord)
       return jsonify({
-          "data": [a("user" + str(i)) for i in range(0,10)]
+          "data": [a(row) for row in accountRecord]
           })
 
 # default route.

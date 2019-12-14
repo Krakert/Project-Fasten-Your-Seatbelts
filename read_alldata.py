@@ -1,5 +1,7 @@
 import sqlite3
 
+read_alldata()
+
 def read_alldata():
     with sqlite3.connect("/dev/sqlite3/balldart.db") as db:
         cursor = db.cursor()
@@ -7,5 +9,3 @@ def read_alldata():
     cursor.execute(readData)
     scoreRecord = cursor.fetchall()
     print(scoreRecord)
-
-read_alldata()
