@@ -32,14 +32,17 @@ def create_table(conn, create_table_sql):
 
 
 def main():
-    database = r"/home/pi/databaseBalldart.db"
+    database = r"C:\Users\jeffr\Documents\PythonProjecten\untitled2\dbballdart.db"
 
     sql_create_User_table = """ CREATE TABLE IF NOT EXISTS User (
-                                        userID integer PRIMARY KEY,
-                                        username varchar(255),
+                                        username varchar(255) PRIMARY KEY,
                                         password varchar(255),
-                                        score integer;
-                                    ); """
+                                        total_score integer,
+                                        highest_score_alltime integer,
+                                        total_games_played integer,
+                                        latest_score integer
+                                        
+                                    );"""
      # create a database connection
     conn = create_connection(database)
 
