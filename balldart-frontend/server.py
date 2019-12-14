@@ -34,8 +34,17 @@ def accounts_by_id(account_id):
 def accounts():
     if request.method == 'POST':
       pythonObject = json.loads(request.data)
-      print(pythonObject["data"]["id"])
-      return jsonify({"data": a(pythonObject["data"]["id"])})
+      with sqlite3.connect("/dev/sqlite3/balldart.db") as db:                      # create connection to database
+          cursor = db.cursor()
+      print(pythonObject["data"])
+      insertData = '''INSERT INTO account(id, password, totalPoints, highestPoints, numberOfRounds, latestRound)
+      VALUES(?,?,?,?,?,?)'''
+      cursor.execute(insertData, [(pythonObject["data"]["id"]), (pythonObject["data"]["attributes"]["password"]), (pythonObject["data"]["attributes"]["total-points"]), (pythonObject["data"]["attributes"]["highest-points"]), (pythonObject["data"]["attributes"]["number-of-rounds"]), (pythonObject["data"]["attributes"]["latest-round"])])
+      db.commit()
+
+      row = (pythonObject["data"]["id"]), (pythonObject["data"]["attributes"]["password"]), (pythonObject["data"]["attributes"]["total-points"]), (pythonObject["data"]["attributes"]["highest-points"]), (pythonObject["data"]["attributes"]["number-of-rounds"]), (pythonObject["data"]["attributes"]["latest-round"])
+
+      return jsonify({"data": a(row)})
     else:
       with sqlite3.connect("/dev/sqlite3/balldart.db") as db:
           cursor = db.cursor()
