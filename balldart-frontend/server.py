@@ -34,7 +34,7 @@ def accounts_by_id(account_id):
 def accounts():
     if request.method == 'POST':
       pythonObject = json.loads(request.data)
-      with sqlite3.connect("/dev/sqlite3/balldart.db") as db:                      # create connection to database
+      with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
       print(pythonObject["data"])
       insertData = '''INSERT INTO account(id, password, totalPoints, highestPoints, numberOfRounds, latestRound)
@@ -44,7 +44,7 @@ def accounts():
       db.commit()
       return jsonify({"data": a(row)})
     else:
-      with sqlite3.connect("/dev/sqlite3/balldart.db") as db:
+      with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
       readData = '''SELECT * FROM account;'''
       cursor.execute(readData)

@@ -4,7 +4,7 @@ import time
 def login():
         username = input("Geef u gebruikersnaam op: ")
         password = input("Geef u wachtwoord op: ")
-        with sqlite3.connect("/dev/sqlite3/balldart.db") as db:  # create connection to database
+        with sqlite3.connect("./databases/balldart.db") as db:  # create connection to database
             cursor = db.cursor()
         # Checks what username belongs to which password
         find_user = ("SELECT * FROM User WHERE username = ? AND  password = ?")  # Checks what username belogns to which

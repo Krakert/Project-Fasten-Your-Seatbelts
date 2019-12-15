@@ -16,4 +16,4 @@ def create_connection(db_file):
             conn.close()
 
 if __name__ == '__main__':
-    create_connection(r"/dev/sqlite3/balldart.db")
+    create_connection(r"./databases/balldart.db")

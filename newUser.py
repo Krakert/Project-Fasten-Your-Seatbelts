@@ -6,7 +6,7 @@ def new_account():
     while found == 0:
         username = input("Gebruikersnaam: ")
 
-        with sqlite3.connect("/dev/sqlite3/balldart.db") as db:                      # create connection to database
+        with sqlite3.connect("./databases/balldart.db") as db:                      # create connection to database
             cursor = db.cursor()
 
         findUser = ("SELECT * FROM account WHERE id = ?")

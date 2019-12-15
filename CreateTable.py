@@ -31,8 +31,7 @@ def create_table(conn, create_table_sql):
         print(e)
 
 def main():
-    database = r"/dev/sqlite3/balldart.db"
-
+    database = "./databases/balldart.db"
     sql_create_account_table = """ CREATE TABLE IF NOT EXISTS account (
                                         id varchar(255) PRIMARY KEY,
                                         password varchar(255),
