@@ -1,12 +1,9 @@
-<div class="stefan">
-  <h1> Scorebord </h1> <br>
-
+<div class="indent-left">
+  <h1> Scorebord </h1>
   {{#each arrangedContent as |account|}}
     Gebruiker: {{account.id}}<br>
-    Points: {{account.totalPoints}}<br>
+    Points: {{account.totalPoints}}<br><br>
   {{/each}}
-  {{data}}
-  {{sortingProperties}}
 </div>
 
 {{outlet}}

@@ -19,20 +19,15 @@
 {{/if}}
 
 {{#if (eq accountmode "create")}}
-  <h2>Account Aanmaken</h2>
+  <h3>Account Aanmaken</h3>
   <h5>Gebruikersnaam:</h5>
-  {{input type="text" value=username}}<br>
-  {{username}}
-
+  {{input type="text" value=username}}{{username}}
   <h5>Wachtwoord:</h5>
   {{input type="text" value=password1}}<br>
-
   <h5>Wachtwoord Opnieuw:</h5>
   {{input type="text" value=password2}}<br><br>
-
   {{#if (and password1 username)}}
     {{#if (eq password1 password2)}}
-      {{password1}}
       <form {{action "createAccount" on="submit"}}>
         <button type = "submit">Account Aanmaken</button>
       </form>
@@ -45,14 +40,8 @@
   <h5>Gebruikersnaam:</h5>
   {{input type="text" value=username}}<br>
   {{username}}
-
   <h5>Wachtwoord:</h5>
   {{input type="text" value=password1}}<br><br>
-
-  {{#if (eq password1 databaseWachtwoord)}}
-    {{password1}}
-  {{/if}}
-
   <!-- if Wachtwoord belongs to Gebruikersnaam -->
   {{#link-to "game" (query-params gamemode="singleplayer")}}
     <form {{action "login" on="submit"}}>

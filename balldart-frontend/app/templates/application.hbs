@@ -6,20 +6,20 @@
       {{/link-to}}
     </div>
     <div class="navbar-inner">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav ">
         {{#active-link}}
-          {{#link-to "scoreboard"}}
-            Scorebord
+          {{#link-to "scoreboard" (query-params data="totalPoints" sortingOrder="desc") class="route-margin"}}
+            <h4>Scorebord</h4>
           {{/link-to}}
         {{/active-link}}
         {{#active-link}}
-          {{#link-to "support"}}
-            Uitleg
+          {{#link-to "support" class="route-margin"}}
+            <h4>Uitleg</h4>
           {{/link-to}}
         {{/active-link}}
         {{#active-link}}
-          {{#link-to "maintenance"}}
-            Onderhoud
+          {{#link-to "maintenance" class="route-margin"}}
+            <h4>Onderhoud</h4>
           {{/link-to}}
         {{/active-link}}
       </ul>

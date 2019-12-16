@@ -7,12 +7,14 @@ export default Controller.extend({
 
   actions: {
     createAccount(){
-      console.log("we komen er");
-      console.log(this.get('username'));
-      console.log(this.get('password1'));
       let newAccount = this.store.createRecord('account',{
         id: this.get('username'),
-        password: this.get('password1')
+        password: this.get('password1'),
+        totalPoints: 0,
+        highestPoints: 0,
+        numberOfRounds: 0,
+        latestRound: 0,
+
       });
       newAccount.save().then(()=>{
         console.log("na save");
