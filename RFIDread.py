@@ -21,13 +21,15 @@ def acces(check):
 
 #This function reads out the id from the tag
 def read():
+    reader = SimpleMFRC522()
     id, text = reader.read()
     print(id)
     print(text)
     acces(id)
+    
 
 
-reader = SimpleMFRC522()
+
 
 
 print("Hold a tag near the reader")
