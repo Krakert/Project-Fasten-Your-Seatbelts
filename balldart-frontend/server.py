@@ -8,7 +8,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-# this function returns an object for one user
+# this function returns an object for one account
 def a(row):
     return {
         "type": "accounts",                      # It has to have type
@@ -18,7 +18,17 @@ def a(row):
             "total-points": row[2],
             "highest-points": row[3],
             "number-of-rounds": row[4],
-            "latest-round": row[5],     # the only data we have for each user is "info" field
+            "latest-round": row[5],
+        },
+    }
+
+# this function returns an object for one game
+def g(row):
+    return {
+        "type": "games",                      # It has to have type
+        "id": row[0],                        # And some unique identifier
+        "attributes": {                          # Here goes actual payload.
+            "mode": row[1],
         },
     }
 
@@ -58,6 +68,30 @@ def accounts():
       return jsonify({
           "data": [a(row) for row in accountRecord]
           })
+
+@app.route('/api/games/<game_id>', methods=['GET','POST','SET'])
+def games_by_id(game_id):
+    if request.method == 'POST':
+      pythonObject = json.loads(request.data)
+      with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
+          cursor = db.cursor()
+      print(pythonObject["data"])
+      insertData = '''INSERT INTO game(id, mode)VALUES(?,?)'''
+      row = ((pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["mode"]))
+      cursor.execute(insertData, row)
+      db.commit()
+      return jsonify({"data": g(row)})
+    else:
+      with sqlite3.connect("../databases/balldart.db") as db:
+          cursor = db.cursor()
+      readData = '''SELECT * FROM game WHERE id = ?'''
+      cursor.execute(readData, [(game_id)])
+      accountRecord = cursor.fetchall()
+      print(accountRecord)
+      return jsonify({"data": g(accountRecord[0])})
+
+
 
 # default route.
 # flask has to serve a file that will be generated later with ember
