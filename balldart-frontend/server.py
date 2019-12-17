@@ -33,7 +33,7 @@ def g(row):
     }
 
 # routes for individual entities
-@app.route('/api/accounts/<account_id>', methods=['GET','POST','SET'])
+@app.route('/api/accounts/<account_id>', methods=['GET','POST'])
 def accounts_by_id(account_id):
     print("singleAccount")
     return jsonify({"data": a(account_id)})
@@ -69,16 +69,19 @@ def accounts():
           "data": [a(row) for row in accountRecord]
           })
 
-@app.route('/api/games/<game_id>', methods=['GET','POST','SET'])
+@app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):
-    if request.method == 'POST':
+    if request.method == 'PATCH':
+      print("tomatensap/patch")
       pythonObject = json.loads(request.data)
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
       print(pythonObject["data"])
-      insertData = '''INSERT INTO game(id, mode)VALUES(?,?)'''
-      row = ((pythonObject["data"]["id"]),
-      (pythonObject["data"]["attributes"]["mode"]))
+
+      insertData = '''UPDATE game
+                      SET mode = ?
+                      WHERE id = ?'''
+      row = ((pythonObject["data"]["attributes"]["mode"]),(pythonObject["data"]["id"]))
       cursor.execute(insertData, row)
       db.commit()
       return jsonify({"data": g(row)})
