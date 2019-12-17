@@ -10,9 +10,8 @@ def new_board():
 
     cursor.execute(sql_create_account_table)
 
-    sql_insertData = '''INSERT INTO game(id, mode)
-    VALUES(?,?)'''
-    cursor.execute(sql_insertData, [('board1'), (4)])
+    sql_insertData = '''INSERT INTO game(id, mode) VALUES(?,?)'''
+    cursor.execute(sql_insertData, [('board1'), (0)])
     db.commit()
 
 def main():
