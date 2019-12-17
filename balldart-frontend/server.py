@@ -39,7 +39,12 @@ def accounts():
       print(pythonObject["data"])
       insertData = '''INSERT INTO account(id, password, totalPoints, highestPoints, numberOfRounds, latestRound)
       VALUES(?,?,?,?,?,?)'''
-      row = (pythonObject["data"]["id"]), (pythonObject["data"]["attributes"]["password"]), (pythonObject["data"]["attributes"]["total-points"]), (pythonObject["data"]["attributes"]["highest-points"]), (pythonObject["data"]["attributes"]["number-of-rounds"]), (pythonObject["data"]["attributes"]["latest-round"])
+      row = ((pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["password"]),
+      (pythonObject["data"]["attributes"]["total-points"]),
+      (pythonObject["data"]["attributes"]["highest-points"]),
+      (pythonObject["data"]["attributes"]["number-of-rounds"]),
+      (pythonObject["data"]["attributes"]["latest-round"]))
       cursor.execute(insertData, row)
       db.commit()
       return jsonify({"data": a(row)})

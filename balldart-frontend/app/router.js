@@ -8,6 +8,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('game');
+  this.route('enter-players');
   this.route('account');
   this.route('scoreboard');
   this.route('support');

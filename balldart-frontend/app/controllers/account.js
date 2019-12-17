@@ -17,7 +17,6 @@ export default Controller.extend({
 
       });
       newAccount.save().then(()=>{
-        console.log("na save");
         this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
       })
       this.username = "";
@@ -25,8 +24,9 @@ export default Controller.extend({
       this.password2 = "";
     },
     login(){
-
+      this.username = "";
+      this.password1 = "";
+      this.password2 = "";
     }
   }
-  // { queryParams: { gamemode: "singleplayer"}}
 });

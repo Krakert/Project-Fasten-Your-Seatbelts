@@ -1,4 +1,3 @@
-Homepage
 <div class="container">
   <div class="inbl">
     {{#link-to "account" (query-params accountmode=" ")}}
@@ -7,7 +6,7 @@ Homepage
     {{/link-to}}
   </div>
   <div class="inbl">
-    {{#link-to "game" (query-params gamemode="multiplayer")}}
+    {{#link-to "enter-players"}}
       <img src="./assets/images/RedMultiplayerCircle.png" alt="Multiplayer" class="imageSize">
       <div class="centered">Multiplayer</div>
     {{/link-to}}
@@ -17,9 +16,11 @@ Homepage
 
 
 <div class="footer navbar-fixed-bottom">
-  {{#link-to "support"}}
-    <img src="./assets/images/questionmark.jpg" alt="Support" class="support">
-  {{/link-to}}
+  <div class="support-img">
+    {{#link-to "support"}}
+      <img src="./assets/images/questionmark.jpg" alt="Support" class="support">
+    {{/link-to}}
+  </div>
   {{#link-to "privacy-policy"}}
     <h5>Privacy Policy</h5>
   {{/link-to}}
