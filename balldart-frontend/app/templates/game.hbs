@@ -3,3 +3,7 @@
 {{else}}
   multiplayer
 {{/if}}
+
+<p>{{input type="text" value=model.mode}}</p>
+Mode: {{model.mode}}
+<button {{action "updateGame"}}>Update</button>

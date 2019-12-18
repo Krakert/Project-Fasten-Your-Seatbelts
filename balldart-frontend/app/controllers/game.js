@@ -4,5 +4,10 @@ import Controller from '@ember/controller';
 export default Controller.extend({
   queryParams: ['gamemode'],
 
-
+  actions: {
+    updateGame: function() {
+      console.log('updateGame');
+      this.model.save();
+    }
+  }
 });

@@ -4,6 +4,11 @@
   white-space: nowrap;
   color: black;
 }
+
+.player{
+  margin-right: 250px;
+  margin-left: 250px;
+}
 .indent-left{
   margin-left: 14px;
 }
@@ -27,6 +32,7 @@
 .support{
   height: 50px;
   width: 50px;
+  align-self: auto;
 }
 
 .logo{
@@ -43,4 +49,9 @@
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+}
+.support-img{
+    position: absolute;
+    right:10px;
+    bottom: 10px
 }
