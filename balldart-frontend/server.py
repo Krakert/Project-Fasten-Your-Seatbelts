@@ -22,6 +22,15 @@ def a(row):
         },
     }
 
+def e(row):
+    return {
+        "type": "employees",                       # It has to have type
+        "id": row[0],                              # And some unique identifier
+        "attributes": {                            # Here goes actual payload.
+            "active": row[1],
+        },
+    }
+
 # this function returns an object for one game
 def g(row):
     return {
@@ -45,7 +54,7 @@ def accounts_by_id(account_id):
     return '', 204
 
 # route for all entities
-@app.route('/api/accounts', methods=['GET','POST','SET'])
+@app.route('/api/accounts', methods=['GET','POST'])
 def accounts():
     if request.method == 'POST':
       pythonObject = json.loads(request.data)
@@ -73,6 +82,18 @@ def accounts():
       return jsonify({
           "data": [a(row) for row in accountRecord]
           })
+
+# route for all entities
+@app.route('/api/employees', methods=['GET'])
+def employees():
+    with sqlite3.connect("../databases/balldart.db") as db:
+        cursor = db.cursor()
+    employeeData = '''SELECT * FROM employees;'''
+    cursor.execute(employeeData)
+    employeeRecord = cursor.fetchall()
+    return jsonify({
+        "data": [e(row) for row in employeeRecord]
+        })
 
 @app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):

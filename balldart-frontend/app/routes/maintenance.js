@@ -6,7 +6,7 @@ export default Route.extend({
     var store = this.store;
     return hash({
       model: store.findAll('account'),
-      //employees: store.findAll('employee')
+      employees: store.findAll('employee')
     });
   },
   setupController: function(controller, models) {

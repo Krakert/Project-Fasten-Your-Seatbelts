@@ -2,4 +2,10 @@
   <button {{action 'deleteAccount' account}}>Delete</button>
   Gebruiker: {{account.id}}<br><br>
 {{/each}}
+
+{{#each employees as |employee|}}
+  RFID: {{employee.id}}<br>
+  Active: {{employee.active}}<br><br>
+{{/each}}
+
 {{outlet}}
