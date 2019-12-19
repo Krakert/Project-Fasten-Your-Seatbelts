@@ -39,7 +39,7 @@ def accounts_by_id(account_id):
     with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
         cursor = db.cursor()
 
-    sql_deleteAccount = '''DELETE FROM account WHERE id = ?'''
+    sql_deleteAccount = '''DELETE FROM accounts WHERE id = ?'''
     cursor.execute(sql_deleteAccount, (account_id, ))
     db.commit()
     return '', 204
@@ -52,7 +52,7 @@ def accounts():
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
       print(pythonObject["data"])
-      insertData = '''INSERT INTO account(id, password, totalPoints, highestPoints, numberOfRounds, latestRound)
+      insertData = '''INSERT INTO accounts(id, password, totalPoints, highestPoints, numberOfRounds, latestRound)
       VALUES(?,?,?,?,?,?)'''
       row = ((pythonObject["data"]["id"]),
       (pythonObject["data"]["attributes"]["password"]),
@@ -66,7 +66,7 @@ def accounts():
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
-      readData = '''SELECT * FROM account;'''
+      readData = '''SELECT * FROM accounts;'''
       cursor.execute(readData)
       accountRecord = cursor.fetchall()
       print(accountRecord)
@@ -77,13 +77,12 @@ def accounts():
 @app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):
     if request.method == 'PATCH':
-      print("tomatensap/patch")
       pythonObject = json.loads(request.data)
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
       print(pythonObject["data"])
 
-      insertData = '''UPDATE game
+      insertData = '''UPDATE games
                       SET mode = ?
                       WHERE id = ?'''
       row = ((pythonObject["data"]["attributes"]["mode"]),(pythonObject["data"]["id"]))
@@ -93,13 +92,11 @@ def games_by_id(game_id):
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
-      readData = '''SELECT * FROM game WHERE id = ?'''
+      readData = '''SELECT * FROM games WHERE id = ?'''
       cursor.execute(readData, [(game_id)])
       accountRecord = cursor.fetchall()
       print(accountRecord)
       return jsonify({"data": g(accountRecord[0])})
-
-
 
 # default route.
 # flask has to serve a file that will be generated later with ember

@@ -3,19 +3,13 @@ import sqlite3
 
 def create_connection(db_file):
     """ Create a database connection to the SQLite database """
-    conn = None
     conn = sqlite3.connect(db_file)
-    print(sqlite3.version)
-    if conn:
-        conn.close()
+    return conn
 
-def create_table(conn, create_table_sql):
-    c = conn.cursor()
-    c.execute(create_table_sql)
-
-def account():
-    database = "./databases/balldart.db"
-    sql_create_account_table = '''CREATE TABLE IF NOT EXISTS account (
+def accounts(conn):
+    cursor = conn.cursor()
+    # Create Table
+    sql_create_account_table = '''CREATE TABLE IF NOT EXISTS accounts (
                                         id varchar(255) PRIMARY KEY,
                                         password varchar(255),
                                         totalPoints integer,
@@ -23,22 +17,38 @@ def account():
                                         numberOfRounds integer,
                                         latestRound integer
                                     );'''
-    conn = create_connection(database)                                          # create a database connection
-    create_table(conn, sql_create_account_table)                                # create account table
+    cursor.execute(sql_create_account_table)
 
-def game():
-    with sqlite3.connect("./databases/balldart.db") as db:                      # create connection to database
-        cursor = db.cursor()
-    sql_create_game_table = '''CREATE TABLE IF NOT EXISTS game (
+def games(conn):
+    cursor = conn.cursor()
+    # Create Table
+    sql_create_game_table = '''CREATE TABLE IF NOT EXISTS games (
                                         id varchar(255) PRIMARY KEY,
                                         mode integer
                                     );'''
     cursor.execute(sql_create_game_table)
-    sql_insertData = '''INSERT INTO game(id, mode) VALUES(?,?)'''
+
+    # Insert Record
+    sql_insertData = '''INSERT INTO games(id, mode) VALUES(?,?)'''
     cursor.execute(sql_insertData, [('board1'), (0)])
-    db.commit()
+    conn.commit()
+
+def employees(conn):
+    cursor = conn.cursor()
+    # Create Table
+    sql_create_employee_table = '''CREATE TABLE IF NOT EXISTS employees (
+                                        id varchar(255) PRIMARY KEY,
+                                        active bit
+                                    );'''
+    cursor.execute(sql_create_employee_table)
+
+    # Insert Record
+    sql_insertData = '''INSERT INTO employees(id, active) VALUES(?,?)'''
+    cursor.execute(sql_insertData, [('fakeID'), (0)])
+    conn.commit()
 
 if __name__ == '__main__':
-    create_connection(r"./databases/balldart.db")
-    account()
-    game()
+    conn = create_connection("./databases/balldart.db")
+    accounts(conn)
+    games(conn)
+    employees(conn)
