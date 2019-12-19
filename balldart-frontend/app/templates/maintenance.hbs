@@ -1,6 +1,5 @@
 {{#each model as |account|}}
   <button {{action 'deleteAccount' account}}>Delete</button>
-  Gebruiker: {{account.id}}<br>
-  Points: {{account.totalPoints}}<br><br>
+  Gebruiker: {{account.id}}<br><br>
 {{/each}}
 {{outlet}}

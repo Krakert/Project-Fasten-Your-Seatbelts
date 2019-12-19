@@ -25,8 +25,8 @@ def a(row):
 # this function returns an object for one game
 def g(row):
     return {
-        "type": "games",                      # It has to have type
-        "id": row[0],                        # And some unique identifier
+        "type": "games",                         # It has to have type
+        "id": row[0],                            # And some unique identifier
         "attributes": {                          # Here goes actual payload.
             "mode": row[1],
         },
@@ -36,8 +36,13 @@ def g(row):
 @app.route('/api/accounts/<account_id>', methods=['DELETE'])
 def accounts_by_id(account_id):
     print("singleAccount")
-    return '', 204
+    with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
+        cursor = db.cursor()
 
+    sql_deleteAccount = '''DELETE FROM account WHERE id = ?'''
+    cursor.execute(sql_deleteAccount, (account_id, ))
+    db.commit()
+    return '', 204
 
 # route for all entities
 @app.route('/api/accounts', methods=['GET','POST','SET'])
