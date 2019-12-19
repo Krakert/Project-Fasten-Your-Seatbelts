@@ -33,10 +33,10 @@ def g(row):
     }
 
 # routes for individual entities
-@app.route('/api/accounts/<account_id>', methods=['GET','POST'])
+@app.route('/api/accounts/<account_id>', methods=['DELETE'])
 def accounts_by_id(account_id):
     print("singleAccount")
-    return jsonify({"data": a(account_id)})
+    return '', 204
 
 
 # route for all entities
