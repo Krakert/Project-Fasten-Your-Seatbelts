@@ -17,16 +17,25 @@ export default Controller.extend({
 
       });
       newAccount.save().then(()=>{
+        this.username = "";
+        this.password1 = "";
+        this.password2 = "";
         this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
       })
-      this.username = "";
-      this.password1 = "";
-      this.password2 = "";
     },
     login(){
-      this.username = "";
-      this.password1 = "";
-      this.password2 = "";
+      this.store.findRecord('account', this.get('username')).then((account)=>{
+        console.log("jahoor")
+        if(account.password === this.get('password1')){
+          console.log("wortelsap")
+          this.username = "";
+          this.password1 = "";
+          this.password2 = "";
+          this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
+        } else {
+          console.log("Incorrect");
+        }
+      });
     }
   }
 });

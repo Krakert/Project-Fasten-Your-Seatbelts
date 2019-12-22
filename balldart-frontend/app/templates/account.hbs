@@ -43,11 +43,8 @@
     {{username}}
     <h5>Wachtwoord:</h5>
     {{input type="text" value=password1}}<br><br>
-    <!-- if Wachtwoord belongs to Gebruikersnaam -->
-    {{#link-to "game" (query-params gamemode="singleplayer")}}
-      <form {{action "login" on="submit"}}>
-        <button type = "submit">Log In</button>
-      </form>
-    {{/link-to}}
+    <form {{action "login" on="submit"}}>
+      <button type = "submit">Log In</button>
+    </form>
   {{/if}}
 </div>

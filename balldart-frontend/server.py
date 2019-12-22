@@ -42,17 +42,25 @@ def g(row):
     }
 
 # routes for individual entities
-@app.route('/api/accounts/<account_id>', methods=['DELETE'])
+@app.route('/api/accounts/<account_id>', methods=['DELETE','GET'])
 def accounts_by_id(account_id):
-    print("singleAccount")
-    with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
-        cursor = db.cursor()
+    if request.method == 'DELETE':
+      print("singleAccount")
+      with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
+          cursor = db.cursor()
 
-    sql_deleteAccount = '''DELETE FROM accounts WHERE id = ?'''
-    cursor.execute(sql_deleteAccount, (account_id, ))
-    db.commit()
-    return '', 204
-
+      sql_deleteAccount = '''DELETE FROM accounts WHERE id = ?'''
+      cursor.execute(sql_deleteAccount, (account_id, ))
+      db.commit()
+      return '', 204
+    else:
+      with sqlite3.connect("../databases/balldart.db") as db:
+          cursor = db.cursor()
+      readData = '''SELECT * FROM accounts WHERE id = ?'''
+      cursor.execute(readData, [(account_id)])
+      accountRecord = cursor.fetchall()
+      print(accountRecord)
+      return jsonify({"data": a(accountRecord[0])})
 # route for all entities
 @app.route('/api/accounts', methods=['GET','POST'])
 def accounts():
@@ -115,9 +123,9 @@ def games_by_id(game_id):
           cursor = db.cursor()
       readData = '''SELECT * FROM games WHERE id = ?'''
       cursor.execute(readData, [(game_id)])
-      accountRecord = cursor.fetchall()
-      print(accountRecord)
-      return jsonify({"data": g(accountRecord[0])})
+      gameRecord = cursor.fetchall()
+      print(gameRecord)
+      return jsonify({"data": g(gameRecord[0])})
 
 # default route.
 # flask has to serve a file that will be generated later with ember
