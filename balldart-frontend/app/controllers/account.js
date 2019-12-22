@@ -1,9 +1,11 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service'
+import { set } from '@ember/object';
 
 export default Controller.extend({
   queryParams: ['accountmode'],
   router: service(),
+  errorMessage: false,
 
   actions: {
     createAccount(){
@@ -24,17 +26,22 @@ export default Controller.extend({
       })
     },
     login(){
-      this.store.findRecord('account', this.get('username')).then((account)=>{
-        console.log("jahoor")
-        if(account.password === this.get('password1')){
-          console.log("wortelsap")
-          this.username = "";
-          this.password1 = "";
-          this.password2 = "";
-          this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
-        } else {
-          console.log("Incorrect");
-        }
+      this.store.findRecord('account', this.get('username'))
+        .then((account)=>{
+          if(account.password === this.get('password1')){
+            set(this, 'errorMessage', false);
+            this.username = "";
+            this.password1 = "";
+            this.password2 = "";
+            this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
+          } else {
+            console.log("Incorrect password");
+            this.errorMessage = true;
+            set(this, 'errorMessage', true);
+          }
+        }).catch((error)=>{
+          console.log("Incorrect Username");
+          set(this, 'errorMessage', true);
       });
     }
   }

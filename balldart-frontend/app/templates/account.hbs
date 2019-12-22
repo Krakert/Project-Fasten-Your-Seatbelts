@@ -43,6 +43,9 @@
     {{username}}
     <h5>Wachtwoord:</h5>
     {{input type="text" value=password1}}<br><br>
+    {{#if errorMessage}}
+      <h5>Verkeerde Gebruikersnaam/Wachtwoord</h5>
+    {{/if}}
     <form {{action "login" on="submit"}}>
       <button type = "submit">Log In</button>
     </form>
