@@ -1,6 +1,9 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-    normalNavbar: true,
-
+  actions: {
+    back: function() {
+        window.history.back()
+    }
+  }
 });

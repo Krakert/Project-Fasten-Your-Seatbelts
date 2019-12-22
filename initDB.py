@@ -33,8 +33,8 @@ def games(conn):
     cursor.execute(sql_create_game_table)
 
     # Insert Record
-    sql_insertData = '''INSERT INTO games(id, mode) VALUES(?,?)'''
-    cursor.execute(sql_insertData, [('board1'), (0)])
+    sql_insertData = '''INSERT INTO games(id, mode, round, pointsOne, pointsTwo, activePlayer) VALUES(?,?,?,?,?,?)'''
+    cursor.execute(sql_insertData, [('board1'), (0), (0), (0), (0), (0)])
     conn.commit()
 
 def employees(conn):

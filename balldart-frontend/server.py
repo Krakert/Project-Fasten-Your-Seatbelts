@@ -38,6 +38,10 @@ def g(row):
         "id": row[0],                            # And some unique identifier
         "attributes": {                          # Here goes actual payload.
             "mode": row[1],
+            "round": row[2],
+            "points-one": row[3],
+            "points-two": row[4],
+            "active-player": row[5],
         },
     }
 
