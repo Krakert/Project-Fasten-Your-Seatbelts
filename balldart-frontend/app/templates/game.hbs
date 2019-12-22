@@ -1,9 +1,9 @@
-{{#if (eq gamemode "singleplayer")}}
-  singleplayer
-{{else}}
-  multiplayer
+
+{{#if (eq gamestate "0")}}
+  <a href {{action "nextGamestate" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
 {{/if}}
 
-<p>{{input type="text" value=model.mode}}</p>
-Mode: {{model.mode}}
-<button {{action "updateGame"}}>Update</button>
+{{#if (eq gamestate "1")}}
+  <h1>{{username}}</h1>
+  Points: {{points}}
+{{/if}}

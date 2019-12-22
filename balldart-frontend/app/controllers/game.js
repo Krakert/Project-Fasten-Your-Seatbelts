@@ -1,13 +1,15 @@
 import Controller from '@ember/controller';
-//import { computed } from '@ember/object';
+import { set } from '@ember/object';
 
 export default Controller.extend({
-  queryParams: ['gamemode'],
+  queryParams: ['gamemode','gamestate','username'],
 
   actions: {
-    updateGame: function() {
-      console.log('updateGame');
+    nextGamestate: function(state,mode) {
+      this.model.set('mode', mode)
       this.model.save();
+      console.log(state, mode);
+      set(this,'gamestate', state);
     }
   }
 });

@@ -116,10 +116,27 @@ def games_by_id(game_id):
       print(pythonObject["data"])
 
       insertData = '''UPDATE games
-                      SET mode = ?
+                      SET
+                        mode = ?,
+                        round = ?,
+                        pointsOne = ?,
+                        pointsTwo = ?,
+                        activePlayer = ?
                       WHERE id = ?'''
-      row = ((pythonObject["data"]["attributes"]["mode"]),(pythonObject["data"]["id"]))
+
+      row = ((pythonObject["data"]["attributes"]["mode"]),
+      (pythonObject["data"]["attributes"]["round"]),
+      (pythonObject["data"]["attributes"]["points-one"]),
+      (pythonObject["data"]["attributes"]["points-two"]),
+      (pythonObject["data"]["attributes"]["active-player"]),
+      (pythonObject["data"]["id"]))
       cursor.execute(insertData, row)
+      row = ((pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["mode"]),
+      (pythonObject["data"]["attributes"]["round"]),
+      (pythonObject["data"]["attributes"]["points-one"]),
+      (pythonObject["data"]["attributes"]["points-two"]),
+      (pythonObject["data"]["attributes"]["active-player"]))
       db.commit()
       return jsonify({"data": g(row)})
     else:
