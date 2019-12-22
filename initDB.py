@@ -24,7 +24,11 @@ def games(conn):
     # Create Table
     sql_create_game_table = '''CREATE TABLE IF NOT EXISTS games (
                                         id varchar(255) PRIMARY KEY,
-                                        mode integer
+                                        mode integer,
+                                        round integer,
+                                        pointsOne integer,
+                                        pointsTwo integer,
+                                        activePlayer integer
                                     );'''
     cursor.execute(sql_create_game_table)
 

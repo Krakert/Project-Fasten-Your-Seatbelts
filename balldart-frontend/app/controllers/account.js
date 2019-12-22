@@ -35,12 +35,9 @@ export default Controller.extend({
             this.password2 = "";
             this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer"}});
           } else {
-            console.log("Incorrect password");
-            this.errorMessage = true;
             set(this, 'errorMessage', true);
           }
-        }).catch((error)=>{
-          console.log("Incorrect Username");
+        }).catch(()=>{
           set(this, 'errorMessage', true);
       });
     }
