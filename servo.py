@@ -2,37 +2,46 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
+#defines
 SERVO_CHANNEL = 16
+CENTER = 60
+LEFT_MAX = 115
+RIGHT_MAX = 25
 
+#variables
+currentPosition = CENTER
+
+#init the PWM
 GPIO.setup(SERVO_CHANNEL, GPIO.OUT)
-p = GPIO.PWM(SERVO_CHANNEL, 50)
+pwm = GPIO.PWM(SERVO_CHANNEL, 50)
+pwm.start((CENTER/10))
 
-def set_board_to_center():
-  CENTER = 60
-  global current_position
-  current_position = CENTER
-  p.start((CENTER/10))
-  time.sleep(2)
+def setBoardCenter():
+    global CENTER
+    global currentPosition
+
+    currentPosition = CENTER
+    pwm.ChangeDutyCycle((CENTER/10))
+    time.sleep(2)
  
-def rotate_board(direction):
-  global current_position
-  LEFT_MAX = 115
-  RIGHT_MAX = 25
-  DELAY = 0.25
-  if direction == 1:
-    current_position = current_position + 1
-    if current_position > LEFT_MAX:
-      current_position = LEFT_MAX
-    time.sleep(DELAY)
+def rotateBoard(direction):
+    global currentPosition
+    global LEFT_MAX
+    global RIGHT_MAX
+    
+    DELAY = 0.25
+    
+    if direction == 1:
+        currentPosition = currentPosition + 1
+        if currentPosition > LEFT_MAX:
+            currentPosition = LEFT_MAX
 
-  elif direction == 2:
-    current_position = current_position - 1
-    if current_position < RIGHT_MAX:
-      current_position = RIGHT_MAX
-    time.sleep(DELAY)
-  print(current_position)
-  p.ChangeDutyCycle((current_position/10))
+    elif direction == 2:
+        currentPosition = currentPosition - 1
+        if currentPosition < RIGHT_MAX:
+            currentPosition = RIGHT_MAX
+        
+    #print(currentPosition)
+    pwm.ChangeDutyCycle((currentPosition/10))
+    #time.sleep(DELAY)
  
