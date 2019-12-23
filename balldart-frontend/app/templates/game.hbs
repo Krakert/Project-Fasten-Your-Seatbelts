@@ -1,9 +1,67 @@
+{{#if (eq gamemode "singleplayer")}}
+  {{#if (eq gamestate "0")}}
+    <a href {{action "nextGamestateSingleplayer" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
+  {{/if}}
 
-{{#if (eq gamestate "0")}}
-  <a href {{action "nextGamestate" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
-{{/if}}
+  {{#if (eq gamestate "1")}}
+    <h1>{{username}}</h1>
+    ID: {{model.id}}<br>
+    Mode: {{model.mode}}<br>
+    Round: {{model.round}}<br>
+    Points1: {{model.pointsOne}}<br>
+    Points2: {{model.pointsTwo}}<br>
+    activePlayer: {{model.activePlayer}}<br>
+    <form {{action "increasePoints" 1}}>
+      <button type = "submit">1</button>
+    </form>
+    <form {{action "increasePoints" 0}}>
+      <button type = "submit">0</button>
+    </form>
+    <form {{action "nextGamestate" 2 1}}>
+      <button type = "submit">Next</button>
+    </form>
+  {{/if}}
 
-{{#if (eq gamestate "1")}}
-  <h1>{{username}}</h1>
-  Points: {{points}}
+  {{#if (eq gamestate "2")}}
+    EINDE
+  {{/if}}
+
+{{else}}
+
+  {{#if (eq gamestate "0")}}
+    {{#if (not-eq username1 username2)}}
+      {{#if (not-eq username1 "")}}
+        <a href {{action "nextGamestateMultiplayer" 1 2}}><img src="./assets/images/play.png" class="imageSize"></a>
+      {{else}}
+        <img src="./assets/images/play.png" class="imageSize">
+      {{/if}}
+    {{else}}
+      <img src="./assets/images/play.png" class="imageSize">
+    {{/if}}
+    {{input type="text" value=username1}}
+    {{input type="text" value=username2}}
+  {{/if}}
+
+  {{#if (eq gamestate "1")}}
+    <h1>{{username1}}</h1>{{model.pointsOne}}<br>
+    <h1>{{username2}}</h1>{{model.pointsTwo}}<br><br><br><br><br><br><br><br>
+    ID: {{model.id}}<br>
+    Mode: {{model.mode}}<br>
+    Round: {{model.round}}<br>
+    activePlayer: {{model.activePlayer}}<br>
+    <form {{action "increasePoints" 1}}>
+      <button type = "submit">1</button>
+    </form>
+    <form {{action "increasePoints" 2}}>
+      <button type = "submit">2</button>
+    </form>
+    <form {{action "nextGamestateMultiplayer" 2 1}}>
+      <button type = "submit">Next</button>
+    </form>
+  {{/if}}
+
+  {{#if (eq gamestate "2")}}
+    EINDE
+  {{/if}}
+
 {{/if}}

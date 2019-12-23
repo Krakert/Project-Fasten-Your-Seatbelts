@@ -1,14 +1,12 @@
 <div class="container">
   <div class="inbl">
     {{#link-to "account" (query-params accountmode=" ")}}
-      <img src="./assets/images/BlueSingleplayerCircle.png" alt="Singleplayer" class="imageSize">
-      <div class="centered">Singleplayer</div>
+      <img src="./assets/images/Single.svg" alt="Singleplayer" class="imageSize">
     {{/link-to}}
   </div>
   <div class="inbl">
-    {{#link-to "enter-players"}}
-      <img src="./assets/images/RedMultiplayerCircle.png" alt="Multiplayer" class="imageSize">
-      <div class="centered">Multiplayer</div>
+    {{#link-to "game"  (query-params gamemode="multiplayer" gamestate="0" username1="" username2="")}}
+      <img src="./assets/images/Multi.svg" alt="Multiplayer" class="imageSize">
     {{/link-to}}
   </div>
 </div>
