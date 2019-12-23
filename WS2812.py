@@ -29,6 +29,15 @@ def setPixelColor(strip, pixelNum, color):
         strip.setPixelColor(pixelNum, color)
         strip.show()
 
+def showSequence(strip, newSequence, SEQUENCE_LED_ON_TIME, SEQUENCE_LED_OFF_TIME):
+    print('show the sequence')
+    for element in newSequence:
+        print(element)
+        setPixelColor(strip, element - 1, COLORS[element]) # turns the led on in the sequence
+        time.sleep(SEQUENCE_LED_ON_TIME)
+        setPixelColor(strip, element - 1, COLORS[0]) # turns the led on in the sequence
+        time.sleep(SEQUENCE_LED_OFF_TIME)
+
 # this function can be displayed if the sequence wass guessed wrong
 def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations=3):
     for i in range(iterations):
@@ -67,6 +76,26 @@ def checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
         strip.show()
         return False
 
+def showWinnerPlayer1(NUMBER_OF_BOARD_PANELS, strip):
+    for i in range(NUMBER_OF_BOARD_PANELS):
+        setPixelColor(strip, i, COLORS[4]) # set all pixels to green
+    strip.show()
+
+def showWinnerPlayer2(NUMBER_OF_BOARD_PANELS, strip):
+    for i in range(NUMBER_OF_BOARD_PANELS):
+        setPixelColor(strip, i, COLORS[5]) # set all pixels to green
+    strip.show()
+
+def setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player):
+    if player:
+        setPixelColor(strip, 6, COLORS[4]) # set all pixels to green
+    else:
+        setPixelColor(strip, 6, COLORS[5]) # set all pixels to green
+
+    strip.show()
+
+
+
 #this can show a rainbow with the WS2812 LEDs
 # NeoPixel library strandtest example
 # Author: Tony DiCola (tony@tonydicola.com)
@@ -85,7 +114,7 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(strip, wait_ms=20, iterations=1):
+def rainbow(strip, wait_ms=15, iterations=1):
     """Draw rainbow that fades across all pixels at once."""
     for j in range(256 * iterations):
         for i in range(strip.numPixels()):
