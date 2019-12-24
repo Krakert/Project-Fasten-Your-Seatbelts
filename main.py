@@ -196,6 +196,8 @@ try:
                 if player1score == player2score:
                     gameCase = GEN_SEQUENCE
                     numberOfRounds = 1
+                    player ^= 1
+                    WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
                 
                 #show the winner    
                 if player1score > player2score:
