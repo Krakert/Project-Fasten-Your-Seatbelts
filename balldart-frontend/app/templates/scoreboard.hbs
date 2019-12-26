@@ -1,9 +1,23 @@
 <div class="indent-left">
   <h1> Scorebord </h1>
-  {{#each arrangedContent as |account|}}
-    Gebruiker: {{account.id}}<br>
-    Points: {{account.totalPoints}}<br><br>
-  {{/each}}
+  {{#if (eq data "totalPoints")}}
+    {{#each arrangedContent as |account|}}
+      Gebruiker: {{account.id}}<br>
+      Points: {{account.totalPoints}}<br><br>
+    {{/each}}
+  {{else if (eq data "highestPoints")}}
+    {{#each arrangedContent as |account|}}
+      Gebruiker: {{account.id}}<br>
+      Points: {{account.highestPoints}}<br><br>
+    {{/each}}
+  {{/if}}
 </div>
+<form {{action "sort" "totalPoints"}}>
+  <button type = "submit">Sorteer op totaal behaalde punten!</button>
+</form>
+<form {{action "sort" "highestPoints"}}>
+  <button type = "submit">Sorteer op hoogst behaalde punten in 1 ronde!</button>
+</form>
 
+{{input type="text" value=username}}
 {{outlet}}
