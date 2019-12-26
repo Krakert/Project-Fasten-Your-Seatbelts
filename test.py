@@ -1,8 +1,9 @@
 import time
+import sqlite3
 
-mode = 1
+mode = 0
 old_mode = mode
-round_interval = 6
+round_interval = 10
 round_counter = round_interval
 round_max = 6
 round = round_max
@@ -16,7 +17,16 @@ while True:
   if counter == 0:
     counter = database_fetch_interval
     print("Hoi")
-    mode = 1
+    with sqlite3.connect("./databases/balldart.db") as db:
+      cursor = db.cursor()
+    readData = '''SELECT * FROM games WHERE id = ?'''
+    cursor.execute(readData, ["board1"])
+    gameRecord = cursor.fetchall()
+    print(gameRecord)
+    mode = gameRecord[0][1]
+    round = gameRecord[0][2]
+    activePlayer = gameRecord[0][5]
+    print(mode + round + activePlayer)
 
   if mode == 0:
     if old_mode == mode:
@@ -26,7 +36,7 @@ while True:
       print("single/multi")
   else:
     if old_mode == mode:
-      print("single")
+      print("active")
       if round != 0:
         round_counter -= 1
         if round_counter == 0:
@@ -39,8 +49,12 @@ while True:
             else:
               activePlayer = 1
             round -= 1
+            insertData = '''UPDATE games SET round = ?, activePlayer = ?, pointsOne = ?, pointsTwo = ? WHERE id = ?'''
+            row = (round, activePlayer, 4, 12, "board1")
+            cursor.execute(insertData, row)
+            db.commit()    
     else:
       old_mode = mode
       round_counter = round_interval
       round = round_max
-      print("start game single")
+      print("start game")
