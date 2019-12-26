@@ -3,12 +3,17 @@
   {{#if (eq data "totalPoints")}}
     {{#each arrangedContent as |account|}}
       Gebruiker: {{account.id}}<br>
-      Points: {{account.totalPoints}}<br><br>
+      Totale Punten: {{account.totalPoints}}<br><br>
     {{/each}}
   {{else if (eq data "highestPoints")}}
     {{#each arrangedContent as |account|}}
       Gebruiker: {{account.id}}<br>
-      Points: {{account.highestPoints}}<br><br>
+      Hoogste Punten: {{account.highestPoints}}<br><br>
+    {{/each}}
+  {{else}}
+    {{#each arrangedContent as |account|}}
+      Gebruiker: {{account.id}}<br>
+      Gemiddelde Punten: {{account.averagePoints}}<br><br>
     {{/each}}
   {{/if}}
 </div>
@@ -17,6 +22,9 @@
 </form>
 <form {{action "sort" "highestPoints"}}>
   <button type = "submit">Sorteer op hoogst behaalde punten in 1 ronde!</button>
+</form>
+<form {{action "sort" "averagePoints"}}>
+  <button type = "submit">Sorteer op gemiddelde punten!</button>
 </form>
 
 {{input type="text" value=username}}
