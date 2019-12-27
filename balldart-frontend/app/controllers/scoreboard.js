@@ -16,9 +16,24 @@ export default Controller.extend({
       return ["averagePoints:desc"];
     }
   }),
-  enrichedModel: computed('model', function() {
+
+  // filteredModel: filter('model',function(item){
+  //   return item.id === this.filtername;
+  // }),
+  // filteredModel: computed('model.@each.id', 'filtername', function(){
+  //   return this.model.filter(function(item){ return item.id === this.filtername});
+  // }),
+
+   filteredModel: computed('model.@each.id','filtername', function(item) {
+     if(item.id === this.filtername){
+       return this.model.filterBy('id', this.filtername);
+     }
+     return this.model;
+   }),
+  enrichedModel: computed('filteredModel', function() {
     let array = [];
-    let model = this.model;
+    let model = this.filteredModel;
+    console.log(model);
     if(model){
       model.forEach((m) => {
         let average = 0;

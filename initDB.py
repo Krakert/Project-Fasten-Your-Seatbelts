@@ -42,7 +42,9 @@ def employees(conn):
     # Create Table
     sql_create_employee_table = '''CREATE TABLE IF NOT EXISTS employees (
                                         id varchar(255) PRIMARY KEY,
-                                        active bit
+                                        active bit,
+                                        led int,
+                                        servo int
                                     );'''
     cursor.execute(sql_create_employee_table)
 

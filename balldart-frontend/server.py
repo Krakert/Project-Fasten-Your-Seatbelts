@@ -28,6 +28,8 @@ def e(row):
         "id": row[0],                              # And some unique identifier
         "attributes": {                            # Here goes actual payload.
             "active": row[1],
+            "led": row[2],
+            "servo": row[3],
         },
     }
 
@@ -106,6 +108,32 @@ def employees():
     return jsonify({
         "data": [e(row) for row in employeeRecord]
         })
+@app.route('/api/employees/<employee_id>', methods=['PATCH'])
+def employees_by_id(employee_id):
+    if request.method == 'PATCH':
+      pythonObject = json.loads(request.data)
+      with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
+          cursor = db.cursor()
+      print(pythonObject["data"])
+
+      insertData = '''UPDATE employees
+                      SET
+                        active = ?,
+                        led = ?,
+                        servo = ?
+                      WHERE id = ?'''
+      row = ((pythonObject["data"]["attributes"]["active"]),
+      (pythonObject["data"]["attributes"]["led"]),
+      (pythonObject["data"]["attributes"]["servo"]),
+      (pythonObject["data"]["id"]))
+      cursor.execute(insertData, row)
+      row = ((pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["active"]),
+      (pythonObject["data"]["attributes"]["led"]),
+      (pythonObject["data"]["attributes"]["servo"]))
+      db.commit()
+      return jsonify({"data": e(row)})
+
 
 @app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):

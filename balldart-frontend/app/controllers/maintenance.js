@@ -3,6 +3,7 @@ import { computed } from '@ember/object'
 export default Controller.extend({
   queryParams: ['active'],
   counter: 1,
+  valid: false,
   seconds: computed('clock.second', function() {
     let x = this.get('clock.second');
     this.counter--;
@@ -17,6 +18,18 @@ export default Controller.extend({
   actions: {
     deleteAccount: function(account) {
       account.destroyRecord();
+    },
+    toggleLED: function(){
+      let employee = this.employees.get('firstObject');
+      if(this.valid){
+        this.valid = false
+        employee.set('led', 1)
+        employee.save();
+      }else{
+        this.valid = true;
+        employee.set('led', 0)
+        employee.save();
+      }
     }
   }
 });
