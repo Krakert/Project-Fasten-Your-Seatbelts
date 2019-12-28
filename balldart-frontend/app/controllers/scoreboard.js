@@ -5,7 +5,7 @@ import { set, computed } from '@ember/object';
 export default Controller.extend({
   queryParams: ['data'],
   arrangedContent: sort('enrichedModel', 'sortingOrder'),
-
+  filtername: "",
   sortingOrder: computed('data', function() {
     let data = this.data;
     if(data === "totalPoints"){
@@ -17,23 +17,21 @@ export default Controller.extend({
     }
   }),
 
-  // filteredModel: filter('model',function(item){
-  //   return item.id === this.filtername;
-  // }),
-  // filteredModel: computed('model.@each.id', 'filtername', function(){
-  //   return this.model.filter(function(item){ return item.id === this.filtername});
-  // }),
-
-   filteredModel: computed('model.@each.id','filtername', function(item) {
-     if(item.id === this.filtername){
-       return this.model.filterBy('id', this.filtername);
-     }
+  filteredModel: computed('model.@each.id','filtername', function() {
+  console.log(this.filtername)
+   if(this.filtername !== ""){
+     console.log(this.model)
+     return this.model.filter((item)=>{
+       return item.id.toLowerCase() === this.filtername.toLowerCase();
+     });
+   } else{
+     console.log(this.model)
      return this.model;
-   }),
+   }
+  }),
   enrichedModel: computed('filteredModel', function() {
     let array = [];
     let model = this.filteredModel;
-    console.log(model);
     if(model){
       model.forEach((m) => {
         let average = 0;
@@ -43,7 +41,6 @@ export default Controller.extend({
         m.set('averagePoints', average);
         array.push(m);
       })
-      console.log(array);
     }
     return array;
   }),

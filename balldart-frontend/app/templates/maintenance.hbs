@@ -1,14 +1,16 @@
+{{#if active}}
+  {{#each model as |account|}}
+    <button {{action 'deleteAccount' account}}>Delete</button>
+    Gebruiker: {{account.id}}<br><br>
+  {{/each}}
 
-{{#each model as |account|}}
-  <button {{action 'deleteAccount' account}}>Delete</button>
-  Gebruiker: {{account.id}}<br><br>
-{{/each}}
-
-{{#each employees as |employee|}}
-  RFID: {{employee.id}}<br>
-  Active: {{employee.active}}<br>
-  LED:    <button {{action 'toggleLED'}}>Toggle</button>{{employee.led}}<br>
-  Servo:   <button {{action 'servoToOrigin'}}>Delete</button><br><br>
-{{/each}}
-{{x}}
+  {{#each employees as |employee|}}
+    RFID: {{employee.id}}<br>
+    Active: {{employee.active}}<br>
+    LED: <button {{action 'toggleLED'}}>Toggle</button>{{employee.led}}<br>
+    Servo: <button {{action 'servoToOrigin'}}>Delete</button><br><br>
+  {{/each}}
+{{else}}
+<h1>Houd je rfid erbij!</h1>
+{{/if}}
 {{outlet}}

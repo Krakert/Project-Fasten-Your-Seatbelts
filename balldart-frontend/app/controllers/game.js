@@ -1,12 +1,12 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object'
+import { observer } from '@ember/object'
 import { set } from '@ember/object';
 
 export default Controller.extend({
   queryParams: ['gamemode','gamestate','username1','username2'],
   counter: 1,
 
-  seconds: computed('clock.second', function() {
+  seconds: observer('clock.second', function() {
     let x = this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
@@ -14,7 +14,6 @@ export default Controller.extend({
       console.log('x', x);
       this.counter = 5
     }
-    return x;
   }),
 
   actions: {
