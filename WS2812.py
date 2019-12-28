@@ -62,6 +62,11 @@ def showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip):
         setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
     strip.show()
 
+def showPanelHit(strip, valid, SHOW_HIT_ON_TIME):
+    setPixelColor(strip, valid - 1, COLORS[valid]) #turn on the led corresponding to the switch that was detected
+    time.sleep(SHOW_HIT_ON_TIME)
+    setPixelColor(strip, valid - 1, COLORS[0]) #turn the led off
+
 def checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
     if distance < MIN_DISTANCE:
         for i in range(NUMBER_OF_BOARD_PANELS):

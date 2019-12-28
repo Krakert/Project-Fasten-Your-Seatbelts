@@ -21,13 +21,16 @@ SEQUENCE_LED_ON_TIME = 1 #seconds
 SEQUENCE_LED_OFF_TIME = 0.3 #seconds
 MIN_DISTANCE = 50 #distance in cm
 MULTI_PLAYER_ROUNDS = 3 # number of rounds played in multiplayer
+CORRECT_SEQUENCE = 50
+INVALID_SEQUENCE = 51
+SHOW_HIT_ON_TIME = 0.2 # time in seconds
 
 #enumeratie of 'switch case singleplayer'
 #gameCase
 GEN_SEQUENCE = 1
 SHOW_SEQUENCE = 2
 DETECT_SEQUENCE = 3
-CORRECT_SEQUENCE = 4
+SHOW_CORRECT_SEQUENCE = 4
 WRONG_SEQUENCE = 5
 SHOW_WINNER = 6
 
@@ -47,7 +50,7 @@ player2score = 0
 numberOfRounds = MULTI_PLAYER_ROUNDS
 distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
-gameModeCase = MULTI_PLAYER
+gameModeCase = MULTI_PLAYER # dit moet dus weg en vervangen worden door in de main loop uit de database de gamemodus op te halen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # LED strip configuration:
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
@@ -117,14 +120,16 @@ try:
             if gameCase == DETECT_SEQUENCE:
                 waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE)
 
-                valid = panelDetection.guessSequence(sequence)               # returns 1 if the sequence was correct, 2 if incorrect
+                valid = panelDetection.guessSequence(sequence, CORRECT_SEQUENCE, INVALID_SEQUENCE)               # returns 1 if the sequence was correct, 2 if incorrect
 
-                if valid == 1:
-                    gameCase = CORRECT_SEQUENCE
-                if valid == 2:
+                if valid == CORRECT_SEQUENCE:
+                    gameCase = SHOW_CORRECT_SEQUENCE
+                elif valid == INVALID_SEQUENCE:
                     gameCase = WRONG_SEQUENCE
+                elif valid != 0:
+                    WS2812.showPanelHit(strip, valid, SHOW_HIT_ON_TIME)
 
-            if gameCase == CORRECT_SEQUENCE:
+            if gameCase == SHOW_CORRECT_SEQUENCE:
                 print("Correct!\n")
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
@@ -156,14 +161,16 @@ try:
 
                 servo.rotateBoard(gyro.main())
 
-                valid = panelDetection.guessSequence(sequence)               # returns 1 if the sequence was correct, 2 if incorrect
+                valid = panelDetection.guessSequence(sequence, CORRECT_SEQUENCE, INVALID_SEQUENCE)               # returns 1 if the sequence was correct, 2 if incorrect
 
-                if valid == 1:
-                    gameCase = CORRECT_SEQUENCE
-                if valid == 2:
+                if valid == CORRECT_SEQUENCE:
+                    gameCase = SHOW_CORRECT_SEQUENCE
+                elif valid == INVALID_SEQUENCE:
                     gameCase = WRONG_SEQUENCE
+                elif valid != 0:
+                    WS2812.showPanelHit(strip, valid, SHOW_HIT_ON_TIME)
 
-            if gameCase == CORRECT_SEQUENCE:
+            if gameCase == SHOW_CORRECT_SEQUENCE:
                 print("Correct!\n")
                 servo.setBoardCenter()
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
