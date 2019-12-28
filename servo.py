@@ -22,7 +22,7 @@ def setBoardCenter():
 
     currentPosition = CENTER
     pwm.ChangeDutyCycle((CENTER/10))
-    time.sleep(2)
+    #time.sleep(2) # dit houdt de code van main op, hierdoor duurt het lang voordat er weergegeven wordt dat de sequence correct is
  
 def rotateBoard(direction):
     global currentPosition
@@ -43,5 +43,5 @@ def rotateBoard(direction):
         
     #print(currentPosition)
     pwm.ChangeDutyCycle((currentPosition/10))
-    #time.sleep(DELAY)
+    #time.sleep(DELAY) #dit houdt de code van main op
  
