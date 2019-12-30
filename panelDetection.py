@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import time
 
 # Pin defines
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 BOARD_PANEL_PINS = [4, 17, 27, 22, 14, 23]
 GPIO.setup(BOARD_PANEL_PINS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -23,8 +24,6 @@ iteration = 0
 
 #defines
 PANEL_BOUNCETIME = 500 # time in ms
-CORRECT_SEQUENCE = 1
-INVALID_SEQUENCE = 2
 
 # can set an bit in a value
 def setBit(number, pos): 
@@ -92,7 +91,7 @@ GPIO.add_event_callback(BOARD_PANEL_PINS[5], panelCallback6)
 # this function checks if the correct panel is hit of the board
 # it will return True if the sequence was correct
 # if the player makes a mistake it will instantly retrun False
-def guessSequence(newSequence):
+def guessSequence(newSequence, CORRECT_SEQUENCE, INVALID_SEQUENCE):
     global callbackValue
     global iteration
 
@@ -107,11 +106,15 @@ def guessSequence(newSequence):
         if lengthOfArray == iteration:          # check if the last panel was hit 
             iteration = 0                       # reset
             return CORRECT_SEQUENCE    
+        
+        return positionSetBit
     
     # checks if the wrong panel was hit
     if currentIndex != positionSetBit and positionSetBit != 0:
         iteration = 0                           # reset
         return INVALID_SEQUENCE
+
+    return 0 #return 0 if there was nothing detected
 
 def clearInterrupts():
     global callbackValue
