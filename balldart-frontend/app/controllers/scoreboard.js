@@ -18,16 +18,15 @@ export default Controller.extend({
   }),
 
   filteredModel: computed('model.@each.id','filtername', function() {
-  console.log(this.filtername)
-   if(this.filtername !== ""){
-     console.log(this.model)
-     return this.model.filter((item)=>{
-       return item.id.toLowerCase() === this.filtername.toLowerCase();
-     });
-   } else{
-     console.log(this.model)
-     return this.model;
-   }
+    let regex = new RegExp(this.filtername,'i');
+    if(this.filtername !== ""){
+      return this.model.filter((item)=>{
+        console.log(regex)
+        return item.id.match(regex);
+      });
+    } else{
+      return this.model;
+    }
   }),
   enrichedModel: computed('filteredModel', function() {
     let array = [];
