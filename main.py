@@ -11,13 +11,13 @@ import panelDetection
 import WS2812
 import servo
 import gyro
-import Sonar
+import sonar
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
 SEQUENCE_LED_ON_TIME = 1 #seconds
 SEQUENCE_LED_OFF_TIME = 0.3 #seconds
-MIN_DISTANCE = 50 #distance in cm
+MIN_DISTANCE = 75 #distance in cm
 MULTI_PLAYER_ROUNDS = 3 # number of rounds played in multiplayer
 CORRECT_SEQUENCE = 50
 INVALID_SEQUENCE = 51
@@ -67,7 +67,7 @@ def addToSequence(previousRandomNumber):
     while randomPanel == previousRandomNumber:
         randomPanel = random.randrange(1, NUMBER_OF_BOARD_PANELS + 1)
 
-    print('new number: %d' % (randomPanel))
+    print('new number: %d' % randomPanel)
     sequence.append(randomPanel)
 
     return sequence, randomPanel
@@ -75,15 +75,15 @@ def addToSequence(previousRandomNumber):
 def waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE):
     global distance
 
-    distance = (distance * 0.9) + (Sonar.distance() * 0.1)
+    distance = (distance * 0.8) + (sonar.distance() * 0.2)
     while WS2812.checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
-        distance = (distance * 0.9) + (Sonar.distance() * 0.1)
+        distance = (distance * 0.8) + (sonar.distance() * 0.2)
         panelDetection.clearInterrupts()
 
 
 # Create NeoPixel object with appropriate configuration.
 strip = PixelStrip(NUMBER_OF_BOARD_PANELS + 1, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-# Intialize the library (must be called once before other functions).
+# Initialize the library (must be called once before other functions).
 strip.begin()
 
 if gameModeCase == MULTI_PLAYER:
