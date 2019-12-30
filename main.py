@@ -7,13 +7,11 @@ import RPi.GPIO as GPIO
 import random
 
 #import files from our own project
-import WS2812
 import panelDetection
+import WS2812
 import servo
 import gyro
 import Sonar
-
-GPIO.setwarnings(False)
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
@@ -178,6 +176,7 @@ try:
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
+                servo.setBoardCenter()
                 if player == True:
                     player1score = player1score + (len(sequence) - 1)
                     print("Incorrect player1! jammer joh... score= %d\n" %(player1score))

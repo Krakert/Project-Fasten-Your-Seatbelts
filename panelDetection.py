@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import time
 
 # Pin defines
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 BOARD_PANEL_PINS = [4, 17, 27, 22, 14, 23]
 GPIO.setup(BOARD_PANEL_PINS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
