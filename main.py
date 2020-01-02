@@ -5,6 +5,7 @@ import time
 from rpi_ws281x import PixelStrip, Color
 import RPi.GPIO as GPIO
 import random
+import sqlite3
 
 #import files from our own project
 import panelDetection
@@ -15,22 +16,25 @@ import sonar
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
-SEQUENCE_LED_ON_TIME = 1 #seconds
-SEQUENCE_LED_OFF_TIME = 0.3 #seconds
-MIN_DISTANCE = 75 #distance in cm
-MULTI_PLAYER_ROUNDS = 3 # number of rounds played in multiplayer
+SEQUENCE_LED_ON_TIME = 1        #seconds
+SEQUENCE_LED_OFF_TIME = 0.3     #seconds
+MIN_DISTANCE = 65               #distance in cm
+MULTI_PLAYER_ROUNDS = 3         # number of rounds played in multiplayer
 CORRECT_SEQUENCE = 50
 INVALID_SEQUENCE = 51
-SHOW_HIT_ON_TIME = 0.2 # time in seconds
+SHOW_HIT_ON_TIME = 0.2          # time in seconds
+ZERO = 0                        # Just a 0, used to update databases info.
 
 #enumeratie of 'switch case singleplayer'
 #gameCase
+INIT = 0
 GEN_SEQUENCE = 1
 SHOW_SEQUENCE = 2
 DETECT_SEQUENCE = 3
 SHOW_CORRECT_SEQUENCE = 4
 WRONG_SEQUENCE = 5
 SHOW_WINNER = 6
+
 
 #enumernatie of 'main switch case'
 #gameModeCase
@@ -48,7 +52,8 @@ player2score = 0
 numberOfRounds = MULTI_PLAYER_ROUNDS
 distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
-gameModeCase = MULTI_PLAYER # dit moet dus weg en vervangen worden door in de main loop uit de database de gamemodus op te halen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+gameModeCase = 0
+init = 0
 
 # LED strip configuration:
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
@@ -75,11 +80,37 @@ def addToSequence(previousRandomNumber):
 def waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE):
     global distance
 
-    distance = (distance * 0.8) + (sonar.distance() * 0.2)
+    distance = (distance * 0.9) + (sonar.distance() * 0.1)
     while WS2812.checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
-        distance = (distance * 0.8) + (sonar.distance() * 0.2)
+        distance = (distance * 0.9) + (sonar.distance() * 0.1)
         panelDetection.clearInterrupts()
 
+def setGameModeToZero():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT * FROM games;'''
+    cursor.execute(readData)
+    gameInfo = cursor.fetchall()
+    primaryKey = gameInfo[0][0]
+    print(gameInfo)
+    updateDate = '''UPDATE games SET mode = ?, round = ?, pointsOne = ?, pointstwo = ?, activePlayer = ? 
+                                 WHERE id = ?'''
+    cursor.execute(updateDate, (ZERO, ZERO, ZERO, ZERO, ZERO, primaryKey))
+    db.commit()
+
+def checkGameMode():
+    global gameModeCase
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT mode FROM games;'''
+    cursor.execute(readData)
+    gameInfo = cursor.fetchall()
+    if gameInfo[0][0] == 0:
+        gameModeCase = NO_GAME
+    elif gameInfo[0][0] == 1:
+        gameModeCase = SINGLE_PLAYER
+    elif gameInfo[0][0] == 2:
+        gameModeCase = MULTI_PLAYER
 
 # Create NeoPixel object with appropriate configuration.
 strip = PixelStrip(NUMBER_OF_BOARD_PANELS + 1, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
@@ -89,24 +120,29 @@ strip.begin()
 if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
+setGameModeToZero()
+
 try:
     while True:
-        #get gamemode from database!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-###############################################################################################################################################################################################
         if gameModeCase == NO_GAME:
+            checkGameMode()
             sequence.clear()                                             # clear array
             player1score = 0
             player2score = 0
             numberOfRounds = MULTI_PLAYER_ROUNDS
-            gameCase = GEN_SEQUENCE
+            gameCase = INIT
             WS2812.rainbow(strip)
 
 
-###############################################################################################################################################################################################
         if gameModeCase == SINGLE_PLAYER:
+            if gameCase == INIT:
+                WS2812.colorWipe(strip)
+                servo.setBoardCenter()
+                time.sleep(2)
+                gameCase = GEN_SEQUENCE
+
             if gameCase == GEN_SEQUENCE:
-                sequence, randomPanel = addToSequence(previousRandomNumber)  # add random number (1 t/m 6) to sequence
+                sequence, randomPanel = addToSequence(previousRandomNumber)     # add random number (1 t/m 6) to sequence
                 previousRandomNumber = randomPanel                              # prevents generating the same number
                 gameCase = SHOW_SEQUENCE
 
@@ -131,22 +167,27 @@ try:
                 print("Correct!\n")
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
-                gameCase = GEN_SEQUENCE                                 # if the sequence was correct, add one to the sequence
+                gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
                 score = len(sequence) - 1
+                setGameModeToZero()
                 #send score to database !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                print("Incorrect! jammer joh... score= %d\n" %(score))
-                sequence.clear()                                             # clear array
-                WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs                    
-                gameCase = GEN_SEQUENCE                                             # if the sequence was incorrect, generate new sequence
+                print("Incorrect! jammer joh... score= %d\n" % score)
+                sequence.clear()                                                # clear array
+                WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs
+                gameModeCase = NO_GAME                                         # if the sequence was incorrect, generate new sequence
 
-
-###############################################################################################################################################################################################
         if gameModeCase == MULTI_PLAYER:
+            if gameCase == INIT:
+                WS2812.colorWipe(strip)
+                servo.setBoardCenter()
+                time.sleep(2)
+                gameCase = GEN_SEQUENCE
+
             if gameCase == GEN_SEQUENCE:
                 sequence, randomPanel = addToSequence(previousRandomNumber)  # add random number (1 t/m 6) to sequence
-                previousRandomNumber = randomPanel                              # prevents generating the same number
+                previousRandomNumber = randomPanel                           # prevents generating the same number
                 gameCase = SHOW_SEQUENCE
 
             if gameCase == SHOW_SEQUENCE:
@@ -177,13 +218,13 @@ try:
 
             if gameCase == WRONG_SEQUENCE:
                 servo.setBoardCenter()
-                if player == True:
+                if player:
                     player1score = player1score + (len(sequence) - 1)
-                    print("Incorrect player1! jammer joh... score= %d\n" %(player1score))
+                    print("Incorrect player1! jammer joh... score= %d\n" % player1score)
                     
                 else:
                     player2score = player2score + (len(sequence) - 1)
-                    print("Incorrect player2! jammer joh... score= %d\n" %(player2score))
+                    print("Incorrect player2! jammer joh... score= %d\n" % player2score)
                     numberOfRounds = numberOfRounds - 1
 
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs     
@@ -194,7 +235,7 @@ try:
                 else:               
                     gameCase = GEN_SEQUENCE                                     # if the sequence was incorrect, generate new sequence
                     player ^= 1
-                    print("player= %d\n" %(player)) 
+                    print("player= %d\n" % player)
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
                 
             if gameCase == SHOW_WINNER:
@@ -210,8 +251,6 @@ try:
                     WS2812.showWinnerPlayer1(NUMBER_OF_BOARD_PANELS + 1, strip)
                 if player1score < player2score:
                     WS2812.showWinnerPlayer2(NUMBER_OF_BOARD_PANELS + 1, strip)
-                
-
 
 except KeyboardInterrupt:
     GPIO.cleanup()       # clean up GPIO on CTRL+C exit

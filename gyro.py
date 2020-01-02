@@ -11,7 +11,7 @@ ADDRESS = 0x68              # The address where it IC can ben found.
 SCALE_FACTOR = 16384.0      # See line 51.
 
 #variables
-threshold = 12              # The minimum angle.
+threshold = 25              # The minimum angle.
 
 # Get the two 8 bits and glue them together.
 def readWord(reg):

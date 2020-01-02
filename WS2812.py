@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import time
+import sqlite3
 from rpi_ws281x import PixelStrip, Color
 
 #color code hexdecimal
@@ -39,8 +40,8 @@ def showSequence(strip, newSequence, SEQUENCE_LED_ON_TIME, SEQUENCE_LED_OFF_TIME
         time.sleep(SEQUENCE_LED_OFF_TIME)
 
 # this function can be displayed if the sequence wass guessed wrong
-def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations=3):
-    for i in range(iterations):
+def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations = 3):
+    for _ in range(iterations):
         for j in range(NUMBER_OF_BOARD_PANELS):
             setPixelColor(strip, j, COLORS[1]) # set all pixels to red
 
@@ -93,9 +94,9 @@ def showWinnerPlayer2(NUMBER_OF_BOARD_PANELS, strip):
 
 def setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player):
     if player:
-        setPixelColor(strip, 6, COLORS[4]) # set all pixels to green
+        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[4]) # set all pixels to green
     else:
-        setPixelColor(strip, 6, COLORS[5]) # set all pixels to green
+        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[5]) # set all pixels to green
 
     strip.show()
 
@@ -119,10 +120,17 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(strip, wait_ms=15, iterations=1):
+def rainbow(strip, wait_ms=15, iterations = 1):
     """Draw rainbow that fades across all pixels at once."""
     for j in range(256 * iterations):
         for i in range(strip.numPixels()):
             strip.setPixelColor(i, wheel((i + j) & 255))
         strip.show()
+        with sqlite3.connect("./databases/balldart.db") as db:
+            cursor = db.cursor()
+        readData = '''SELECT mode FROM games;'''
+        cursor.execute(readData)
+        gameInfo = cursor.fetchall()
+        if gameInfo[0][0] != 0:
+            break
         time.sleep(wait_ms / 1000.0)
