@@ -1,7 +1,7 @@
-# file backend/api.py
-from flask import Flask
-from flask import jsonify
-from flask import request, send_from_directory
+#!/usr/bin/env python3
+
+#import installed libraries
+from flask import Flask, jsonify, request, send_from_directory
 import json
 import random
 import sqlite3
