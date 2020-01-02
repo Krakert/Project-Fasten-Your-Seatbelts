@@ -9,15 +9,6 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 BOARD_PANEL_PINS = [4, 17, 27, 22, 14, 23]
 GPIO.setup(BOARD_PANEL_PINS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-
-BOARD_PANEL_PIN_1 = 4
-BOARD_PANEL_PIN_2 = 17
-BOARD_PANEL_PIN_3 = 27
-BOARD_PANEL_PIN_4 = 22
-BOARD_PANEL_PIN_5 = 14
-BOARD_PANEL_PIN_6 = 23
-
 # variables
 callbackValue = 0
 iteration = 0

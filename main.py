@@ -93,13 +93,14 @@ strip.begin()
 if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
+SQL.setupConnection()
 SQL.setGameModeToZero()
 
 try:
     while True:
         if gameModeCase == NO_GAME:
             gameModeCase = SQL.checkGameMode()
-            sequence.clear()                                             # clear array
+            sequence.clear()
             player1score = 0
             player2score = 0
             numberOfRounds = MULTI_PLAYER_ROUNDS
@@ -141,14 +142,16 @@ try:
 
             if gameCase == SHOW_CORRECT_SEQUENCE:
                 print("Correct!\n")
+                score = len(sequence)
+                SQL.updateInfo(score, score, gameModeCase)
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
-                time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
+                time.sleep(3)
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
                 score = len(sequence) - 1
+                SQL.updateInfo(score, score, gameModeCase)
                 SQL.setGameModeToZero()
-                #send score to database !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 print("Incorrect! jammer joh... score= %d\n" % score)
                 sequence.clear()                                                # clear array
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs
