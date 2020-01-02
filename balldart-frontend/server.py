@@ -89,7 +89,7 @@ def accounts():
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
-      readData = '''SELECT * FROM accounts;'''
+      readData = '''SELECT * FROM accounts'''
       cursor.execute(readData)
       accountRecord = cursor.fetchall()
       print(accountRecord)
@@ -108,7 +108,7 @@ def employees():
     return jsonify({
         "data": [e(row) for row in employeeRecord]
         })
-@app.route('/api/employees/<employee_id>', methods=['PATCH'])
+@app.route('/api/employees/<employee_id>', methods=['PATCH','GET'])
 def employees_by_id(employee_id):
     if request.method == 'PATCH':
       pythonObject = json.loads(request.data)
@@ -133,7 +133,13 @@ def employees_by_id(employee_id):
       (pythonObject["data"]["attributes"]["servo"]))
       db.commit()
       return jsonify({"data": e(row)})
-
+    else:
+      with sqlite3.connect("../databases/balldart.db") as db:
+          cursor = db.cursor()
+      readData = '''SELECT * FROM employees WHERE id = ?'''
+      cursor.execute(readData, [(employee_id)])
+      employeesRecord = cursor.fetchall()
+      return jsonify({"data": e(employeesRecord[0])})
 
 @app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):

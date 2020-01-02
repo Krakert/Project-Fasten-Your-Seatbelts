@@ -5,18 +5,20 @@ import { set } from '@ember/object';
 export default Controller.extend({
   queryParams: [],
   counter: 1,
-  active: 1,
+  active: 0,
   valid: false,
 
   seconds: observer('clock.second', function() {
     let x = this.get('clock.second');
     this.counter--;
-    if(this.counter === 0){
+    // if(this.counter === 0){
       this.store.findRecord('employee', 'fakeID').then((employee)=>{
         set(this,'active', employee.active)
+        console.log(employee.active)
         this.counter = 5
       });
-    }
+    // }
+    console.log("yoyoyoyooy");
   }),
   actions: {
     deleteAccount: function(account) {
@@ -28,7 +30,7 @@ export default Controller.extend({
         this.valid = false
         employee.set('led', 1)
         employee.save();
-      }else{
+      } else{
         this.valid = true;
         employee.set('led', 0)
         employee.save();

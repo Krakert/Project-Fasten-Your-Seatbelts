@@ -5,20 +5,25 @@
   {{/if}}
 
   {{#if (eq gamestate "1")}}
-    <h1>{{username1}}</h1>
-    {{model.pointsOne}}<br><br><br><br><br><br><br><br>
+    <div class="huge">
+      {{username1}}<br>{{model.pointsOne}}
+    </div>
+
     ID: {{model.id}}<br>
     Mode: {{model.mode}}<br>
     Round: {{model.round}}<br>
     activePlayer: {{model.activePlayer}}<br>
-    <form {{action "increasePoints" 1}}>
-      <button type = "submit">1</button>
-    </form>
     <form {{action "nextGamestateSingleplayer" 2 1}}>
       <button type = "submit">Next</button>
     </form>
   {{/if}}
-
+  <div class="footer navbar-fixed-bottom">
+    <div class="support-img">
+      {{#link-to "application"}}
+        <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="support"></a>
+      {{/link-to}}
+    </div>
+  </div>
   {{#if (eq gamestate "2")}}
     EINDE
   {{/if}}
@@ -40,23 +45,35 @@
   {{/if}}
 
   {{#if (eq gamestate "1")}}
-    <h1>{{username1}}</h1>{{model.pointsOne}}<br>
-    <h1>{{username2}}</h1>{{model.pointsTwo}}<br><br><br><br><br><br><br><br>
-    ID: {{model.id}}<br>
-    Mode: {{model.mode}}<br>
-    Round: {{model.round}}<br>
-    activePlayer: {{model.activePlayer}}<br>
-    <form {{action "increasePoints" 1}}>
-      <button type = "submit">1</button>
-    </form>
-    <form {{action "increasePoints" 2}}>
-      <button type = "submit">2</button>
-    </form>
-    <form {{action "nextGamestateMultiplayer" 2 1}}>
-      <button type = "submit">Next</button>
-    </form>
+    <div class="container">
+      <div class="score">
+        <div class="huge">
+          Aantal Behaalde Punten:<br>
+          {{model.pointsOne}}<br>
+          {{username1}}
+        </div>
+      </div>
+      <div class="score">
+        <div class="huge">
+          Aantal Behaalde Punten:<br>
+          {{model.pointsTwo}}<br>
+          {{username2}}
+        </div>
+      </div>
+    </div>
+    {{#if (eq model.activePlayer 1)}}
+      {{username1}} moet gooien!
+    {{else}}
+      {{username2}} moet gooien!
+    {{/if}}
+    <div class="footer navbar-fixed-bottom">
+      <div class="support-img">
+        {{#link-to "application"}}
+          <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="support"></a>
+        {{/link-to}}
+      </div>
+    </div>
   {{/if}}
-
   {{#if (eq gamestate "2")}}
     EINDE
   {{/if}}

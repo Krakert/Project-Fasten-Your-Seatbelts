@@ -1,10 +1,11 @@
 import Controller from '@ember/controller';
-import { observer } from '@ember/object'
+import { observer,computed } from '@ember/object'
 import { set } from '@ember/object';
-
+import { inject as service } from '@ember/service';
 export default Controller.extend({
   queryParams: ['gamemode','gamestate','username1','username2'],
   counter: 1,
+  router: service(),
 
   seconds: observer('clock.second', function() {
     let x = this.get('clock.second');
@@ -40,14 +41,12 @@ export default Controller.extend({
       set(this,'gamestate', state);
       this.model.save();
     },
-    increasePoints: function(player){
-      if(player === 1){
-        this.model.set('pointsOne', this.model.pointsOne + 1);
-      }
-      if (player === 2){
-        this.model.set('pointsTwo', this.model.pointsTwo + 1);
-      }
+    stop: function(){
+      this.model.set('mode', 0);
+      this.model.set('round', 0);
+      this.router.transitionTo('application');
       this.model.save();
     }
+
   }
 });

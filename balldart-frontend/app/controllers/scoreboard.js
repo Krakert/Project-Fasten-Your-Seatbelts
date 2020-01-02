@@ -6,6 +6,7 @@ export default Controller.extend({
   queryParams: ['data'],
   arrangedContent: sort('enrichedModel', 'sortingOrder'),
   filtername: "",
+
   sortingOrder: computed('data', function() {
     let data = this.data;
     if(data === "totalPoints"){

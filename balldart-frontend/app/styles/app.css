@@ -4,7 +4,10 @@
   white-space: nowrap;
   color: black;
 }
-
+.huge{
+    font-size: 300%;
+    text-align: center;
+}
 .player{
   margin-right: 250px;
   margin-left: 250px;
@@ -43,6 +46,12 @@
   display: inline-block;
   vertical-align: top;
 }
+.score{
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 50px;
+  margin-right: 50px;
+}
 .centered {
   position: static;
   top: 50%;
@@ -52,6 +61,6 @@
 }
 .support-img{
     position: absolute;
-    right:10px;
+    right:  10px;
     bottom: 10px
 }
