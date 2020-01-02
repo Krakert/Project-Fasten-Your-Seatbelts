@@ -12,19 +12,23 @@ export default Controller.extend({
     this.counter--;
     if(this.counter === 0){
       this.store.findRecord('game', 'board1').then((game)=>{
-        console.log(game.round);
-        if(game.round === 0 && this.gamestate === 1){
+        if(game.round === 0 && this.gamestate === "1"){
           if(this.username1){
             this.store.findRecord('account', this.username1).then((account)=>{
               account.set('totalPoints', game.pointsOne);
               account.save().then(()=>{
                 game.set('mode',0);
+                game.set('pointsOne',0);
+                game.set('pointsTwo',0);
                 game.save();
               });
               set(this,'gamestate', 2);
             });
           }else{
+            console.log("hoi")
             game.set('mode',0);
+            game.set('pointsOne',0);
+            game.set('pointsTwo',0);
             game.save();
             set(this,'gamestate', 2);
           }
