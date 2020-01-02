@@ -48,7 +48,7 @@ def g(row):
     }
 
 # routes for individual entities
-@app.route('/api/accounts/<account_id>', methods=['DELETE','GET'])
+@app.route('/api/accounts/<account_id>', methods=['DELETE','GET','PATCH'])
 def accounts_by_id(account_id):
     if request.method == 'DELETE':
       print("singleAccount")
@@ -59,7 +59,7 @@ def accounts_by_id(account_id):
       cursor.execute(sql_deleteAccount, (account_id, ))
       db.commit()
       return '', 204
-    else:
+    elif request.method == 'GET':
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
       readData = '''SELECT * FROM accounts WHERE id = ?'''
@@ -67,6 +67,34 @@ def accounts_by_id(account_id):
       accountRecord = cursor.fetchall()
       print(accountRecord)
       return jsonify({"data": a(accountRecord[0])})
+    else:
+      pythonObject = json.loads(request.data)
+      with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
+          cursor = db.cursor()
+      insertData = '''UPDATE accounts
+                      SET
+                        password = ?,
+                        totalPoints = ?,
+                        highestPoints = ?,
+                        numberOfRounds = ?,
+                        latestRound = ?
+                      WHERE id = ?'''
+      row = ((pythonObject["data"]["attributes"]["password"]),
+      (pythonObject["data"]["attributes"]["total-points"]),
+      (pythonObject["data"]["attributes"]["highest-points"]),
+      (pythonObject["data"]["attributes"]["number-of-rounds"]),
+      (pythonObject["data"]["attributes"]["latest-round"]),
+      (pythonObject["data"]["id"]))
+      cursor.execute(insertData, row)
+      row = ((pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["password"]),
+      (pythonObject["data"]["attributes"]["total-points"]),
+      (pythonObject["data"]["attributes"]["highest-points"]),
+      (pythonObject["data"]["attributes"]["number-of-rounds"]),
+      (pythonObject["data"]["attributes"]["latest-round"]))
+      db.commit()
+      return jsonify({"data": a(row)})
+
 # route for all entities
 @app.route('/api/accounts', methods=['GET','POST'])
 def accounts():
