@@ -49,7 +49,7 @@ def employees(conn):
     cursor.execute(sql_create_employee_table)
 
     # Insert Record
-    sql_insertData = '''INSERT INTO employees(id, active,led,servo) VALUES(?,?)'''
+    sql_insertData = '''INSERT INTO employees(id, active,led,servo) VALUES(?,?,?,?)'''
     cursor.execute(sql_insertData, [('fakeID'), (0),(0),(0)])
     conn.commit()
 

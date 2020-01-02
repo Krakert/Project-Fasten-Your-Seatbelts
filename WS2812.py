@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+#import installed libraries
 import time
-import sqlite3
 from rpi_ws281x import PixelStrip, Color
+
+#import files from our own project
+import sqlHandling as SQL
 
 #color code hexdecimal
 COLORS = [  0x000000,   # black
@@ -126,11 +129,6 @@ def rainbow(strip, wait_ms=15, iterations = 1):
         for i in range(strip.numPixels()):
             strip.setPixelColor(i, wheel((i + j) & 255))
         strip.show()
-        with sqlite3.connect("./databases/balldart.db") as db:
-            cursor = db.cursor()
-        readData = '''SELECT mode FROM games;'''
-        cursor.execute(readData)
-        gameInfo = cursor.fetchall()
-        if gameInfo[0][0] != 0:
+        if SQL.checkGameMode() != 0:
             break
         time.sleep(wait_ms / 1000.0)
