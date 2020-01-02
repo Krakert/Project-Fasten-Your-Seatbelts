@@ -16,14 +16,14 @@
     <form {{action "nextGamestateSingleplayer" 2 1}}>
       <button type = "submit">Next</button>
     </form>
-  {{/if}}
-  <div class="footer navbar-fixed-bottom">
-    <div class="support-img">
-      {{#link-to "application"}}
-        <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="support"></a>
-      {{/link-to}}
+    <div class="footer navbar-fixed-bottom">
+      <div class="support-img">
+        {{#link-to "application"}}
+          <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="back"></a>
+        {{/link-to}}
+      </div>
     </div>
-  </div>
+  {{/if}}
   {{#if (eq gamestate "2")}}
     EINDE
   {{/if}}
@@ -69,7 +69,7 @@
     <div class="footer navbar-fixed-bottom">
       <div class="support-img">
         {{#link-to "application"}}
-          <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="support"></a>
+          <a href {{action "stop"}}><img src="./assets/images/Stop.svg" class="back"></a>
         {{/link-to}}
       </div>
     </div>
