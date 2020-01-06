@@ -9,16 +9,14 @@ export default Controller.extend({
   valid: false,
 
   seconds: observer('clock.second', function() {
-    let x = this.get('clock.second');
+    this.get('clock.second');
     this.counter--;
-    // if(this.counter === 0){
+    if(this.counter === 0){
       this.store.findRecord('employee', 'fakeID').then((employee)=>{
         set(this,'active', employee.active)
-        console.log(employee.active)
         this.counter = 5
       });
-    // }
-    console.log("yoyoyoyooy");
+    }
   }),
   actions: {
     deleteAccount: function(account) {

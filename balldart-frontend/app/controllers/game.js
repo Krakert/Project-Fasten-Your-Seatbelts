@@ -8,12 +8,29 @@ export default Controller.extend({
   router: service(),
 
   seconds: observer('clock.second', function() {
-    let x = this.get('clock.second');
+    this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
-      this.store.findRecord('game', 'board1');
-      console.log('x', x);
-      this.counter = 5
+      this.store.findRecord('game', 'board1').then((game)=>{
+        console.log(game.round);
+        if(game.round === 0 && this.gamestate === 1){
+          if(this.username1){
+            this.store.findRecord('account', this.username1).then((account)=>{
+              account.set('totalPoints', game.pointsOne);
+              account.save().then(()=>{
+                game.set('mode',0);
+                game.save();
+              });
+              set(this,'gamestate', 2);
+            });
+          }else{
+            game.set('mode',0);
+            game.save();
+            set(this,'gamestate', 2);
+          }
+        }
+        this.counter = 5;
+      });
     }
   }),
 
@@ -22,7 +39,7 @@ export default Controller.extend({
       this.model.set('mode', mode)
       if(this.gamestate === "0"){
         this.model.set('pointsOne', 0);
-        this.model.set('round', 3);
+        this.model.set('round', 1);
         this.model.set('activePlayer', 1)
       }
       console.log(state, mode);
