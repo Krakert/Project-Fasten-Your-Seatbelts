@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-    normalNavbar: true,
-
+    gameActive: false,
 });

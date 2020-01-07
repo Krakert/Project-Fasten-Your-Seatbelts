@@ -2,10 +2,13 @@ import Controller from '@ember/controller';
 import { observer } from '@ember/object'
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { inject } from '@ember/controller';
+
 export default Controller.extend({
   queryParams: ['gamemode','gamestate','username1','username2'],
   counter: 1,
   router: service(),
+  application: inject('application'),
 
   seconds: observer('clock.second', function() {
     this.get('clock.second');
@@ -23,6 +26,7 @@ export default Controller.extend({
                 game.save();
               });
               set(this,'gamestate', 2);
+              this.application.set('gameActive', false);
             });
           }else{
             console.log("hoi")
@@ -31,6 +35,7 @@ export default Controller.extend({
             game.set('pointsTwo',0);
             game.save();
             set(this,'gamestate', 2);
+            this.application.set('gameActive', false);
           }
         }
         this.counter = 5;
@@ -42,6 +47,7 @@ export default Controller.extend({
     nextGamestateSingleplayer: function(state,mode) {
       this.model.set('mode', mode)
       if(this.gamestate === "0"){
+        this.application.set('gameActive', true);
         this.model.set('pointsOne', 0);
         this.model.set('round', 1);
         this.model.set('activePlayer', 1)
@@ -53,6 +59,7 @@ export default Controller.extend({
     nextGamestateMultiplayer: function(state,mode) {
       this.model.set('mode', mode)
       if(this.gamestate === "0"){
+        this.application.set('gameActive', true);
         this.model.set('pointsOne', 0);
         this.model.set('pointsTwo', 0);
         this.model.set('round', 3);
@@ -63,6 +70,7 @@ export default Controller.extend({
       this.model.save();
     },
     stop: function(){
+      this.application.set('gameActive', false);
       this.model.set('mode', 0);
       this.model.set('round', 0);
       this.router.transitionTo('application');

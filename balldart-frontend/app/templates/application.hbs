@@ -1,13 +1,13 @@
-<div class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      {{#link-to "application" class="navbar-brand" }}
-        <img src="./assets/images/logo.png" alt="Logo" class="logo">
-      {{/link-to}}
-    </div>
-    <div class="navbar-inner">
-      <ul class="nav navbar-nav ">
-        {{#if normalNavbar}}
+{{#unless gameActive}}
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        {{#link-to "application" class="navbar-brand" }}
+          <img src="./assets/images/logo.png" alt="Logo" class="logo">
+        {{/link-to}}
+      </div>
+      <div class="navbar-inner">
+        <ul class="nav navbar-nav ">
           {{#active-link}}
             {{#link-to "scoreboard" (query-params data="totalPoints" sortingOrder="desc") class="route-margin"}}
               <h4>Scorebord</h4>
@@ -23,9 +23,9 @@
               <h4>Onderhoud</h4>
             {{/link-to}}
           {{/active-link}}
-        {{/if}}
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+{{/unless}}
 {{outlet}}

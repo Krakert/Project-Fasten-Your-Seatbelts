@@ -24,9 +24,9 @@
     <h5>Gebruikersnaam:</h5>
     {{input type="text" value=username}}{{username}}
     <h5>Wachtwoord:</h5>
-    {{input type="text" value=password1}}<br>
+    {{input type="password" value=password1}}<br>
     <h5>Wachtwoord Opnieuw:</h5>
-    {{input type="text" value=password2}}<br><br>
+    {{input type="password" value=password2}}<br><br>
     {{#if (and password1 username)}}
       {{#if (eq password1 password2)}}
         <form {{action "createAccount" on="submit"}}>
@@ -42,7 +42,7 @@
     {{input type="text" value=username}}<br>
     {{username}}
     <h5>Wachtwoord:</h5>
-    {{input type="text" value=password1}}<br><br>
+    {{input type="password" value=password1}}<br><br>
     {{#if errorMessage}}
       <h5>Verkeerde Gebruikersnaam/Wachtwoord</h5>
     {{/if}}
