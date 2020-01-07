@@ -143,14 +143,14 @@ try:
             if gameCase == SHOW_CORRECT_SEQUENCE:
                 print("Correct!\n")
                 score = len(sequence)
-                SQL.updateInfo(score, score, gameModeCase)
+                SQL.updateInfo(score, NULL, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
                 score = len(sequence) - 1
-                SQL.updateInfo(score, score, gameModeCase)
+                SQL.updateInfo(score, NULL, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
                 SQL.setGameModeToZero()
                 print("Incorrect! jammer joh... score= %d\n" % score)
                 sequence.clear()                                                # clear array
@@ -193,18 +193,28 @@ try:
                 print("Correct!\n")
                 servo.setBoardCenter()
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
+                #Hier laten we de behaalde score zien die de speler deze ronde heeft behaald#################################################################################
+                if player:
+                    player1roundScore = len(sequence)
+                    SQL.updateInfo(score, score, gameModeCase) #hier moet je wat veranderen############################################################################
+                else:
+                    player2roundScore = len(sequence)
+                    SQL.updateInfo(score, score, gameModeCase)#hier moet je wat veranderen#############################################################################
                 time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
                 gameModeCase = SQL.checkGameMode()
                 servo.setBoardCenter()
+                #Aan het einde van de ronde als de speler af is ziet hij zijn totaalscore#######################################################################################
                 if player:
                     player1score = player1score + (len(sequence) - 1)
+                    SQL.updateInfo(score, score, gameModeCase) #totaalscore van player 1########################################################################
                     print("Incorrect player1! jammer joh... score= %d\n" % player1score)
                     
                 else:
                     player2score = player2score + (len(sequence) - 1)
+                    SQL.updateInfo(score, score, gameModeCase) #totaalscore van player 2########################################################################
                     print("Incorrect player2! jammer joh... score= %d\n" % player2score)
                     numberOfRounds = numberOfRounds - 1
 
