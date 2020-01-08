@@ -1,16 +1,17 @@
 import Controller from '@ember/controller';
 import { observer  } from '@ember/object';
 import { set } from '@ember/object';
+import { inject } from '@ember/controller';
 
 export default Controller.extend({
   queryParams: [],
   counter: 1,
   active: 0,
   valid: false,
-
   seconds: observer('clock.second', function() {
     this.get('clock.second');
     this.counter--;
+    console.log("ewa");
     if(this.counter === 0){
       this.store.findRecord('employee', 'fakeID').then((employee)=>{
         set(this,'active', employee.active)

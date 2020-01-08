@@ -26,7 +26,7 @@ export default Controller.extend({
                 game.save();
               });
               set(this,'gamestate', 2);
-              this.application.set('gameActive', false);
+              this.application.set('incorrectNavbar', false);
             });
           }else{
             console.log("hoi")
@@ -35,7 +35,7 @@ export default Controller.extend({
             game.set('pointsTwo',0);
             game.save();
             set(this,'gamestate', 2);
-            this.application.set('gameActive', false);
+            this.application.set('incorrectNavbar', false);
           }
         }
         this.counter = 5;
@@ -47,7 +47,7 @@ export default Controller.extend({
     nextGamestateSingleplayer: function(state,mode) {
       this.model.set('mode', mode)
       if(this.gamestate === "0"){
-        this.application.set('gameActive', true);
+        this.application.set('incorrectNavbar', true);
         this.model.set('pointsOne', 0);
         this.model.set('round', 1);
         this.model.set('activePlayer', 1)
@@ -59,7 +59,7 @@ export default Controller.extend({
     nextGamestateMultiplayer: function(state,mode) {
       this.model.set('mode', mode)
       if(this.gamestate === "0"){
-        this.application.set('gameActive', true);
+        this.application.set('incorrectNavbar', true);
         this.model.set('pointsOne', 0);
         this.model.set('pointsTwo', 0);
         this.model.set('round', 3);
@@ -70,7 +70,7 @@ export default Controller.extend({
       this.model.save();
     },
     stop: function(){
-      this.application.set('gameActive', false);
+      this.application.set('incorrectNavbar', false);
       this.model.set('mode', 0);
       this.model.set('round', 0);
       this.router.transitionTo('application');

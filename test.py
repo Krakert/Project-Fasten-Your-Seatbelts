@@ -1,5 +1,6 @@
 import time
 import sqlite3
+import random
 
 mode = 0
 old_mode = mode
@@ -50,9 +51,9 @@ while True:
               activePlayer = 1
             round -= 1
             insertData = '''UPDATE games SET round = ?, activePlayer = ?, pointsOne = ?, pointsTwo = ? WHERE id = ?'''
-            row = (round, activePlayer, 4, 12, "board1")
+            row = (round, activePlayer, random.randint(1, 10),random.randint(1, 10), "board1")
             cursor.execute(insertData, row)
-            db.commit()    
+            db.commit()
     else:
       old_mode = mode
       round_counter = round_interval
