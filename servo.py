@@ -14,8 +14,26 @@ currentPosition = CENTER
 #init the PWM
 GPIO.setup(SERVO_CHANNEL, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_CHANNEL, 50)
-pwm.start((CENTER/10))
+pwm.start((CENTER/100))
 
+def testServo():
+    global CENTER
+    global LEFT_MAX
+    global RIGHT_MAX
+    global currentPosition
+
+    pwm.ChangeDutyCycle((LEFT_MAX/100))
+    time.sleep(10) #needs debugging
+
+    pwm.ChangeDutyCycle((RIGHT_MAX/100))
+    time.sleep(10)#needs debugging
+
+    pwm.ChangeDutyCycle((CENTER/100))
+    currentPosition = CENTER
+    time.sleep(10)#needs debugging
+
+    
+#this function will set the board to the center
 def setBoardCenter():
     global CENTER
     global currentPosition
@@ -23,6 +41,7 @@ def setBoardCenter():
     currentPosition = CENTER
     pwm.ChangeDutyCycle((CENTER/100))
 
+#this function rotates the board. Direction is collected from the MPU6050
 def rotateBoard(direction):
     global currentPosition
     global LEFT_MAX
