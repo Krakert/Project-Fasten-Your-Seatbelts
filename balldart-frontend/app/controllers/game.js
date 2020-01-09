@@ -18,13 +18,18 @@ export default Controller.extend({
         if(game.round === 0 && this.gamestate === "1"){
           if(this.username1){
             this.store.findRecord('account', this.username1).then((account)=>{
-              let pointsAccount = account.get('totalPoints');
-              let pointsGame = game.get('pointsOne');
-              console.log(pointsAccount, pointsGame);
+
+              // Add to totalPoints
               let addition = account.get('totalPoints') + game.get('pointsOne');
-              console.log(addition);
               account.set('totalPoints', addition);
 
+              // Highest Points Check
+              if(game.get('pointsOne') > account.get('highestPoints')){
+                console.log("yooo");
+                account.set('highestPoints',game.get('pointsOne'));
+              }
+              // Number of rounds increased
+              account.set('numberOfRounds', account.get('numberOfRounds') + 1);
 
               account.save().then(()=>{
                 game.set('mode',0);

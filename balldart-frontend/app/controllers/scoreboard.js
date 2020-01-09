@@ -29,7 +29,7 @@ export default Controller.extend({
       return this.model;
     }
   }),
-  enrichedModel: computed('filteredModel', function() {
+  enrichedModel: computed('filteredModel.@each.numberOfRounds', function() {
     let array = [];
     let model = this.filteredModel;
     if(model){
