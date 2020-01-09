@@ -7,9 +7,11 @@ from mfrc522 import SimpleMFRC522
 
 #This function reads out the id from the tag
 def read():
-    reader = SimpleMFRC522()
-    id, name = reader.read()
-
+    try:
+        reader = SimpleMFRC522()
+        id, name = reader.read()
+    except Exception:
+        pass
     return id
 
 def write(name):
