@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { observer } from '@ember/object'
+import { observer,computed } from '@ember/object'
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { inject } from '@ember/controller';
@@ -10,15 +10,22 @@ export default Controller.extend({
   router: service(),
   application: inject('application'),
 
-  seconds: observer('clock.second', function() {
-    this.get('clock.second');
+  seconds: computed('clock.second', function() {
+    let x = this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
       this.store.findRecord('game', 'board1').then((game)=>{
         if(game.round === 0 && this.gamestate === "1"){
           if(this.username1){
             this.store.findRecord('account', this.username1).then((account)=>{
-              account.set('totalPoints', game.pointsOne);
+              let pointsAccount = account.get('totalPoints');
+              let pointsGame = game.get('pointsOne');
+              console.log(pointsAccount, pointsGame);
+              let addition = account.get('totalPoints') + game.get('pointsOne');
+              console.log(addition);
+              account.set('totalPoints', addition);
+
+
               account.save().then(()=>{
                 game.set('mode',0);
                 game.set('pointsOne',0);
@@ -41,6 +48,7 @@ export default Controller.extend({
         this.counter = 5;
       });
     }
+    return x;
   }),
 
   actions: {

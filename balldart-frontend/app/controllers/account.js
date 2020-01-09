@@ -20,9 +20,9 @@ export default Controller.extend({
       });
       newAccount.save().then(()=>{
         this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer", gamestate: "0", username1: this.get('username'), username2: ""}});
-        this.username = "";
-        this.password1 = "";
-        this.password2 = "";
+        set(this,'username',"");
+        set(this,'password1',"");
+        set(this,'password2',"");
       })
     },
     login(){
@@ -31,9 +31,9 @@ export default Controller.extend({
           if(account.password === this.get('password1')){
             set(this, 'errorMessage', false);
             this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer", gamestate: "0", username1: this.get('username'), username2: ""}});
-            this.username = "";
-            this.password1 = "";
-            this.password2 = "";
+            set(this,'username',"");
+            set(this,'password1',"");
+            set(this,'password2',"");
           } else {
             set(this, 'errorMessage', true);
           }

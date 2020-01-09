@@ -12,7 +12,7 @@ app = Flask(__name__)
 def a(row):
     return {
         "type": "accounts",                      # It has to have type
-        "id": row[0],                        # And some unique identifier
+        "id": row[0],                            # And some unique identifier
         "attributes": {                          # Here goes actual payload.
             "password": row[1],
             "total-points": row[2],
