@@ -14,7 +14,11 @@ export default Route.extend({
   },
   actions: {
     willTransition: function(){
-      console.log("hoi");
+      this.store.findRecord('employee',"fakeID").then((employee)=>{
+        console.log(employee);
+        employee.set('active', 0);
+        employee.save();
+      });
     }
   }
 });
