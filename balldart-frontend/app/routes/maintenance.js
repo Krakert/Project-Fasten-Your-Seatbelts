@@ -11,5 +11,10 @@ export default Route.extend({
   },
   setupController: function(controller, models) {
     controller.setProperties(models);
+  },
+  actions: {
+    willTransition: function(){
+      console.log("hoi");
+    }
   }
 });

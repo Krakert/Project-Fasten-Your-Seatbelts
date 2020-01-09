@@ -11,7 +11,6 @@ export default Controller.extend({
   seconds: observer('clock.second', function() {
     this.get('clock.second');
     this.counter--;
-    console.log("ewa");
     if(this.counter === 0){
       this.store.findRecord('employee', 'fakeID').then((employee)=>{
         set(this,'active', employee.active)
