@@ -13,6 +13,7 @@ import servo
 import gyro
 import sonar
 import sqlHandling as SQL
+import rfid
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
@@ -93,6 +94,7 @@ strip.begin()
 if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
+servo.setBoardCenter()
 SQL.setupConnection()
 SQL.setGameModeToZero()
 
@@ -100,6 +102,7 @@ try:
     while True:
         if gameModeCase == NO_GAME:
             gameModeCase = SQL.checkGameMode()
+            #SQL.updateEmployees(rfid.read())
             sequence.clear()
             player1score = 0
             player2score = 0

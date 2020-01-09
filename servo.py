@@ -4,9 +4,9 @@ import time
 
 #defines
 SERVO_CHANNEL = 16
-CENTER = 60
-LEFT_MAX = 115
-RIGHT_MAX = 25
+CENTER = 600
+LEFT_MAX = 1150
+RIGHT_MAX = 250
 
 #variables
 currentPosition = CENTER
@@ -21,15 +21,12 @@ def setBoardCenter():
     global currentPosition
 
     currentPosition = CENTER
-    pwm.ChangeDutyCycle((CENTER/10))
-    #time.sleep(2) # dit houdt de code van main op, hierdoor duurt het lang voordat er weergegeven wordt dat de sequence correct is
- 
+    pwm.ChangeDutyCycle((CENTER/100))
+
 def rotateBoard(direction):
     global currentPosition
     global LEFT_MAX
     global RIGHT_MAX
-    
-    DELAY = 0.25
     
     if direction == 1:
         currentPosition = currentPosition + 1
@@ -40,8 +37,5 @@ def rotateBoard(direction):
         currentPosition = currentPosition - 1
         if currentPosition < RIGHT_MAX:
             currentPosition = RIGHT_MAX
-        
-    #print(currentPosition)
-    pwm.ChangeDutyCycle((currentPosition/10))
-    #time.sleep(DELAY) #dit houdt de code van main op
- 
+
+    pwm.ChangeDutyCycle((currentPosition/100))
