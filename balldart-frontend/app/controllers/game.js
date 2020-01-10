@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { observer,computed } from '@ember/object'
+import { observer } from '@ember/object'
 import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { inject } from '@ember/controller';
@@ -10,22 +10,20 @@ export default Controller.extend({
   router: service(),
   application: inject('application'),
 
-  seconds: computed('clock.second', function() {
-    let x = this.get('clock.second');
+  seconds: observer('clock.second', function() {
+    this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
       this.store.findRecord('game', 'board1').then((game)=>{
         if(game.round === 0 && this.gamestate === "1"){
           if(this.username1){
             this.store.findRecord('account', this.username1).then((account)=>{
-
               // Add to totalPoints
               let addition = account.get('totalPoints') + game.get('pointsOne');
               account.set('totalPoints', addition);
 
               // Highest Points Check
               if(game.get('pointsOne') > account.get('highestPoints')){
-                console.log("yooo");
                 account.set('highestPoints',game.get('pointsOne'));
               }
               // Number of rounds increased
@@ -41,7 +39,6 @@ export default Controller.extend({
               this.application.set('incorrectNavbar', false);
             });
           }else{
-            console.log("hoi")
             game.set('mode',0);
             game.set('pointsOne',0);
             game.set('pointsTwo',0);
@@ -53,7 +50,6 @@ export default Controller.extend({
         this.counter = 5;
       });
     }
-    return x;
   }),
 
   actions: {
@@ -81,6 +77,9 @@ export default Controller.extend({
       console.log(state, mode);
       set(this,'gamestate', state);
       this.model.save();
+    },
+    replay: function(){
+      this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer", gamestate: "0", username1: this.get('username1'), username2: ""}});
     },
     stop: function(){
       this.application.set('incorrectNavbar', false);

@@ -1,4 +1,4 @@
-<div class="indent-left">
+<div class="indent-left scoreboard">
   <h1> Scorebord </h1>
 
   {{#if (eq data "totalPoints")}}
@@ -18,15 +18,15 @@
     {{/each}}
   {{/if}}
 </div>
-<form {{action "sort" "totalPoints"}}>
-  <button type = "submit">Sorteer op totaal behaalde punten!</button>
-</form>
 <form {{action "sort" "highestPoints"}}>
-  <button type = "submit">Sorteer op hoogst behaalde punten in 1 ronde!</button>
+  <button type = "submit">Sorteer op hoogst behaalde punten in 1 ronde!</button><br>
+</form>
+<form {{action "sort" "totalPoints"}}>
+  <button type = "submit">Sorteer op totaal behaalde punten!</button><br>
 </form>
 <form {{action "sort" "averagePoints"}}>
   <button type = "submit">Sorteer op gemiddelde punten!</button>
 </form>
-
-{{input type="text" value=filtername}}
+<br>
+{{input type="text" placeholder="Zoek je naam op!" value=filtername}}
 {{outlet}}
