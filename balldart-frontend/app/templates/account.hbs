@@ -22,7 +22,7 @@
   {{#if (eq accountmode "create")}}
     <h3>Account Aanmaken</h3>
     <h5>Gebruikersnaam:</h5>
-    {{input type="text" value=username}}{{username}}
+    {{input type="text" value=username}}
     <h5>Wachtwoord:</h5>
     {{input type="password" value=password1}}<br>
     <h5>Wachtwoord Opnieuw:</h5>
@@ -40,7 +40,6 @@
     <h2>Inloggen Account</h2>
     <h5>Gebruikersnaam:</h5>
     {{input type="text" value=username}}<br>
-    {{username}}
     <h5>Wachtwoord:</h5>
     {{input type="password" value=password1}}<br><br>
     {{#if errorMessage}}

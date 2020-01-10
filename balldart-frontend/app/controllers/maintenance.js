@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { observer  } from '@ember/object';
 import { set } from '@ember/object';
-import { inject } from '@ember/controller';
 
 export default Controller.extend({
   queryParams: [],
@@ -25,14 +24,19 @@ export default Controller.extend({
     toggleLED: function(){
       let employee = this.employees.get('firstObject');
       if(this.valid){
-        this.valid = false
-        employee.set('led', 1)
+        this.valid = false;
+        employee.set('led', 1);
         employee.save();
       } else{
         this.valid = true;
-        employee.set('led', 0)
+        employee.set('led', 0);
         employee.save();
       }
+    },
+    servoToOrigin: function(){
+      let employee = this.employees.get('firstObject');
+      employee.set('servo', 1);
+      employee.save();
     }
   }
 });

@@ -19,6 +19,14 @@ COLORS = [  0x000000,   # black
 			#0x200010,  # pink
             0x202020, ] # white
 
+#this function will be used to test the leds of the board
+def testPixel(strip, NUMBER_OF_BOARD_PANELS):
+    for i in range(NUMBER_OF_BOARD_PANELS + 1):
+            setPixelColor(strip, i, COLORS[6]) # set a pixel to white
+
+            time.sleep(0.5)
+            setPixelColor(strip, i, COLORS[0]) # turn the pixel off
+
 # this function can be used to turn all the leds off
 def colorWipe(strip):
     """Wipe color across display a pixel at a time."""

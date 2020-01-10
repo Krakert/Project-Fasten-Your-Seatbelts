@@ -1,5 +1,3 @@
-{{seconds}}
-
 {{#if (eq gamemode "singleplayer")}}
   {{#if (eq gamestate "0")}}
     <a href {{action "nextGamestateSingleplayer" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
@@ -23,7 +21,12 @@
     </div>
   {{/if}}
   {{#if (eq gamestate "2")}}
-    EINDE
+    <div class="end">
+      Bedankt voor het spelen!<br>Wil je opnieuw spelen?
+    </div>
+    <form {{action "replay" on="submit"}}>
+      <button type = "submit">Ja!</button>
+    </form>
   {{/if}}
 
 {{else}}

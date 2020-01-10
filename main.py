@@ -56,8 +56,8 @@ distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
 gameModeCase = 0
 
-
-
+gameStartTime = 0
+totalGameTime = 0
 
 # LED strip configuration:
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
@@ -105,7 +105,16 @@ RFID.start()
 
 try:
     while True:
+        if (gameModeCase == SINGLE_PLAYER or gameModeCase == MULTI_PLAYER) and run:
+            gameStartTime = time.time()
+            run = False
+        
         if gameModeCase == NO_GAME:
+            if not run:
+                totalGameTime += time.time() - gameStartTime
+                print("totalgametime= %d\n" % totalGameTime)
+                run = True
+
             gameModeCase = SQL.checkGameMode()
             sequence.clear()
             player1score = 0
@@ -113,7 +122,6 @@ try:
             numberOfRounds = MULTI_PLAYER_ROUNDS
             gameCase = INIT
             WS2812.rainbow(strip)
-
 
         if gameModeCase == SINGLE_PLAYER:
             if gameCase == INIT:
@@ -163,6 +171,7 @@ try:
                 sequence.clear()                                                # clear array
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs
                 gameModeCase = NO_GAME
+
 
         if gameModeCase == MULTI_PLAYER:
             if gameCase == INIT:
