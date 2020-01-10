@@ -14,7 +14,7 @@ currentPosition = CENTER
 #init the PWM
 GPIO.setup(SERVO_CHANNEL, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_CHANNEL, 50)
-pwm.start((CENTER/10))
+pwm.start((CENTER/100))
 
 def setBoardCenter():
     global CENTER
