@@ -12,7 +12,7 @@ export default Controller.extend({
     this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
-      this.store.findRecord('employee', 'fakeID').then((employee)=>{
+      this.store.findRecord('employee', '154162618071').then((employee)=>{
         set(this,'active', employee.active)
         this.counter = 1
       });
