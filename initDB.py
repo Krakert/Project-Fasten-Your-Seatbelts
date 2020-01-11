@@ -34,7 +34,7 @@ def games(conn):
 
     # Insert Record
     sql_insertData = '''INSERT INTO games(id, mode, round, pointsOne, pointsTwo, activePlayer) VALUES(?,?,?,?,?,?)'''
-    cursor.execute(sql_insertData, [('board1'), (0), (0), (0), (0), (0)])
+    cursor.execute(sql_insertData, ['board1', 0, 0, 0, 0, 0])
     conn.commit()
 
 def employees(conn):
@@ -50,7 +50,7 @@ def employees(conn):
 
     # Insert Record
     sql_insertData = '''INSERT INTO employees(id, active,led,servo) VALUES(?,?,?,?)'''
-    cursor.execute(sql_insertData, [('fakeID'), (0),(0),(0)])
+    cursor.execute(sql_insertData, [154162618071, 0, 0, 0])
     conn.commit()
 
 if __name__ == '__main__':

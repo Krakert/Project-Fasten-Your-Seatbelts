@@ -4,18 +4,41 @@
 import RPi.GPIO as GPIO
 import signal
 from mfrc522 import SimpleMFRC522
-import sqlHandling as SQL
+import sqlite3
 
-import config
+# import files from our own project
+import sqlHandling as SQL
+import config as C
+
 
 # This function reads out the id from the tag
-def read():
+def main():
+    # SQL.setupConnection()
     while True:
-        reader = SimpleMFRC522()
-        id, name = reader.read()
-        print(id)
-        print(config.gameModeCase)
-    # return id
+        if C.gameModeCase == 0:
+            reader = SimpleMFRC522()
+            uidTag, name = reader.read()
+            print("UID given: %10d" % int(uidTag))
+
+            with sqlite3.connect("./databases/balldart.db") as db:
+                cursor = db.cursor()
+
+            readData = '''SELECT id FROM employees WHERE id = ?'''
+            cursor.execute(readData, [uidTag])
+            databaseInfo = cursor.fetchall()
+            print(len(databaseInfo))
+            if len(databaseInfo) != 0:
+                print("UID From database: %10d" % int(databaseInfo[0][0]))
+                if int(databaseInfo[0][0]) == int(uidTag):
+                    active = 1
+                else:
+                    active = 0
+                print("Access: %s" % active)
+                insertData = '''UPDATE employees SET active = ?, led = ?, servo = ? WHERE id = ?'''
+                row = (active, 0, 0, int(uidTag))
+                cursor.execute(insertData, row)
+                db.commit()
+        print("gamemode: %1d" % C.gameModeCase)
 
 
 def write(name):

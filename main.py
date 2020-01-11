@@ -15,6 +15,7 @@ import gyro
 import sonar
 import sqlHandling as SQL
 import rfid
+import config as C
 
 #defines
 NUMBER_OF_BOARD_PANELS = 6
@@ -56,6 +57,7 @@ distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
 gameModeCase = 0
 
+run = 0
 gameStartTime = 0
 totalGameTime = 0
 
@@ -100,7 +102,7 @@ if gameModeCase == MULTI_PLAYER:
 SQL.setupConnection()
 SQL.setGameModeToZero()
 
-RFID = threading.Thread(target = rfid.read)
+RFID = threading.Thread(target = rfid.main)
 RFID.start()
 
 try:
