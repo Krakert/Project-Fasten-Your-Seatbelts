@@ -5,6 +5,7 @@ import time
 from rpi_ws281x import PixelStrip, Color
 import RPi.GPIO as GPIO
 import random
+import threading
 
 #import files from our own project
 import panelDetection
@@ -54,7 +55,7 @@ numberOfRounds = MULTI_PLAYER_ROUNDS
 distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
 gameModeCase = 0
-init = 0
+
 gameStartTime = 0
 totalGameTime = 0
 
@@ -96,9 +97,11 @@ strip.begin()
 if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
-servo.setBoardCenter()
 SQL.setupConnection()
 SQL.setGameModeToZero()
+
+RFID = threading.Thread(target = rfid.read)
+RFID.start()
 
 try:
     while True:
@@ -107,13 +110,12 @@ try:
             run = False
         
         if gameModeCase == NO_GAME:
-            if run == False:
+            if not run:
                 totalGameTime += time.time() - gameStartTime
                 print("totalgametime= %d\n" % totalGameTime)
                 run = True
 
             gameModeCase = SQL.checkGameMode()
-            #SQL.updateEmployees(rfid.read())
             sequence.clear()
             player1score = 0
             player2score = 0
@@ -156,14 +158,14 @@ try:
             if gameCase == SHOW_CORRECT_SEQUENCE:
                 print("Correct!\n")
                 score = len(sequence)
-                SQL.updateInfo(score, NULL, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
+                SQL.updateInfo(score, score, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
             if gameCase == WRONG_SEQUENCE:
                 score = len(sequence) - 1
-                SQL.updateInfo(score, NULL, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
+                SQL.updateInfo(score, score, gameModeCase)#Check of NULL mag liever dat je een mooiere functie maakt :)##################################################################################
                 SQL.setGameModeToZero()
                 print("Incorrect! jammer joh... score= %d\n" % score)
                 sequence.clear()                                                # clear array
@@ -210,10 +212,10 @@ try:
                 #Hier laten we de behaalde score zien die de speler deze ronde heeft behaald#################################################################################
                 if player:
                     player1roundScore = len(sequence)
-                    SQL.updateInfo(score, score, gameModeCase) #hier moet je wat veranderen############################################################################
+                    SQL.updateInfo(player1roundScore, 1) #hier moet je wat veranderen############################################################################
                 else:
                     player2roundScore = len(sequence)
-                    SQL.updateInfo(score, score, gameModeCase)#hier moet je wat veranderen#############################################################################
+                    SQL.updateInfo(player2roundScore, 2)#hier moet je wat veranderen#############################################################################
                 time.sleep(3)                                                   # Needs fixing, dont use the sleep fuction!
                 gameCase = GEN_SEQUENCE                                         # if the sequence was correct, add one to the sequence
 
@@ -222,27 +224,27 @@ try:
                 servo.setBoardCenter()
                 #Aan het einde van de ronde als de speler af is ziet hij zijn totaalscore#######################################################################################
                 if player:
-                    player1score = player1score + (len(sequence) - 1)
-                    SQL.updateInfo(score, score, gameModeCase) #totaalscore van player 1########################################################################
-                    print("Incorrect player1! jammer joh... score= %d\n" % player1score)
-                    
+                    player1TotalScore = player1score + (len(sequence) - 1)
+                    SQL.updateInfo(player1roundScore, 1) #totaalscore van player 1########################################################################
+                    print("Incorrect player1! jammer joh... score= %d\n" % player2TotalScore)
+
                 else:
-                    player2score = player2score + (len(sequence) - 1)
-                    SQL.updateInfo(score, score, gameModeCase) #totaalscore van player 2########################################################################
-                    print("Incorrect player2! jammer joh... score= %d\n" % player2score)
+                    player2TotalScore = player2score + (len(sequence) - 1)
+                    SQL.updateInfo(player2TotalScore, 2) #totaalscore van player 2########################################################################
+                    print("Incorrect player2! jammer joh... score= %d\n" % player2TotalScore)
                     numberOfRounds = numberOfRounds - 1
 
-                WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs     
-                sequence.clear()  
+                WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs
+                sequence.clear()
 
                 if numberOfRounds == 0:
                     gameCase = SHOW_WINNER                                      # show the winner if there are no more rounds to play
-                else:               
+                else:
                     gameCase = GEN_SEQUENCE                                     # if the sequence was incorrect, generate new sequence
                     player ^= 1
                     print("player= %d\n" % player)
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
-                
+
             if gameCase == SHOW_WINNER:
                 #if there is a tie there will be an extra round
                 if player1score == player2score:
@@ -250,8 +252,8 @@ try:
                     numberOfRounds = 1
                     player ^= 1
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
-                
-                #show the winner    
+
+                #show the winner
                 if player1score > player2score:
                     WS2812.showWinnerPlayer1(NUMBER_OF_BOARD_PANELS + 1, strip)
                 if player1score < player2score:

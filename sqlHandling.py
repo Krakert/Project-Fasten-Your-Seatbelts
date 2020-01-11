@@ -2,7 +2,7 @@
 
 # import installed libraries
 import sqlite3
-
+import config
 # defines
 ZERO = 0  # Just a 0, used to update databases info.
 
@@ -37,26 +37,26 @@ def checkGameMode():
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
     if gameInfo[0][0] == 0:
-        gameModeCase = NO_GAME
+        config.gameModeCase = NO_GAME
     elif gameInfo[0][0] == 1:
-        gameModeCase = SINGLE_PLAYER
+        config.gameModeCase = SINGLE_PLAYER
     elif gameInfo[0][0] == 2:
-        gameModeCase = MULTI_PLAYER
+        config.gameModeCase = MULTI_PLAYER
 
-    return gameModeCase
+    return config.gameModeCase
 
 
-def updateInfo(pointPlayerOne, pointPlayerTwo, activePlayer):
+def updateInfo(points, activePlayer):
     readData = '''SELECT id FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
     primaryKey = gameInfo[0][0]
     if activePlayer == 1:
         updateData = '''UPDATE games SET pointsOne = ?, activePlayer = ? WHERE id = ?'''
-        data = (pointPlayerOne, activePlayer, primaryKey)
+        data = (points, activePlayer, primaryKey)
     elif activePlayer == 2:
         updateData = '''UPDATE games SET pointsTwo = ?, activePlayer = ? WHERE id = ?'''
-        data = (pointPlayerTwo, activePlayer, primaryKey)
+        data = (points, activePlayer, primaryKey)
 
     cursor.execute(updateData, data)
     db.commit()
