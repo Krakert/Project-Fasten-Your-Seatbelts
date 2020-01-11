@@ -12,8 +12,6 @@ def setupConnection():
     global db
     with sqlite3.connect("./databases/balldart.db") as db:
         cursor = db.cursor()
-    print("Database connected")
-
 
 def setGameModeToZero():
     readData = '''SELECT id FROM games;'''
@@ -25,7 +23,6 @@ def setGameModeToZero():
     data = (ZERO, ZERO, ZERO, ZERO, ZERO, primaryKey)
     cursor.execute(updateData, data)
     db.commit()
-
 
 def checkGameMode():
     # defines
@@ -44,7 +41,6 @@ def checkGameMode():
         config.gameModeCase = MULTI_PLAYER
 
     return config.gameModeCase
-
 
 def updateInfo(points, activePlayer):
     readData = '''SELECT id FROM games;'''
@@ -66,17 +62,18 @@ def updateInfo(points, activePlayer):
     gameInfo = cursor.fetchall()
     print(gameInfo)
 
-
 def updateEmployees(uidTag):
-    readData = '''SELECT id FROM employees;'''
-    cursor.execute(readData)
-    employeesInfo = cursor.fetchall()
-    UIDS = len(employeesInfo)
-    for x in range(UIDS):
-        print("UID given: %10d, ID from database %10d" % (int(uidTag), int(employeesInfo[x][0])))
-        if int(employeesInfo[x][0]) == int(uidTag):
-            print("!UID corresponds to database info!")
-            updateData = '''UPDATE employees SET active = ? WHERE id = ?'''
-            data = (1, int(uidTag))
-            cursor.execute(updateData, data)
-            db.commit()
+    setupConnection()
+
+    readData = '''SELECT id FROM employees WHERE id = ?'''
+    cursor.execute(readData, [uidTag])
+    databaseInfo = cursor.fetchall()
+    if len(databaseInfo) != 0:
+        if int(databaseInfo[0][0]) == int(uidTag):
+            active = 1
+        else:
+            active = 0
+        insertData = '''UPDATE employees SET active = ?, led = ?, servo = ? WHERE id = ?'''
+        row = (active, 0, 0, int(uidTag))
+        cursor.execute(insertData, row)
+        db.commit()
