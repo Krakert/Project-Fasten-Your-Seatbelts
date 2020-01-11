@@ -16,7 +16,7 @@ export default Controller.extend({
     if(this.counter === 0){
       this.store.findRecord('game', 'board1').then((game)=>{
         if(game.round === 0 && this.gamestate === "1"){
-          if(this.username1){
+          if(this.username1 && game.mode === 1){
             this.store.findRecord('account', this.username1).then((account)=>{
               // Add to totalPoints
               let addition = account.get('totalPoints') + game.get('pointsOne');
@@ -47,7 +47,7 @@ export default Controller.extend({
             this.application.set('incorrectNavbar', false);
           }
         }
-        this.counter = 5;
+        this.counter = 1;
       });
     }
   }),
@@ -61,7 +61,6 @@ export default Controller.extend({
         this.model.set('round', 1);
         this.model.set('activePlayer', 1)
       }
-      console.log(state, mode);
       set(this,'gamestate', state);
       this.model.save();
     },
@@ -74,12 +73,17 @@ export default Controller.extend({
         this.model.set('round', 3);
         this.model.set('activePlayer', 1)
       }
-      console.log(state, mode);
       set(this,'gamestate', state);
       this.model.save();
     },
-    replay: function(){
+    replaySingle: function(){
       this.router.transitionTo('game', { queryParams: { gamemode: "singleplayer", gamestate: "0", username1: this.get('username1'), username2: ""}});
+    },
+    replayMultiple: function(){
+      this.router.transitionTo('game', { queryParams: { gamemode: "multiplayer", gamestate: "0", username1: this.get('username1'), username2: this.get('username2')}});
+    },
+    homepage: function(){
+      this.router.transitionTo('application');
     },
     stop: function(){
       this.application.set('incorrectNavbar', false);

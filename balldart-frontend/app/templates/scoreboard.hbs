@@ -18,15 +18,20 @@
     {{/each}}
   {{/if}}
 </div>
-<form {{action "sort" "highestPoints"}}>
-  <button type = "submit">Sorteer op hoogst behaalde punten in 1 ronde!</button><br>
-</form>
-<form {{action "sort" "totalPoints"}}>
-  <button type = "submit">Sorteer op totaal behaalde punten!</button><br>
-</form>
-<form {{action "sort" "averagePoints"}}>
-  <button type = "submit">Sorteer op gemiddelde punten!</button>
-</form>
-<br>
-{{input type="text" placeholder="Zoek je naam op!" value=filtername}}
+<div class="data-input">
+  <div class="indent-sort">
+    <h3>Sorteer op:</h3>
+  </div>
+  <form {{action "sort" "totalPoints"}}>
+    <button type = "submit" class="button-width">Totale punten!</button><br>
+  </form>
+  <form {{action "sort" "averagePoints"}}>
+    <button type = "submit" class="button-width">Gemiddelde punten!</button>
+  </form>
+  <form {{action "sort" "highestPoints"}}>
+    <button type = "submit" class="button-width">Hoogste punten in 1 ronde!</button><br>
+  </form>
+  <br>
+  {{input type="text" placeholder="Zoek je gebruikersnaam op!" value=filtername size=21}}
+</div>
 {{outlet}}

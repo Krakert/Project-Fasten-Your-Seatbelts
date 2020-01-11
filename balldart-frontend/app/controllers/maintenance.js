@@ -7,13 +7,14 @@ export default Controller.extend({
   counter: 1,
   active: 0,
   valid: false,
+
   seconds: observer('clock.second', function() {
     this.get('clock.second');
     this.counter--;
     if(this.counter === 0){
       this.store.findRecord('employee', 'fakeID').then((employee)=>{
         set(this,'active', employee.active)
-        this.counter = 5
+        this.counter = 1
       });
     }
   }),

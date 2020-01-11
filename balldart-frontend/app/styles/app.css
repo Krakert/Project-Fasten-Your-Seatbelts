@@ -4,16 +4,20 @@
   white-space: nowrap;
   color: black;
 }
+.button-width{
+  width: 187px;
+  margin-top: 7px;
+}
 .navbar-balldart{
-    background-color: #F8F8F8;
-    border-color: #888888;
+  background-color: #F8F8F8;
+  border-color: #BBBBBB;
 }
 .scoreboard{
-    text-align: center;
+  text-align: center;
 }
 .huge{
-    font-size: 200%;
-    text-align: center;
+  font-size: 200%;
+  text-align: center;
 }
 .end{
     font-size: 300%;
@@ -25,6 +29,9 @@
 }
 .indent-left{
   margin-left: 14px;
+}
+.indent-sort{
+  margin-left: 34px;
 }
 .route-margin{
   margin-top: 6px;
@@ -43,6 +50,9 @@
   height: 80px;
   line-height: 80px;
 }
+.input{
+  text-align: center;
+}
 .support{
   height: 75px;
   width: 75px;
@@ -52,6 +62,10 @@
   height: 53px;
   width: 150px;
   align-self: auto;
+}
+.yesNo{
+  height: 106px;
+  width: 300px;
 }
 
 .logo{
@@ -72,11 +86,15 @@
   position: static;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
   transform: translate(-50%, -50%);
 }
 .support-img{
     position: absolute;
     right:  10px;
     bottom: 10px
+}
+.data-input{
+    position: absolute;
+    left:  0px;
+    top: 85px
 }

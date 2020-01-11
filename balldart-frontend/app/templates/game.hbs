@@ -1,6 +1,10 @@
 {{#if (eq gamemode "singleplayer")}}
   {{#if (eq gamestate "0")}}
+  <div class="container">
+    <div class="inbl">
     <a href {{action "nextGamestateSingleplayer" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
+    </div>
+  </div>
   {{/if}}
 
   {{#if (eq gamestate "1")}}
@@ -24,25 +28,38 @@
     <div class="end">
       Bedankt voor het spelen!<br>Wil je opnieuw spelen?
     </div>
-    <form {{action "replay" on="submit"}}>
-      <button type = "submit">Ja!</button>
-    </form>
+    <br>
+    <div class="container">
+      <div class="inbl">
+        <a href {{action "replaySingle"}}><img src="./assets/images/Yes.svg" class="yesNo"></a>
+        <a href {{action "homepage"}}><img src="./assets/images/No.svg" class="yesNo"></a>
+      </div>
+    </div>
   {{/if}}
 
 {{else}}
 
   {{#if (eq gamestate "0")}}
-    {{#if (not-eq username1 username2)}}
-      {{#if (and username1 username2)}}
-        <a href {{action "nextGamestateMultiplayer" 1 2}}><img src="./assets/images/play.png" class="imageSize"></a>
+  <div class="container">
+    <div class="inbl">
+      {{#if (not-eq username1 username2)}}
+        {{#if (and username1 username2)}}
+          <a href {{action "nextGamestateMultiplayer" 1 2}}><img src="./assets/images/play.png" class="imageSize"></a>
+        {{else}}
+          <img src="./assets/images/play.png" class="imageSize">
+        {{/if}}
       {{else}}
         <img src="./assets/images/play.png" class="imageSize">
       {{/if}}
-    {{else}}
-      <img src="./assets/images/play.png" class="imageSize">
-    {{/if}}
-    {{input type="text" value=username1}}
-    {{input type="text" value=username2}}
+    </div>
+  </div>
+  <br>
+  <div class="container">
+    <div class="inbl">
+      {{input type="text" placeholder="Speler 1" value=username1 class="input"}}
+      {{input type="text" placeholder="Speler 2" value=username2 class="input"}}
+    </div>
+  </div>
   {{/if}}
 
   {{#if (eq gamestate "1")}}
@@ -76,7 +93,16 @@
     </div>
   {{/if}}
   {{#if (eq gamestate "2")}}
-    EINDE
+  <div class="end">
+    Bedankt voor het spelen!<br>Wil je opnieuw spelen?
+  </div>
+  <br>
+  <div class="container">
+    <div class="inbl">
+      <a href {{action "replayMultiple"}}><img src="./assets/images/Yes.svg" class="yesNo"></a>
+      <a href {{action "homepage"}}><img src="./assets/images/No.svg" class="yesNo"></a>
+    </div>
+  </div>
   {{/if}}
 
 {{/if}}

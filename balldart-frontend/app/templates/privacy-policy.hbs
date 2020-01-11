@@ -1,6 +1,9 @@
 Privacy-Policy
-<form {{action "back" on="submit"}}>
-  <button type = "submit">Terug</button>
-</form>
-
+<div class="footer navbar-fixed-bottom">
+    <div class="support-img">
+      {{#link-to "application"}}
+        <a href><img src="./assets/images/Back.svg" class="back"></a>
+      {{/link-to}}
+    </div>
+</div>
 {{outlet}}

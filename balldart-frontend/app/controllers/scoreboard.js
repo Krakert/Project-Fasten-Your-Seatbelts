@@ -22,7 +22,6 @@ export default Controller.extend({
     let regex = new RegExp(this.filtername,'i');
     if(this.filtername !== ""){
       return this.model.filter((item)=>{
-        console.log(regex)
         return item.id.match(regex);
       });
     } else{
