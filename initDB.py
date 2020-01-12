@@ -70,10 +70,6 @@ def gameStats(conn):
     cursor.execute(sql_insertData, [0, None, None, None, None])
     conn.commit()
 
-
-
-
-
 if __name__ == '__main__':
     conn = create_connection("./databases/balldart.db")
     accounts(conn)
