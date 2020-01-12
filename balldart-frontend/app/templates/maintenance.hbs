@@ -1,15 +1,15 @@
 <div class="indent-left">
     {{#if active}}
+      <h1>Testmogelijkheden:</h1>
+      {{#each employees as |employee|}}
+        Werknemer ID: {{employee.id}}<br>
+        LED: <button {{action 'toggleLED'}}>Start Test</button><br>
+        Servo: <button {{action 'servoToOrigin'}}>Start Test</button><br><br>
+      {{/each}}
+      <h1>Gebruikers:</h1>
       {{#each model as |account|}}
         <button {{action 'deleteAccount' account}}>Delete</button>
         Gebruiker: {{account.id}}<br><br>
-      {{/each}}
-
-      {{#each employees as |employee|}}
-        RFID: {{employee.id}}<br>
-        Active: {{employee.active}}<br>
-        LED: <button {{action 'toggleLED'}}>Aan/Uit!</button>{{employee.led}}<br>
-        Servo: <button {{action 'servoToOrigin'}}>Naar Startpositie!</button><br><br>
       {{/each}}
     {{else}}
       <h1>Houd je rfid erbij!</h1>

@@ -1,21 +1,18 @@
 {{#if (eq gamemode "singleplayer")}}
   {{#if (eq gamestate "0")}}
-  <div class="container">
-    <div class="inbl">
-    <a href {{action "nextGamestateSingleplayer" 1 1}}><img src="./assets/images/play.png" class="imageSize"></a>
+    <div class="container">
+      <div class="inbl">
+      <a href {{action "nextGamestateSingleplayer" 1 1}}><img src="./assets/images/play.png" class="playButton"></a>
+      </div>
     </div>
-  </div>
   {{/if}}
 
   {{#if (eq gamestate "1")}}
     <div class="huge">
-      {{username1}}<br>{{model.pointsOne}}
+      Aantal behaalde punten:<br>
+      {{model.pointsOne}} punten <br>
+      {{username1}}<br>
     </div>
-
-    ID: {{model.id}}<br>
-    Mode: {{model.mode}}<br>
-    Round: {{model.round}}<br>
-    activePlayer: {{model.activePlayer}}<br>
     <div class="footer navbar-fixed-bottom">
       <div class="support-img">
         {{#link-to "application"}}
@@ -65,25 +62,25 @@
   {{#if (eq gamestate "1")}}
     <div class="container">
       <div class="score">
-        <div class="huge">
+        <div class="multiScore">
           Aantal Behaalde Punten:<br>
           {{model.pointsOne}}<br>
           {{username1}}
         </div>
       </div>
       <div class="score">
-        <div class="huge">
+        <div class="multiScore">
           Aantal Behaalde Punten:<br>
           {{model.pointsTwo}}<br>
           {{username2}}
         </div>
       </div>
     </div>
-    {{#if (eq model.activePlayer 1)}}
+    <!-- {{#if (eq model.activePlayer 1)}}
       {{username1}} moet gooien!
     {{else}}
       {{username2}} moet gooien!
-    {{/if}}
+    {{/if}} -->
     <div class="footer navbar-fixed-bottom">
       <div class="support-img">
         {{#link-to "application"}}

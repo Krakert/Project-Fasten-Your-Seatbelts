@@ -47,7 +47,6 @@ export default Controller.extend({
   actions: {
     sort: function(data) {
       set(this,'data', data);
-
     }
   }
 });

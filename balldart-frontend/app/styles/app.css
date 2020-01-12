@@ -15,6 +15,10 @@
 .scoreboard{
   text-align: center;
 }
+.playButton{
+  height: 300px;
+  width: 300px;
+}
 .huge{
   font-size: 200%;
   text-align: center;
@@ -79,8 +83,12 @@
 .score{
   display: inline-block;
   vertical-align: top;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.multiScore{
+  font-size: 180%;
+  text-align: center;
 }
 .centered {
   position: static;

@@ -15,7 +15,6 @@ export default Route.extend({
   actions: {
     willTransition: function(){
       this.store.findRecord('employee','154162618071').then((employee)=>{
-        console.log(employee);
         employee.set('active', 0);
         employee.save();
       });
