@@ -17,24 +17,20 @@ while True:
   counter -= 1
   if counter == 0:
     counter = database_fetch_interval
-    print("Hoi")
     with sqlite3.connect("./databases/balldart.db") as db:
       cursor = db.cursor()
     readData = '''SELECT * FROM games WHERE id = ?'''
     cursor.execute(readData, ["board1"])
     gameRecord = cursor.fetchall()
-    print(gameRecord)
     mode = gameRecord[0][1]
     round = gameRecord[0][2]
     activePlayer = gameRecord[0][5]
-    print(mode + round + activePlayer)
 
   if mode == 0:
     if old_mode == mode:
       print("idle")
     else:
       old_mode = mode
-      print("single/multi")
   else:
     if old_mode == mode:
       print("active")
