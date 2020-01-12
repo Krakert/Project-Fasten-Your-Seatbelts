@@ -6,14 +6,10 @@ import config
 # defines
 ZERO = 0  # Just a 0, used to update databases info.
 
-
-def setupConnection():
-    global cursor
-    global db
+def setGameModeToZero():
     with sqlite3.connect("./databases/balldart.db") as db:
         cursor = db.cursor()
 
-def setGameModeToZero():
     readData = '''SELECT id FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
@@ -30,6 +26,9 @@ def checkGameMode():
     SINGLE_PLAYER = 1
     MULTI_PLAYER = 2
 
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
     readData = '''SELECT mode FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
@@ -43,6 +42,9 @@ def checkGameMode():
     return config.gameModeCase
 
 def updateInfo(points, activePlayer):
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
     readData = '''SELECT id FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
@@ -57,13 +59,9 @@ def updateInfo(points, activePlayer):
     cursor.execute(updateData, data)
     db.commit()
 
-    readData = '''SELECT * FROM games;'''
-    cursor.execute(readData)
-    gameInfo = cursor.fetchall()
-    print(gameInfo)
-
 def updateEmployees(uidTag):
-    setupConnection()
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
 
     readData = '''SELECT id FROM employees WHERE id = ?'''
     cursor.execute(readData, [uidTag])
