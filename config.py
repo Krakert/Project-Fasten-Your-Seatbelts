@@ -3,7 +3,6 @@
 # if gameModeCase != the program wont have to look at the tag.
 gameModeCase = 0
 
-
 # LED strip configuration:
 L_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
 L_HZ = 800000       # LED signal frequency in hertz (usually 800khz)
