@@ -6,16 +6,10 @@ import config
 # defines
 ZERO = 0  # Just a 0, used to update databases info.
 
-
-def setupConnection():
-    global cursor
-    global db
+def setGameModeToZero():
     with sqlite3.connect("./databases/balldart.db") as db:
         cursor = db.cursor()
-    print("Database connected")
 
-
-def setGameModeToZero():
     readData = '''SELECT id FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
@@ -26,12 +20,14 @@ def setGameModeToZero():
     cursor.execute(updateData, data)
     db.commit()
 
-
 def checkGameMode():
     # defines
     NO_GAME = 0
     SINGLE_PLAYER = 1
     MULTI_PLAYER = 2
+
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
 
     readData = '''SELECT mode FROM games;'''
     cursor.execute(readData)
@@ -45,8 +41,10 @@ def checkGameMode():
 
     return config.gameModeCase
 
-
 def updateInfo(points, activePlayer):
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
     readData = '''SELECT id FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
@@ -61,22 +59,19 @@ def updateInfo(points, activePlayer):
     cursor.execute(updateData, data)
     db.commit()
 
-    readData = '''SELECT * FROM games;'''
-    cursor.execute(readData)
-    gameInfo = cursor.fetchall()
-    print(gameInfo)
-
-
 def updateEmployees(uidTag):
-    readData = '''SELECT id FROM employees;'''
-    cursor.execute(readData)
-    employeesInfo = cursor.fetchall()
-    UIDS = len(employeesInfo)
-    for x in range(UIDS):
-        print("UID given: %10d, ID from database %10d" % (int(uidTag), int(employeesInfo[x][0])))
-        if int(employeesInfo[x][0]) == int(uidTag):
-            print("!UID corresponds to database info!")
-            updateData = '''UPDATE employees SET active = ? WHERE id = ?'''
-            data = (1, int(uidTag))
-            cursor.execute(updateData, data)
-            db.commit()
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
+    readData = '''SELECT id FROM employees WHERE id = ?'''
+    cursor.execute(readData, [uidTag])
+    databaseInfo = cursor.fetchall()
+    if len(databaseInfo) != 0:
+        if int(databaseInfo[0][0]) == int(uidTag):
+            active = 1
+        else:
+            active = 0
+        insertData = '''UPDATE employees SET active = ?, led = ?, servo = ? WHERE id = ?'''
+        row = (active, 0, 0, int(uidTag))
+        cursor.execute(insertData, row)
+        db.commit()
