@@ -232,17 +232,8 @@ try:
                 gameModeCase = SQL.checkGameMode()
                 servo.setBoardCenter()
                 #Aan het einde van de ronde als de speler af is ziet hij zijn totaalscore
-                if player:
-                #     player1TotalScore = player1TotalScore + (len(sequence) - 1)
-                #     SQL.updateInfo(player1TotalScore, 1) #totaalscore van player 1
-                     print("p1: %s" % points[0])
-                #
-                else:
-                #     player2TotalScore = player2TotalScore + (len(sequence) - 1)
-                #     SQL.updateInfo(player2TotalScore, 2) #totaalscore van player 2
-                #     print("Incorrect player2! jammer joh... score= %d\n" % player2TotalScore)
-                    print("p1: %s" % points[0])
-                    numberOfRounds = numberOfRounds - 1
+                if not player:
+                   numberOfRounds = numberOfRounds - 1
 
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)         # show blinking red LEDs
                 sequence.clear()
