@@ -50,8 +50,8 @@ sequenseSize = 0
 previousRandomNumber = 0
 player = True
 
-points = [[0,0,0,0],
-          [0,0,0,0]]
+points = [[0,0,0],
+          [0,0,0]]
 
 numberOfRounds = MULTI_PLAYER_ROUNDS
 distance = MIN_DISTANCE
@@ -83,6 +83,11 @@ def waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE):
     while WS2812.checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
         distance = (distance * 0.9) + (sonar.distance() * 0.1)
         panelDetection.clearInterrupts()
+        
+def cleanPoints():
+    for i in range(len(points)):
+        for x in range(len(points[i])):
+            points[i][x] = 0
 
 # Create NeoPixel object with appropriate configuration.
 strip = PixelStrip(NUMBER_OF_BOARD_PANELS + 1, C.L_PIN, C.L_HZ, C.L_DMA, C.L_INVERT, C.L_BRIGHTNESS, C.L_CHANNEL)
@@ -102,7 +107,7 @@ try:
         if (gameModeCase == SINGLE_PLAYER or gameModeCase == MULTI_PLAYER) and run:
             gameStartTime = time.time()
             run = False
-        
+
         if gameModeCase == NO_GAME:
             if not run:
                 totalGameTime += time.time() - gameStartTime
@@ -111,7 +116,7 @@ try:
 
             gameModeCase = SQL.checkGameMode()
             sequence.clear()
-            points.clear()
+            cleanPoints()
             numberOfRounds = MULTI_PLAYER_ROUNDS
             gameCase = INIT
             WS2812.rainbow(strip)
@@ -204,14 +209,14 @@ try:
                 servo.setBoardCenter()
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 if player:
-                    points[0][numberOfRounds] = len(sequence)
-                    print(points)
-                    print("sum: %2d" % sum(points[0]))
+                    points[0][numberOfRounds - 1] = len(sequence)
+                    #print(points)
+                    #print("sum: %2d" % sum(points[0]))
                     SQL.updateInfo(sum(points[0]), 1)
                 else:
-                    points[1][numberOfRounds] = len(sequence)
-                    print(points)
-                    print("sum: %2d" % sum(points[1]))
+                    points[1][numberOfRounds - 1] = len(sequence)
+                    #print(points)
+                    #print("sum: %2d" % sum(points[1]))
                     SQL.updateInfo(sum(points[1]), 2)
                 time.sleep(3)                                                                       # Needs fixing, dont use the sleep fuction!
                 gameCase = GEN_SEQUENCE                                                             # if the sequence was correct, add one to the sequence
