@@ -54,6 +54,7 @@ player = True
 points = [[0,0,0],
           [0,0,0]]
 runTimeGame = [0,0,0]
+roundTime = [0,0,0]
 runTimeServo = 0
 
 numberOfRounds = MULTI_PLAYER_ROUNDS
@@ -119,6 +120,7 @@ try:
                 servo.setBoardCenter()
                 time.sleep(2)
                 runTimeGame[0] = timeit.default_timer()
+                gameNumber = SQL.nextGameNumber()
                 gameCase = GEN_SEQUENCE
 
             elif gameCase == GEN_SEQUENCE:
@@ -128,15 +130,15 @@ try:
                 gameCase = SHOW_SEQUENCE
 
             elif gameCase == SHOW_SEQUENCE:
-                gameModeCase = SQL.checkGameMode()
                 WS2812.showSequence(strip, sequence, SEQUENCE_LED_ON_TIME, SEQUENCE_LED_OFF_TIME)   # Show sequence to the player.
                 panelDetection.clearInterrupts()                                                    # Clears the interrupts in case someone hit a panel during SHOW_SEQUENCE.
+                roundTime[0] = timeit.default_timer()                                               # Get time now.
                 gameCase = DETECT_SEQUENCE
 
             elif gameCase == DETECT_SEQUENCE:
-                gameModeCase = SQL.checkGameMode()
-                waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE)
 
+                gameModeCase = SQL.checkGameMode()                                                  # To be able to stop halfway.
+                waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE)
                 valid = panelDetection.guessSequence(sequence, CORRECT_SEQUENCE, INVALID_SEQUENCE)  # Returns 1 if the sequence was correct, 2 if incorrect.
 
                 if valid == CORRECT_SEQUENCE:
@@ -151,7 +153,10 @@ try:
                 score = len(sequence)
                 SQL.updateInfo(score, gameModeCase)
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
-                time.sleep(3)
+                roundTime[1] = timeit.default_timer()                                               # get time now.
+                roundTime[2] = int(roundTime[1] - roundTime[0])                                     # Time a sequence takes.
+                SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])          # Push stats off round to
+                time.sleep(3)                                                                       # the database.
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
 
             elif gameCase == WRONG_SEQUENCE:
@@ -161,9 +166,9 @@ try:
                 print("Incorrect! jammer joh... score= %d\n" % score)
                 sequence.clear()                                                                    # Clear array.
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)                             # Show blinking red LEDs.
-                runTimeGame[1] = timeit.default_timer()
-                runTimeGame[2] = int(runTimeGame[1] - runTimeGame[0])
-                SQL.updateRuntime(runTimeGame[2])
+                runTimeGame[1] = timeit.default_timer()                                             # Get time now.
+                runTimeGame[2] = int(runTimeGame[1] - runTimeGame[0])                               # Calculate time of game.
+                SQL.updateRuntime(runTimeGame[2])                                                   # Update Total game time.
                 gameModeCase = NO_GAME
 
 
@@ -176,6 +181,7 @@ try:
                 servo.setBoardCenter()
                 time.sleep(2)
                 runTimeGame[0] = timeit.default_timer()
+                gameNumber = gameNumber + 1
                 gameCase = GEN_SEQUENCE
 
             elif gameCase == GEN_SEQUENCE:
