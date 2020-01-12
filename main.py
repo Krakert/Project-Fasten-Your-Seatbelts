@@ -220,14 +220,18 @@ try:
                     SQL.updateInfo(sum(points[0]), 1)                                               # And push overall to database.
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])      # Push stats off round to
-                else:                                                                               # databases
+                    SQL.pushGameStats(gameNumber, player,                                           # Push stats off round to
+                                      numberOfRounds, int(len(sequence)),                           # databases
+                                      roundTime[2])
+                else:
                     points[1][numberOfRounds - 1] = len(sequence)                                   # Push point of that round.
                     SQL.updateInfo(sum(points[1]), 2)                                               # And push overall to database.
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])      # Push stats off round to
-                                                                                                    # database.
+                    SQL.pushGameStats(gameNumber, player,                                           # Push stats off round to
+                                      numberOfRounds, int(len(sequence)),                           # database.
+                                      roundTime[2])
+
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
 
