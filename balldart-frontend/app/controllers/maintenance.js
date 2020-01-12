@@ -20,7 +20,9 @@ export default Controller.extend({
   }),
   actions: {
     deleteAccount: function(account) {
-      account.destroyRecord();
+      account.destroyRecord().then(()=>{
+          this.store.unloadRecord(account);
+      });
     },
     toggleLED: function(){
       let employee = this.employees.get('firstObject');
