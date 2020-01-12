@@ -2,6 +2,7 @@
 
 #import installed libraries
 import time
+import timeit
 from rpi_ws281x import PixelStrip, Color
 import RPi.GPIO as GPIO
 import random
@@ -35,8 +36,8 @@ SHOW_SEQUENCE = 2
 DETECT_SEQUENCE = 3
 SHOW_CORRECT_SEQUENCE = 4
 WRONG_SEQUENCE = 5
-SHOW_WINNER = 6
-
+CHECK_WINNER = 6
+END_GAME = 7
 
 #enumernatie of 'main switch case'
 #gameModeCase
@@ -52,19 +53,13 @@ player = True
 
 points = [[0,0,0],
           [0,0,0]]
-
-runtime = [[0,0,0],                                                                                 # Timer for total game time and
-           [0,0,0]]                                                                                 # time the servo had turned.
+runTimeGame = [0,0,0]
+runTimeServo = 0
 
 numberOfRounds = MULTI_PLAYER_ROUNDS
 distance = MIN_DISTANCE
 gameCase = GEN_SEQUENCE
 gameModeCase = 0
-
-run = 0
-gameStartTime = 0
-totalGameTime = 0
-
 
 def addToSequence(previousRandomNumber):
     global sequence
@@ -92,18 +87,7 @@ def cleanPoints():
         for x in range(len(points[i])):
             points[i][x] = 0
 
-def timers(clock):
-    global timeNow
-    if time.time() - timeNow > 1:
-        runtime[clock][2] = runtime[0][2] + 1
-        #print ("Runtime of the servo %d" % totalGameTime)
-        timeNow = time.time()
-    if runtime[clock][2] == 60:
-        runtime[clock][1] = runtime[clock][1] + 1
-        runtime[clock][2] = 0
-    if runtime[clock][1] == 60:
-        runtime[clock][0] = runtime[clock][0] + 1
-        runtime[clock][1] = 0
+
 
 # Create NeoPixel object with appropriate configuration.
 strip = PixelStrip(NUMBER_OF_BOARD_PANELS + 1, C.L_PIN, C.L_HZ, C.L_DMA, C.L_INVERT, C.L_BRIGHTNESS, C.L_CHANNEL)
@@ -117,8 +101,6 @@ SQL.setGameModeToZero()
 
 RFID = threading.Thread(target = rfid.main)
 RFID.start()
-
-timeNow = time.time()
 
 try:
     while True:
@@ -136,6 +118,7 @@ try:
                 WS2812.colorWipe(strip)
                 servo.setBoardCenter()
                 time.sleep(2)
+                runTimeGame[0] = timeit.default_timer()
                 gameCase = GEN_SEQUENCE
 
             elif gameCase == GEN_SEQUENCE:
@@ -178,6 +161,9 @@ try:
                 print("Incorrect! jammer joh... score= %d\n" % score)
                 sequence.clear()                                                                    # Clear array.
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)                             # Show blinking red LEDs.
+                runTimeGame[1] = timeit.default_timer()
+                runTimeGame[2] = int(runTimeGame[1] - runTimeGame[0])
+                SQL.updateRuntime(runTimeGame[2])
                 gameModeCase = NO_GAME
 
 
@@ -189,6 +175,7 @@ try:
                 WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
                 servo.setBoardCenter()
                 time.sleep(2)
+                runTimeGame[0] = timeit.default_timer()
                 gameCase = GEN_SEQUENCE
 
             elif gameCase == GEN_SEQUENCE:
@@ -204,7 +191,8 @@ try:
                 gameCase = DETECT_SEQUENCE
 
             elif gameCase == DETECT_SEQUENCE:
-                timers()
+                #timer start
+                runTimeServo = servo.timerServo()
                 gameModeCase = SQL.checkGameMode()
                 waitIfPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, MIN_DISTANCE)
                 servo.rotateBoard(gyro.main())
@@ -212,8 +200,11 @@ try:
 
                 if valid == CORRECT_SEQUENCE:
                     gameCase = SHOW_CORRECT_SEQUENCE
+                    #timer stop
+                    # insert into
                 elif valid == INVALID_SEQUENCE:
                     gameCase = WRONG_SEQUENCE
+                    #timer stop
                 elif valid != 0:
                     WS2812.showPanelHit(strip, valid, SHOW_HIT_ON_TIME)
 
@@ -239,28 +230,40 @@ try:
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)                             # Show blinking red LEDs.
                 sequence.clear()
 
-                if numberOfRounds == 1:
-                    gameCase = SHOW_WINNER                                                          # Show the winner if there are no more rounds to play.
+                if numberOfRounds == 0:
+                    gameCase = CHECK_WINNER                                                          # Show the winner if there are no more rounds to play.
                 else:
                     gameCase = GEN_SEQUENCE                                                         # If the sequence was incorrect, generate new sequence.
                     player ^= 1
                     print("player= %d\n" % player)
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
-            elif gameCase == SHOW_WINNER:
+            elif gameCase == CHECK_WINNER:
                 #if there is a tie there will be an extra round
                 if sum(points[0]) == sum(points[1]):
+                    print ("the game is Tie, exta round")
                     gameCase = GEN_SEQUENCE
                     numberOfRounds = 1
                     player ^= 1
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
+                else:
+                    gameCase = END_GAME
+                    print("End of game")
 
                 #show the winner
+            elif gameCase == END_GAME:
+                print ("Time to end")
                 if sum(points[0]) > sum(points[1]):
                     WS2812.showWinnerPlayer1(NUMBER_OF_BOARD_PANELS + 1, strip)
                 if sum(points[0]) < sum(points[1]):
                     WS2812.showWinnerPlayer2(NUMBER_OF_BOARD_PANELS + 1, strip)
-                time.sleep(10)
+
+                runTimeGame[1] = timeit.default_timer()
+                runTimeGame[2] = int(runTimeGame[1] - runTimeGame[0])
+                SQL.updateRuntime(runTimeGame[2])
+                SQL.updateRuntimeServo(runTimeServo)
+
+                time.sleep(5)
                 SQL.setGameModeToZero()
                 gameModeCase = NO_GAME
 
