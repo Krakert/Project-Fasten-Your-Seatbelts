@@ -99,3 +99,23 @@ def updateRuntimeServo(toAddRuntime):
     data = (newRuntime, 154162618071)
     cursor.execute(updateData, data)
     db.commit()
+
+def nextGameNumber():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT MAX(game_number) FROM gamestat;'''
+    cursor.execute(readData)
+    lastUnmber = cursor.fetchall()
+    print (lastUnmber[0][0])
+    nextNumber = int(lastUnmber[0][0]) + 1
+
+    return nextNumber
+
+def pushGameStats(gameNumber, player, round, sequenceLength, timeInSec):
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    insertData = '''INSERT INTO gamestat (game_number, player, round, sequenceLength, timeInSec)
+                    VALUES (?,?,?,?,?)'''
+    Data = (gameNumber, player, round, sequenceLength, timeInSec)
+    cursor.execute(insertData, Data)
+    db.commit()
