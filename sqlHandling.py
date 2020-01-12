@@ -75,3 +75,17 @@ def updateEmployees(uidTag):
         row = (active, 0, 0, int(uidTag))
         cursor.execute(insertData, row)
         db.commit()
+
+def updateRuntime(toAddRuntime):
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT runTimeSystem FROM employees;'''
+    cursor.execute(readData)
+    runTimeInfo = cursor.fetchall()
+    print (runTimeInfo[0][0])
+    newRuntime = (runTimeInfo[0][0] + toAddRuntime)
+    print (newRuntime)
+    updateData = '''UPDATE employees SET  runTimeSystemInSec = ? WHERE id = ?'''
+    data = (newRuntime, 154162618071)
+    cursor.execute(updateData, data)
+    db.commit()
