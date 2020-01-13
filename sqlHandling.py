@@ -119,3 +119,49 @@ def pushGameStats(gameNumber, player, round, sequenceLength, timeInSec):
     Data = (gameNumber, player, round, sequenceLength, timeInSec)
     cursor.execute(insertData, Data)
     db.commit()
+
+def resetTimeServo():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
+    updateData = '''UPDATE employees SET  runtimeServoInSec = ? WHERE id = ?'''
+    data = (0, 154162618071)
+    cursor.execute(updateData, data)
+    db.commit()
+
+def setTestToZero():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
+    updateData = '''UPDATE employees SET led = ?, servo = ? WHERE id = ?'''
+    data = (0, 0, 154162618071)
+    cursor.execute(updateData, data)
+    db.commit()
+
+def setEmployeesToZero():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
+    updateData = '''UPDATE employees SET active = ?, led = ?, servo = ? WHERE id = ?'''
+    data = (0, 0, 0, 154162618071)
+    cursor.execute(updateData, data)
+    db.commit()
+
+def checkEmployees():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT active FROM employees;'''
+    cursor.execute(readData)
+    Data = cursor.fetchall()
+
+    return int(Data[0][0])
+
+
+def getTestData():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    readData = '''SELECT led, servo FROM employees;'''
+    cursor.execute(readData)
+    testData = cursor.fetchall()
+
+    return testData[0]

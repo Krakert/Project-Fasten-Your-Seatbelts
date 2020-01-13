@@ -137,6 +137,6 @@ def rainbow(strip, wait_ms=15, iterations = 1):
         for i in range(strip.numPixels()):
             strip.setPixelColor(i, wheel((i + j) & 255))
         strip.show()
-        if SQL.checkGameMode() != 0:
+        if SQL.checkGameMode() != 0 or SQL.getTestData()[0] == 1:
             break
         time.sleep(wait_ms / 1000.0)

@@ -50,7 +50,8 @@ sequence = []
 sequenseSize = 0
 previousRandomNumber = 0
 player = True
-
+run = 0
+stop = 0
 points = [[0,0,0],
           [0,0,0]]
 runTimeGame = [0,0,0]
@@ -99,6 +100,7 @@ if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
 SQL.setGameModeToZero()
+SQL.setEmployeesToZero()
 
 RFID = threading.Thread(target = rfid.main)
 RFID.start()
@@ -111,7 +113,8 @@ try:
             cleanPoints()
             numberOfRounds = MULTI_PLAYER_ROUNDS
             gameCase = INIT
-            WS2812.rainbow(strip)
+            if SQL.getTestData()[0] == 0:
+                WS2812.rainbow(strip)
             servo.setBoardCenter()
 
         elif gameModeCase == SINGLE_PLAYER:
@@ -155,8 +158,10 @@ try:
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 roundTime[1] = timeit.default_timer()                                               # get time now.
                 roundTime[2] = int(roundTime[1] - roundTime[0])                                     # Time a sequence takes.
-                SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])          # Push stats off round to
-                time.sleep(3)                                                                       # the database.
+                print (roundTime[2])
+                SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])          # Push stats off round to the database.
+                SQL.updateRuntime(runTimeGame[2])                                                   # Update Total game time.
+                time.sleep(3)
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
 
             elif gameCase == WRONG_SEQUENCE:
@@ -220,17 +225,20 @@ try:
                     SQL.updateInfo(sum(points[0]), 1)                                               # And push overall to database.
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player,                                           # Push stats off round to
+                    SQL.pushGameStats(gameNumber, player,                                           # Push stats of round to
                                       numberOfRounds, int(len(sequence)),                           # databases
                                       roundTime[2])
+                    SQL.updateRuntimeServo(runTimeServo)                                            # Update run time of servo.
+
                 else:
                     points[1][numberOfRounds - 1] = len(sequence)                                   # Push point of that round.
                     SQL.updateInfo(sum(points[1]), 2)                                               # And push overall to database.
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player,                                           # Push stats off round to
+                    SQL.pushGameStats(gameNumber, player,                                           # Push stats of round to
                                       numberOfRounds, int(len(sequence)),                           # database.
                                       roundTime[2])
+                    SQL.updateRuntimeServo(runTimeServo)                                            # Update run time of servo.
 
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
