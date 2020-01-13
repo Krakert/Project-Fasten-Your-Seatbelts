@@ -23,17 +23,17 @@ export default Controller.extend({
   employee: filterBy('employees','id', '154162618071'),
 
   systemRuntime: computed('employee.@each.runtimeSystemInSec', function(){
-    if(this.employee[0].runtimeSystemInSec >= 36000){
+    if(this.employee[0].runtimeSystemInSec >= 3600){
       return Math.floor(this.employee[0].runtimeSystemInSec) + " secondes, checken dus!";
     } else{
-      return Math.floor(this.employee[0].runtimeSystemInSec) + " seconde(s)";
+      return Math.floor(this.employee[0].runtimeSystemInSec) + " seconde(s), prima!";
     }
   }),
   servoRuntime: computed('employee.@each.runtimeServoInSec', function(){
-    if(this.employee[0].runtimeServoInSec >= 36000){
+    if(this.employee[0].runtimeServoInSec >= 3600){
       return Math.floor(this.employee[0].runtimeServoInSec) + " secondes, checken dus!";
     } else{
-      return Math.floor(this.employee[0].runtimeServoInSec) + " seconde(s)";
+      return Math.floor(this.employee[0].runtimeServoInSec) + " seconde(s), prima!";
     }
   }),
   actions: {
@@ -53,6 +53,18 @@ export default Controller.extend({
         employee.set('servo', 1);
         employee.save();
       });
-    }
+    },
+    clearSystemRuntime: function(){
+      this.store.findRecord('employee', '154162618071').then((employee)=>{
+        employee.set('runtimeSystemInSec', 0);
+        employee.save();
+      });
+    },
+    clearServoRuntime: function(){
+      this.store.findRecord('employee', '154162618071').then((employee)=>{
+        employee.set('runtimeServoInSec', 0);
+        employee.save();
+      });
+    },
   }
 });
