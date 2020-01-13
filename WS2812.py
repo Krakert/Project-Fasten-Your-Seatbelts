@@ -100,14 +100,14 @@ def showWinnerPlayer1(NUMBER_OF_BOARD_PANELS, strip):
 
 def showWinnerPlayer2(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[5])                                                          # Set all pixels to purple.
+        setPixelColor(strip, i, COLORS[1])                                                          # Set all pixels to purple.
     strip.show()
 
 def setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player):
     if player:
         setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[4])                                     # Set all pixels to blue.
     else:
-        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[5])                                     # Set all pixels to puple.
+        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[1])                                     # Set all pixels to puple.
 
     strip.show()
 

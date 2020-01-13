@@ -14,9 +14,9 @@ def setGameModeToZero():
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
     primaryKey = gameInfo[0][0]
-    updateData = '''UPDATE games SET mode = ?, round = ?, pointsOne = ?, pointstwo = ?, activePlayer = ? 
+    updateData = '''UPDATE games SET mode = ?, round = ?, activePlayer = ? 
                                  WHERE id = ?'''
-    data = (ZERO, ZERO, ZERO, ZERO, ZERO, primaryKey)
+    data = (ZERO, ZERO, ZERO, primaryKey)
     cursor.execute(updateData, data)
     db.commit()
 
@@ -41,20 +41,27 @@ def checkGameMode():
 
     return config.gameModeCase
 
-def updateInfo(points, activePlayer):
+def updateActivePlayer(player):
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+    updateData = '''UPDATE games SET activePlayer = ? WHERE id = ?'''
+    data = (player,  "board1")
+    cursor.execute(updateData, data)
+    db.commit()
+
+def updateScore(activePlayer):
     with sqlite3.connect("./databases/balldart.db") as db:
         cursor = db.cursor()
 
-    readData = '''SELECT id FROM games;'''
+    readData = '''SELECT pointsOne, pointsTwo FROM games;'''
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
-    primaryKey = gameInfo[0][0]
     if activePlayer == 1:
-        updateData = '''UPDATE games SET pointsOne = ?, activePlayer = ? WHERE id = ?'''
-        data = (points, activePlayer, primaryKey)
+        updateData = '''UPDATE games SET pointsOne = ? WHERE id = ?'''
+        data = ((gameInfo[0][0] + 1),  "board1")
     elif activePlayer == 2:
-        updateData = '''UPDATE games SET pointsTwo = ?, activePlayer = ? WHERE id = ?'''
-        data = (points, activePlayer, primaryKey)
+        updateData = '''UPDATE games SET pointsTwo = ? WHERE id = ?'''
+        data = ((gameInfo[0][1] + 1), "board1")
 
     cursor.execute(updateData, data)
     db.commit()
@@ -164,3 +171,17 @@ def getTestData():
     testData = cursor.fetchall()
 
     return testData[0]
+
+def checkScore():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
+    readData = '''SELECT pointsOne, pointsTwo FROM games;'''
+    cursor.execute(readData)
+    scoreInfo = cursor.fetchall()
+    if int(scoreInfo[0][0]) == int(scoreInfo[0][1]):
+        return 1
+    if int(scoreInfo[0][0]) > int(scoreInfo[0][1]):
+        return 2
+    if int(scoreInfo[0][0]) < int(scoreInfo[0][1]):
+        return 3
