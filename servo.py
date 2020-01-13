@@ -25,14 +25,14 @@ def testServo():
     global currentPosition
 
     pwm.ChangeDutyCycle((LEFT_MAX/100))
-    time.sleep(10) #needs debugging
+    time.sleep(5) #needs debugging
 
     pwm.ChangeDutyCycle((RIGHT_MAX/100))
-    time.sleep(10)#needs debugging
+    time.sleep(5)#needs debugging
 
     pwm.ChangeDutyCycle((CENTER/100))
     currentPosition = CENTER
-    time.sleep(10)#needs debugging
+    time.sleep(5)#needs debugging
 
     
 #this function will set the board to the center
