@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
-import { observer  } from '@ember/object';
+import { observer, computed,  } from '@ember/object';
 import { set } from '@ember/object';
+import { filterBy } from '@ember/object/computed';
 
 export default Controller.extend({
   queryParams: [],
@@ -13,9 +14,26 @@ export default Controller.extend({
     this.counter--;
     if(this.counter === 0){
       this.store.findRecord('employee', '154162618071').then((employee)=>{
-        set(this,'active', employee.active)
-        this.counter = 1
+        set(this,'active', employee.active);
+        this.counter = 1;
       });
+    }
+  }),
+
+  employee: filterBy('employees','id', '154162618071'),
+
+  systemRuntime: computed('employee.@each.runtimeSystemInSec', function(){
+    if(this.employee[0].runtimeSystemInSec >= 36000){
+      return Math.floor(this.employee[0].runtimeSystemInSec) + " secondes, checken dus!";
+    } else{
+      return Math.floor(this.employee[0].runtimeSystemInSec) + " seconde(s)";
+    }
+  }),
+  servoRuntime: computed('employee.@each.runtimeServoInSec', function(){
+    if(this.employee[0].runtimeServoInSec >= 36000){
+      return Math.floor(this.employee[0].runtimeServoInSec) + " secondes, checken dus!";
+    } else{
+      return Math.floor(this.employee[0].runtimeServoInSec) + " seconde(s)";
     }
   }),
   actions: {
@@ -26,13 +44,13 @@ export default Controller.extend({
     },
     toggleLED: function(){
       this.store.findRecord('employee', '154162618071').then((employee)=>{
-        employee.set('led', 1)
+        employee.set('led', 1);
         employee.save();
       });
     },
     servoToOrigin: function(){
       this.store.findRecord('employee', '154162618071').then((employee)=>{
-        employee.set('servo', 1)
+        employee.set('servo', 1);
         employee.save();
       });
     }

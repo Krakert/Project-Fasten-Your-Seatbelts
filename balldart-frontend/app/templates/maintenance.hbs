@@ -4,7 +4,9 @@
       {{#each employees as |employee|}}
         Werknemer ID: {{employee.id}}<br>
         LED: <button {{action 'toggleLED'}}>Start Test</button><br>
-        Servo: <button {{action 'servoToOrigin'}}>Start Test</button><br><br>
+        Servo: <button {{action 'servoToOrigin'}}>Start Test</button><br>
+        SystemRuntime: {{systemRuntime}}<br>
+        ServoRuntime: {{servoRuntime}}<br><br>
       {{/each}}
       <h1>Gebruikers:</h1>
       {{#each model as |account|}}
