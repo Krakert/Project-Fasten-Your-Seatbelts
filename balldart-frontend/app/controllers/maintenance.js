@@ -25,21 +25,16 @@ export default Controller.extend({
       });
     },
     toggleLED: function(){
-      let employee = this.employees.get('firstObject');
-      if(this.valid){
-        this.valid = false;
-        employee.set('led', 1);
+      this.store.findRecord('employee', '154162618071').then((employee)=>{
+        employee.set('led', 1)
         employee.save();
-      } else{
-        this.valid = true;
-        employee.set('led', 0);
-        employee.save();
-      }
+      });
     },
     servoToOrigin: function(){
-      let employee = this.employees.get('firstObject');
-      employee.set('servo', 1);
-      employee.save();
+      this.store.findRecord('employee', '154162618071').then((employee)=>{
+        employee.set('servo', 1)
+        employee.save();
+      });
     }
   }
 });
