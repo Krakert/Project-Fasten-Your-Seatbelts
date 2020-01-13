@@ -33,7 +33,7 @@ def distance():
         startTime = time.time()
  
     while GPIO.input(GPIO_ECHO) == 1:
-        if (currentTime + TIMEOUT) < (time.time() * 1000):         # If pulse is not not registered return a 0.
+        if (currentTime + TIMEOUT) < (time.time() * 1000):          # If pulse is not not registered return a 0.
             return 0
         stopTime = time.time()
  
