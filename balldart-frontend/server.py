@@ -9,7 +9,7 @@ import sqlite3
 app = Flask(__name__)
 
 # this function returns an object for one account
-def a(row):
+def account_model(row):
     return {
         "type": "accounts",                      # It has to have type
         "id": row[0],                            # And some unique identifier
@@ -22,7 +22,7 @@ def a(row):
         },
     }
 
-def e(row):
+def employee_model(row):
     return {
         "type": "employees",                       # It has to have type
         "id": row[0],                              # And some unique identifier
@@ -30,11 +30,13 @@ def e(row):
             "active": row[1],
             "led": row[2],
             "servo": row[3],
+            "runtime-system-in-sec": row[4],
+            "runtime-servo-in-sec": row[5],
         },
     }
 
 # this function returns an object for one game
-def g(row):
+def game_model(row):
     return {
         "type": "games",                         # It has to have type
         "id": row[0],                            # And some unique identifier
@@ -66,7 +68,7 @@ def accounts_by_id(account_id):
       cursor.execute(readData, [(account_id)])
       accountRecord = cursor.fetchall()
       print(accountRecord)
-      return jsonify({"data": a(accountRecord[0])})
+      return jsonify({"data": account_model(accountRecord[0])})
     else:
       pythonObject = json.loads(request.data)
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
@@ -93,7 +95,7 @@ def accounts_by_id(account_id):
       (pythonObject["data"]["attributes"]["number-of-rounds"]),
       (pythonObject["data"]["attributes"]["latest-round"]))
       db.commit()
-      return jsonify({"data": a(row)})
+      return jsonify({"data": account_model(row)})
 
 # route for all entities
 @app.route('/api/accounts', methods=['GET','POST'])
@@ -113,7 +115,7 @@ def accounts():
       (pythonObject["data"]["attributes"]["latest-round"]))
       cursor.execute(insertData, row)
       db.commit()
-      return jsonify({"data": a(row)})
+      return jsonify({"data": account_model(row)})
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
@@ -122,7 +124,7 @@ def accounts():
       accountRecord = cursor.fetchall()
       print(accountRecord)
       return jsonify({
-          "data": [a(row) for row in accountRecord]
+          "data": [account_model(row) for row in accountRecord]
           })
 
 # route for all entities
@@ -134,7 +136,7 @@ def employees():
     cursor.execute(employeeData)
     employeeRecord = cursor.fetchall()
     return jsonify({
-        "data": [e(row) for row in employeeRecord]
+        "data": [employee_model(row) for row in employeeRecord]
         })
 @app.route('/api/employees/<employee_id>', methods=['PATCH','GET'])
 def employees_by_id(employee_id):
@@ -142,32 +144,41 @@ def employees_by_id(employee_id):
       pythonObject = json.loads(request.data)
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
-      print(pythonObject["data"])
 
       insertData = '''UPDATE employees
                       SET
                         active = ?,
                         led = ?,
-                        servo = ?
+                        servo = ?,
+                        runtimeSystemInSec = ?,
+                        runtimeServoInSec = ?
                       WHERE id = ?'''
-      row = ((pythonObject["data"]["attributes"]["active"]),
-      (pythonObject["data"]["attributes"]["led"]),
-      (pythonObject["data"]["attributes"]["servo"]),
-      (pythonObject["data"]["id"]))
-      cursor.execute(insertData, row)
-      row = ((pythonObject["data"]["id"]),
+      row = (
       (pythonObject["data"]["attributes"]["active"]),
       (pythonObject["data"]["attributes"]["led"]),
-      (pythonObject["data"]["attributes"]["servo"]))
+      (pythonObject["data"]["attributes"]["servo"]),
+      (pythonObject["data"]["attributes"]["runtime-system-in-sec"]),
+      (pythonObject["data"]["attributes"]["runtime-servo-in-sec"]),
+      (pythonObject["data"]["id"])
+      )
+      cursor.execute(insertData, row)
+      row = (
+      (pythonObject["data"]["id"]),
+      (pythonObject["data"]["attributes"]["active"]),
+      (pythonObject["data"]["attributes"]["led"]),
+      (pythonObject["data"]["attributes"]["servo"]),
+      (pythonObject["data"]["attributes"]["runtime-system-in-sec"]),
+      (pythonObject["data"]["attributes"]["runtime-servo-in-sec"])
+      )
       db.commit()
-      return jsonify({"data": e(row)})
+      return jsonify({"data": employee_model(row)})
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
       readData = '''SELECT * FROM employees WHERE id = ?'''
       cursor.execute(readData, [(employee_id)])
       employeesRecord = cursor.fetchall()
-      return jsonify({"data": e(employeesRecord[0])})
+      return jsonify({"data": employee_model(employeesRecord[0])})
 
 @app.route('/api/games/<game_id>', methods=['GET','PATCH'])
 def games_by_id(game_id):
@@ -175,7 +186,6 @@ def games_by_id(game_id):
       pythonObject = json.loads(request.data)
       with sqlite3.connect("../databases/balldart.db") as db:                      # create connection to database
           cursor = db.cursor()
-      print(pythonObject["data"])
 
       insertData = '''UPDATE games
                       SET
@@ -200,15 +210,14 @@ def games_by_id(game_id):
       (pythonObject["data"]["attributes"]["points-two"]),
       (pythonObject["data"]["attributes"]["active-player"]))
       db.commit()
-      return jsonify({"data": g(row)})
+      return jsonify({"data": game_model(row)})
     else:
       with sqlite3.connect("../databases/balldart.db") as db:
           cursor = db.cursor()
       readData = '''SELECT * FROM games WHERE id = ?'''
       cursor.execute(readData, [(game_id)])
       gameRecord = cursor.fetchall()
-      print(gameRecord)
-      return jsonify({"data": g(gameRecord[0])})
+      return jsonify({"data": game_model(gameRecord[0])})
 
 # default route.
 # flask has to serve a file that will be generated later with ember
