@@ -10,7 +10,9 @@ RIGHT_MAX = 250
 
 #variables
 currentPosition = CENTER
+runTimeServo = 0
 
+timeNow = time.time()
 #init the PWM
 GPIO.setup(SERVO_CHANNEL, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_CHANNEL, 50)
@@ -58,3 +60,12 @@ def rotateBoard(direction):
             currentPosition = RIGHT_MAX
 
     pwm.ChangeDutyCycle((currentPosition/100))
+
+
+def timerServo():
+    global timeNow
+    global runTimeServo
+    if time.time() - timeNow > 1:
+        runTimeServo = runTimeServo + 1
+        timeNow = time.time()
+    return runTimeServo

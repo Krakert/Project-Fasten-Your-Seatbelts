@@ -9,27 +9,26 @@ def create_connection(db_file):
 def accounts(conn):
     cursor = conn.cursor()
     # Create Table
-    sql_create_account_table = '''CREATE TABLE IF NOT EXISTS accounts (
-                                        id varchar(255) PRIMARY KEY,
-                                        password varchar(255),
-                                        totalPoints integer,
-                                        highestPoints integer,
-                                        numberOfRounds integer,
-                                        latestRound integer
-                                    );'''
+    sql_create_account_table = '''CREATE TABLE accounts (
+    id             VARCHAR (255) PRIMARY KEY
+                                 NOT NULL,
+    password       VARCHAR (255) NOT NULL,
+    totalPoints    INTEGER,
+    highestPoints  INTEGER,
+    numberOfRounds INTEGER,
+    latestRound    INTEGER);'''
     cursor.execute(sql_create_account_table)
 
 def games(conn):
     cursor = conn.cursor()
     # Create Table
-    sql_create_game_table = '''CREATE TABLE IF NOT EXISTS games (
-                                        id varchar(255) PRIMARY KEY,
-                                        mode integer,
-                                        round integer,
-                                        pointsOne integer,
-                                        pointsTwo integer,
-                                        activePlayer integer
-                                    );'''
+    sql_create_game_table = '''CREATE TABLE games (
+    id           VARCHAR (255) PRIMARY KEY,
+    mode         INTEGER,
+    round        INTEGER,
+    pointsOne    INTEGER,
+    pointsTwo    INTEGER,
+    activePlayer INTEGER);'''
     cursor.execute(sql_create_game_table)
 
     # Insert Record
@@ -40,17 +39,35 @@ def games(conn):
 def employees(conn):
     cursor = conn.cursor()
     # Create Table
-    sql_create_employee_table = '''CREATE TABLE IF NOT EXISTS employees (
-                                        id varchar(255) PRIMARY KEY,
-                                        active bit,
-                                        led int,
-                                        servo int
-                                    );'''
+    sql_create_employee_table = '''CREATE TABLE employees (
+    id                 VARCHAR (255) PRIMARY KEY
+                                     NOT NULL,
+    active             INTEGER,
+    led                INTEGER,
+    servo              INTEGER,
+    runtimeSystemInSec INTEGER       DEFAULT (0),
+    runtimeServoInSec  INTEGER       DEFAULT (0));'''
     cursor.execute(sql_create_employee_table)
 
     # Insert Record
-    sql_insertData = '''INSERT INTO employees(id, active,led,servo) VALUES(?,?,?,?)'''
+    sql_insertData = '''INSERT INTO employees(id, active, led, servo) VALUES(?,?,?,?)'''
     cursor.execute(sql_insertData, [154162618071, 0, 0, 0])
+    conn.commit()
+
+def gameStats(conn):
+    cursor = conn.cursor()
+    # Create Table
+    sql_create_gamestat_table = '''CREATE TABLE gamestat (
+    game_number    INTEGER DEFAULT (0),
+    player         INTEGER,
+    round          INTEGER,
+    sequenceLength INTEGER,
+    timeInSec      INTEGER);'''
+    cursor.execute(sql_create_gamestat_table)
+
+    # Insert Record
+    sql_insertData = '''INSERT INTO gamestat(game_number, player, round, sequenceLength, timeInSec) VALUES(?,?,?,?,?)'''
+    cursor.execute(sql_insertData, [0, None, None, None, None])
     conn.commit()
 
 if __name__ == '__main__':
@@ -58,3 +75,4 @@ if __name__ == '__main__':
     accounts(conn)
     games(conn)
     employees(conn)
+    gameStats(conn)

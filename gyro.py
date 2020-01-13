@@ -11,7 +11,7 @@ ADDRESS = 0x68              # The address where it IC can ben found.
 SCALE_FACTOR = 16384.0      # See line 51.
 
 #variables
-threshold = 25              # The minimum angle.
+threshold = 20              # The minimum angle.
 
 # Get the two 8 bits and glue them together.
 def readWord(reg):
@@ -55,8 +55,8 @@ def main():
         direction = (getRotation(accelerationXoutScaled, accelerationYoutScaled, accelerationZoutScaled))
         return direction                                # Return a 0, 1 or 2 back to the program.
 
-    except OSError:
-        print ("Can`t open bus I2C, ignore me")         # If the I2C data is not great
+    except Exception:
+        pass
 
 
     
