@@ -50,8 +50,7 @@ sequence = []
 sequenseSize = 0
 previousRandomNumber = 0
 player = True
-run = 0
-stop = 0
+
 points = [[0,0,0],
           [0,0,0]]
 runTimeGame = [0,0,0]
@@ -158,9 +157,7 @@ try:
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 roundTime[1] = timeit.default_timer()                                               # get time now.
                 roundTime[2] = int(roundTime[1] - roundTime[0])                                     # Time a sequence takes.
-                print (roundTime[2])
                 SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])          # Push stats off round to the database.
-                SQL.updateRuntime(runTimeGame[2])                                                   # Update Total game time.
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
 

@@ -106,7 +106,6 @@ def nextGameNumber():
     readData = '''SELECT MAX(game_number) FROM gamestat;'''
     cursor.execute(readData)
     lastUnmber = cursor.fetchall()
-    print (lastUnmber[0][0])
     nextNumber = int(lastUnmber[0][0]) + 1
 
     return nextNumber

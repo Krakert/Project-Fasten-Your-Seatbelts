@@ -45,69 +45,69 @@ def showSequence(strip, newSequence, SEQUENCE_LED_ON_TIME, SEQUENCE_LED_OFF_TIME
     print('show the sequence')
     for element in newSequence:
         print(element)
-        setPixelColor(strip, element - 1, COLORS[element]) # turns the led on in the sequence
+        setPixelColor(strip, element - 1, COLORS[element])                                          # turns the led on in the sequence
         time.sleep(SEQUENCE_LED_ON_TIME)
-        setPixelColor(strip, element - 1, COLORS[0]) # turns the led on in the sequence
+        setPixelColor(strip, element - 1, COLORS[0])                                                # turns the led on in the sequence
         time.sleep(SEQUENCE_LED_OFF_TIME)
 
 # this function can be displayed if the sequence wass guessed wrong
 def showWrongSequence(NUMBER_OF_BOARD_PANELS, strip, iterations = 3):
     for _ in range(iterations):
         for j in range(NUMBER_OF_BOARD_PANELS):
-            setPixelColor(strip, j, COLORS[1]) # set all pixels to red
+            setPixelColor(strip, j, COLORS[1])                                                      # Set all pixels to red.
 
         strip.show()
-        time.sleep(0.5) # Needs fixing, dont use the sleep fuction!
+        time.sleep(0.5)                                                                             # Needs fixing, dont use the sleep fuction!
 
         for j in range(NUMBER_OF_BOARD_PANELS):
-            setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+            setPixelColor(strip, j, COLORS[0])                                                      # Set all colors to black aka off.
 
         strip.show()
-        time.sleep(0.5) # Needs fixing, dont use the sleep fuction!
+        time.sleep(0.5)                                                                             # Needs fixing, dont use the sleep fuction!
 
 def showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[3]) # set all pixels to green
+        setPixelColor(strip, i, COLORS[3])                                                          # Set all pixels to green.
     strip.show()
-    time.sleep(0.5) # Needs fixing, dont use the sleep fuction!
+    time.sleep(0.5)                                                                                 # Needs fixing, dont use the sleep fuction!
     for j in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+        setPixelColor(strip, j, COLORS[0])                                                          # Set all colors to black aka off.
     strip.show()
 
 def showPanelHit(strip, valid, SHOW_HIT_ON_TIME):
-    setPixelColor(strip, valid - 1, COLORS[valid]) #turn on the led corresponding to the switch that was detected
+    setPixelColor(strip, valid - 1, COLORS[valid])                                                  # Turn on the led corresponding to the switch that was detected.
     time.sleep(SHOW_HIT_ON_TIME)
-    setPixelColor(strip, valid - 1, COLORS[0]) #turn the led off
+    setPixelColor(strip, valid - 1, COLORS[0])                                                      # Turn the led off.
 
 def checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
     if distance < MIN_DISTANCE:
         for i in range(NUMBER_OF_BOARD_PANELS):
-            setPixelColor(strip, i, COLORS[2]) # set all pixels to orange
+            setPixelColor(strip, i, COLORS[2])                                                      # Set all pixels to orange.
         strip.show()
         print('Distance must be greater than %dcm, distance= %dcm' % (MIN_DISTANCE, distance))
-        time.sleep(1) #otherwise the led's will start flashing
+        time.sleep(1)                                                                               # Otherwise the led's will start flashing.
         return True
     else:
         for j in range(NUMBER_OF_BOARD_PANELS):
-            setPixelColor(strip, j, COLORS[0]) # set all colors to black aka off
+            setPixelColor(strip, j, COLORS[0])                                                      # Set all colors to black aka off.
         strip.show()
         return False
 
 def showWinnerPlayer1(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[4]) # set all pixels to green
+        setPixelColor(strip, i, COLORS[4])                                                          # Set all pixels to blue.
     strip.show()
 
 def showWinnerPlayer2(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[5]) # set all pixels to green
+        setPixelColor(strip, i, COLORS[5])                                                          # Set all pixels to purple.
     strip.show()
 
 def setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player):
     if player:
-        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[4]) # set all pixels to green
+        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[4])                                     # Set all pixels to blue.
     else:
-        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[5]) # set all pixels to green
+        setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[5])                                     # Set all pixels to puple.
 
     strip.show()
 
