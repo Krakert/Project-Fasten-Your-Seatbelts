@@ -85,6 +85,15 @@
   vertical-align: top;
   margin-left: 25px;
   margin-right: 25px;
+  border-style: solid;
+  border-color: white;
+  padding: 4px;
+}
+.score.red{
+  border-color: red;
+}
+.score.blue{
+  border-color: blue;
 }
 .multiScore{
   font-size: 180%;

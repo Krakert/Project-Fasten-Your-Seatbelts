@@ -8,6 +8,7 @@
   {{/if}}
 
   {{#if (eq gamestate "1")}}
+    <br>
     <div class="huge">
       Aantal behaalde punten:<br>
       {{model.pointsOne}} punten <br>
@@ -23,7 +24,7 @@
   {{/if}}
   {{#if (eq gamestate "2")}}
     <div class="end">
-      Bedankt voor het spelen!<br>Wil je opnieuw spelen?
+      Je hebt {{model.pointsOne}} punten behaald.<br>Bedankt voor het spelen!<br>Wil je opnieuw spelen?
     </div>
     <br>
     <div class="container">
@@ -32,6 +33,7 @@
         <a href {{action "homepage"}}><img src="./assets/images/No.svg" alt="no" class="yesNo"></a>
       </div>
     </div>
+    <br>
   {{/if}}
 
 {{else}}
@@ -62,14 +64,14 @@
   {{#if (eq gamestate "1")}}
     <br>
     <div class="container">
-      <div class="score">
+      <div class= {{if (eq model.activePlayer 1) "score blue" "score"}}>
         <div class="multiScore">
           Aantal Behaalde Punten:<br>
           {{model.pointsOne}}<br>
           {{username1}}
         </div>
       </div>
-      <div class="score">
+      <div class= {{if (eq model.activePlayer 2) "score red" "score"}}>
         <div class="multiScore">
           Aantal Behaalde Punten:<br>
           {{model.pointsTwo}}<br>
@@ -77,11 +79,14 @@
         </div>
       </div>
     </div>
-    {{#if (eq model.activePlayer 1)}}
-      {{username1}} moet gooien!
-    {{else}}
-      {{username2}} moet gooien!
-    {{/if}}
+    <br>
+    <div class="multiScore">
+      {{#if (eq model.activePlayer 1)}}
+        {{username1}} moet gooien!
+      {{else}}
+        {{username2}} moet gooien!
+      {{/if}}
+    </div>
     <div class="footer navbar-fixed-bottom">
       <div class="support-img">
         {{#link-to "application"}}
@@ -100,6 +105,10 @@
         <a href {{action "replayMultiple"}}><img src="./assets/images/Yes.svg" alt="yes" class="yesNo"></a>
         <a href {{action "homepage"}}><img src="./assets/images/No.svg" alt="no" class="yesNo"></a>
       </div>
+    </div>
+    <div class="end">
+      {{username1}} heeft {{model.pointsOne}} punten behaald.<br>
+      {{username2}} heeft {{model.pointsTwo}} punten behaald.
     </div>
   {{/if}}
 

@@ -31,8 +31,6 @@ export default Controller.extend({
 
               account.save().then(()=>{
                 game.set('mode', 0);
-                game.set('pointsOne', 0);
-                game.set('pointsTwo', 0);
                 game.save();
               });
               set(this,'gamestate', 2);
@@ -40,8 +38,6 @@ export default Controller.extend({
             });
           }else{
             game.set('mode', 0);
-            game.set('pointsOne', 0);
-            game.set('pointsTwo', 0);
             game.save();
             set(this,'gamestate', 2);
             this.application.set('incorrectNavbar', false);
