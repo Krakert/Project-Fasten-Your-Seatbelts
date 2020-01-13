@@ -133,6 +133,15 @@ def setTestToZero():
     with sqlite3.connect("./databases/balldart.db") as db:
         cursor = db.cursor()
 
+    updateData = '''UPDATE employees SET active = ?,led = ?, servo = ? WHERE id = ?'''
+    data = (0, 0, 0, 154162618071)
+    cursor.execute(updateData, data)
+    db.commit()
+
+def setEmployeesToZero():
+    with sqlite3.connect("./databases/balldart.db") as db:
+        cursor = db.cursor()
+
     updateData = '''UPDATE employees SET  led = ?, servo = ? WHERE id = ?'''
     data = (0, 0, 154162618071)
     cursor.execute(updateData, data)

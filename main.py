@@ -100,6 +100,7 @@ if gameModeCase == MULTI_PLAYER:
     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
 SQL.setGameModeToZero()
+SQL.setEmployeesToZero()
 
 RFID = threading.Thread(target = rfid.main)
 RFID.start()
