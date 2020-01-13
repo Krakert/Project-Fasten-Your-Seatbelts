@@ -66,7 +66,7 @@ export default Controller.extend({
         this.application.set('incorrectNavbar', true);
         this.model.set('pointsOne', 0);
         this.model.set('pointsTwo', 0);
-        this.model.set('round', 3);
+        this.model.set('round', 1);
         this.model.set('activePlayer', 1)
       }
       set(this,'gamestate', state);
