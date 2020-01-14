@@ -29,12 +29,12 @@ def distance():
 
     while GPIO.input(GPIO_ECHO) == 0:
         if (currentTime + TIMEOUT) < (time.time() * 1000):          # If pulse is not not registered return a 0.
-            return 0
+            return 150
         startTime = time.time()
  
     while GPIO.input(GPIO_ECHO) == 1:
         if (currentTime + TIMEOUT) < (time.time() * 1000):          # If pulse is not not registered return a 0.
-            return 0
+            return 200
         stopTime = time.time()
  
     distance = ((stopTime - startTime) * SPEED_OF_SOUND) / 2        # Calculate the distance.

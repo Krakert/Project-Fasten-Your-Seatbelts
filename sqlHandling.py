@@ -14,9 +14,8 @@ def setGameModeToZero():
     cursor.execute(readData)
     gameInfo = cursor.fetchall()
     primaryKey = gameInfo[0][0]
-    updateData = '''UPDATE games SET mode = ?, round = ?, activePlayer = ? 
-                                 WHERE id = ?'''
-    data = (ZERO, ZERO, ZERO, primaryKey)
+    updateData = '''UPDATE games SET round = ?, activePlayer = ? WHERE id = ?'''
+    data = (ZERO, ZERO, primaryKey)
     cursor.execute(updateData, data)
     db.commit()
 

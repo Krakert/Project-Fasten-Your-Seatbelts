@@ -22,7 +22,7 @@ import config as C
 NUMBER_OF_BOARD_PANELS = 6
 SEQUENCE_LED_ON_TIME = 1        #seconds
 SEQUENCE_LED_OFF_TIME = 0.3     #seconds
-MIN_DISTANCE = 65               #distance in cm
+MIN_DISTANCE = 70               #distance in cm
 MULTI_PLAYER_ROUNDS = 3         # number of rounds played in multiplayer
 CORRECT_SEQUENCE = 50
 INVALID_SEQUENCE = 51
@@ -147,7 +147,7 @@ try:
                 WS2812.showCorrectSequence(NUMBER_OF_BOARD_PANELS, strip)
                 roundTime[1] = timeit.default_timer()                                               # get time now.
                 roundTime[2] = int(roundTime[1] - roundTime[0])                                     # Time a sequence takes.
-                SQL.pushGameStats(gameNumber, player, 0, int(len(sequence)), roundTime[2])          # Push stats off round to the database.
+                SQL.pushGameStats(gameNumber, 1, 0, int(len(sequence)), roundTime[2])          # Push stats off round to the database.
                 time.sleep(3)
                 gameCase = GEN_SEQUENCE                                                             # If the sequence was correct, add one to the sequence.
 
@@ -160,6 +160,7 @@ try:
                 runTimeGame[1] = timeit.default_timer()                                             # Get time now.
                 runTimeGame[2] = int(runTimeGame[1] - runTimeGame[0])                               # Calculate time of game.
                 SQL.updateRuntime(runTimeGame[2])                                                   # Update Total game time.
+                time.sleep(5)
                 gameModeCase = NO_GAME
 
 

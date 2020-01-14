@@ -35,48 +35,54 @@ GPIO.setwarnings(False)
 GPIO.add_event_detect(BOARD_PANEL_PINS[0], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback1(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 1)
-    print('Pushed 1: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 1)
+        print('Pushed 1: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[0], panelCallback1)
 
 # GPIO setup panel 2
 GPIO.add_event_detect(BOARD_PANEL_PINS[1], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback2(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 2)
-    print('Pushed 2: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 2)
+        print('Pushed 2: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[1], panelCallback2)
 
 # GPIO setup panel 3
 GPIO.add_event_detect(BOARD_PANEL_PINS[2], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback3(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 3)
-    print('Pushed 3: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 3)
+        print('Pushed 3: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[2], panelCallback3)
 
 # GPIO setup panel 4
 GPIO.add_event_detect(BOARD_PANEL_PINS[3], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback4(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 4)
-    print('Pushed 4: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 4)
+        print('Pushed 4: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[3], panelCallback4)
 
 # GPIO setup panel 5
 GPIO.add_event_detect(BOARD_PANEL_PINS[4], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback5(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 5)
-    print('Pushed 5: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 5)
+        print('Pushed 5: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[4], panelCallback5)
 
 # GPIO setup panel 6
 GPIO.add_event_detect(BOARD_PANEL_PINS[5], GPIO.RISING, bouncetime= PANEL_BOUNCETIME)
 def panelCallback6(self):
     global callbackValue
-    callbackValue = setBit(callbackValue, 6)
-    print('Pushed 6: %d' % callbackValue)
+    if callbackValue == 0:
+        callbackValue = setBit(callbackValue, 6)
+        print('Pushed 6: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[5], panelCallback6)
 
 # this function checks if the correct panel is hit of the board

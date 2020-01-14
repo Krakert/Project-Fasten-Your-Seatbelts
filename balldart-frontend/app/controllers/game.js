@@ -43,7 +43,7 @@ export default Controller.extend({
             this.application.set('incorrectNavbar', false);
           }
         }
-        this.counter = 5;
+        this.counter = 1;
       });
     }
   }),
