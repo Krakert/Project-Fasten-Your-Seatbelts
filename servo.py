@@ -4,9 +4,9 @@ import time
 
 #defines
 SERVO_CHANNEL = 16
-CENTER = 600
-LEFT_MAX = 1150
-RIGHT_MAX = 250
+CENTER = 60
+LEFT_MAX = 115
+RIGHT_MAX = 25
 
 #variables
 currentPosition = CENTER
@@ -16,7 +16,7 @@ timeNow = time.time()
 #init the PWM
 GPIO.setup(SERVO_CHANNEL, GPIO.OUT)
 pwm = GPIO.PWM(SERVO_CHANNEL, 50)
-pwm.start((CENTER/100))
+pwm.start((CENTER/10))
 
 def testServo():
     global CENTER
@@ -24,13 +24,13 @@ def testServo():
     global RIGHT_MAX
     global currentPosition
 
-    pwm.ChangeDutyCycle((LEFT_MAX/100))
+    pwm.ChangeDutyCycle((LEFT_MAX/10))
     time.sleep(10)
 
-    pwm.ChangeDutyCycle((RIGHT_MAX/100))
+    pwm.ChangeDutyCycle((RIGHT_MAX/10))
     time.sleep(10)
 
-    pwm.ChangeDutyCycle((CENTER/100))
+    pwm.ChangeDutyCycle((CENTER/10))
     currentPosition = CENTER
     time.sleep(10)
 
@@ -41,7 +41,7 @@ def setBoardCenter():
     global currentPosition
 
     currentPosition = CENTER
-    pwm.ChangeDutyCycle((CENTER/100))
+    pwm.ChangeDutyCycle((CENTER/10))
 
 #this function rotates the board. Direction is collected from the MPU6050
 def rotateBoard(direction):
@@ -59,7 +59,7 @@ def rotateBoard(direction):
         if currentPosition < RIGHT_MAX:
             currentPosition = RIGHT_MAX
 
-    pwm.ChangeDutyCycle((currentPosition/100))
+    pwm.ChangeDutyCycle((currentPosition/10))
 
 
 def timerServo():

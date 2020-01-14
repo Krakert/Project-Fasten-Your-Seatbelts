@@ -14,7 +14,7 @@ callbackValue = 0
 iteration = 0
 
 #defines
-PANEL_BOUNCETIME = 500 # time in ms
+PANEL_BOUNCETIME = 1000 # time in ms
 
 # can set an bit in a value
 def setBit(number, pos): 
@@ -37,7 +37,7 @@ def panelCallback1(self):
     global callbackValue
     if callbackValue == 0:
         callbackValue = setBit(callbackValue, 1)
-        print('Pushed 1: %d' % callbackValue)
+        print('Pushed 1.: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[0], panelCallback1)
 
 # GPIO setup panel 2
@@ -46,7 +46,7 @@ def panelCallback2(self):
     global callbackValue
     if callbackValue == 0:
         callbackValue = setBit(callbackValue, 2)
-        print('Pushed 2: %d' % callbackValue)
+        print('Pushed 2.: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[1], panelCallback2)
 
 # GPIO setup panel 3
@@ -55,7 +55,7 @@ def panelCallback3(self):
     global callbackValue
     if callbackValue == 0:
         callbackValue = setBit(callbackValue, 3)
-        print('Pushed 3: %d' % callbackValue)
+        print('Pushed 3.: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[2], panelCallback3)
 
 # GPIO setup panel 4
@@ -64,7 +64,7 @@ def panelCallback4(self):
     global callbackValue
     if callbackValue == 0:
         callbackValue = setBit(callbackValue, 4)
-        print('Pushed 4: %d' % callbackValue)
+        print('Pushed 4.: %d' % callbackValue)
 GPIO.add_event_callback(BOARD_PANEL_PINS[3], panelCallback4)
 
 # GPIO setup panel 5
@@ -94,6 +94,7 @@ def guessSequence(newSequence, CORRECT_SEQUENCE, INVALID_SEQUENCE):
 
     lengthOfArray = len(newSequence)            # lookup length of the sequence 
     currentIndex = newSequence[iteration]       # panelnumber you currently want to throw at
+    time.sleep(0.5)
     positionSetBit = lookupSetBit()             # returns the panelnumber that was hit 
 
     # checks if the correct panel was hit

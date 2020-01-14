@@ -115,6 +115,7 @@ try:
                 runTimeGame[0] = timeit.default_timer()
                 gameNumber = SQL.nextGameNumber()
                 gameCase = GEN_SEQUENCE
+                time.sleep(2)
 
             elif gameCase == GEN_SEQUENCE:
                 gameModeCase = SQL.checkGameMode()
@@ -175,6 +176,7 @@ try:
                 runTimeGame[0] = timeit.default_timer()                                             # Save time start game.
                 gameNumber = SQL.nextGameNumber()                                                   # Get next record for database.
                 gameCase = GEN_SEQUENCE                                                             # Continue.
+                time.sleep(3)
 
             elif gameCase == GEN_SEQUENCE:
                 gameModeCase = SQL.checkGameMode()
@@ -244,14 +246,12 @@ try:
                     gameCase = GEN_SEQUENCE                                                         # If the sequence was incorrect, generate new sequence.
                     player ^= 1
                     print("player= %d\n" % player)
-                    #print ("Round %d" %numberOfRounds)
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
+                time.sleep(5)
 
             elif gameCase == CHECK_WINNER:
-                #print ("Checking winner")
                 if SQL.checkScore() == 1:                                                            # if there is a tie
                     gameCase = GEN_SEQUENCE                                                          # there will be an extra round.
-                    #print ("Extra round: %d" %numberOfRounds)
                     player ^= 1
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
                 else:
