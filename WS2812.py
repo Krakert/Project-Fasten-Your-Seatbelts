@@ -95,14 +95,14 @@ def checkPlayerTooClose(NUMBER_OF_BOARD_PANELS, strip, distance, MIN_DISTANCE):
 
 def showWinnerPlayer1(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[4])                                                          # Set all pixels to blue.
-    strip.show()
-
+        setPixelColor(strip, i, COLORS[1])                                                          # Set all pixels to purple.
+    strip.show()                                                                                    # Contra of the player that needs
+                                                                                                    # to play.
 def showWinnerPlayer2(NUMBER_OF_BOARD_PANELS, strip):
     for i in range(NUMBER_OF_BOARD_PANELS):
-        setPixelColor(strip, i, COLORS[1])                                                          # Set all pixels to purple.
-    strip.show()
-
+        setPixelColor(strip, i, COLORS[4])                                                          # Set all pixels to blue.
+    strip.show()                                                                                    # Contra of the player that needs
+                                                                                                    # to play.
 def setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player):
     if player:
         setPixelColor(strip, NUMBER_OF_BOARD_PANELS, COLORS[4])                                     # Set all pixels to blue.
