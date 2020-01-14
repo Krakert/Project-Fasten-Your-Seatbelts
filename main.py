@@ -210,7 +210,7 @@ try:
                     SQL.updateScore(1)
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player,                                           # Push stats of round to
+                    SQL.pushGameStats(gameNumber, 1,                                                # Push stats of round to
                                       numberOfRounds, int(len(sequence)),                           # databases
                                       roundTime[2])
                     SQL.updateRuntimeServo(runTimeServo)                                            # Update run time of servo.
@@ -219,7 +219,7 @@ try:
                     SQL.updateScore(2)
                     roundTime[1] = timeit.default_timer()                                           # get time now.
                     roundTime[2] = int(roundTime[1] - roundTime[0])                                 # Time a sequence takes.
-                    SQL.pushGameStats(gameNumber, player,                                           # Push stats of round to
+                    SQL.pushGameStats(gameNumber, 2,                                                # Push stats of round to
                                       numberOfRounds, int(len(sequence)),                           # database.
                                       roundTime[2])
                     SQL.updateRuntimeServo(runTimeServo)                                            # Update run time of servo.
@@ -233,24 +233,24 @@ try:
                 if player:
                     SQL.updateActivePlayer(2)
                 else:
-                   SQL.updateActivePlayer(1)
-                   if numberOfRounds != 3:
-                        numberOfRounds = numberOfRounds + 1                                         # Next round.
+                    SQL.updateActivePlayer(1)
+                    numberOfRounds = numberOfRounds + 1                                         # Next round.
                 WS2812.showWrongSequence(NUMBER_OF_BOARD_PANELS, strip)                             # Show blinking red LEDs.
-                sequence.clear()                                                                    # Clear the array.
-                print (player)
-                if numberOfRounds >= 3 and player == 0:
+                sequence.clear()                                                                    # Clear the array
+                if numberOfRounds >= 4 and player == 0:
                     gameCase = CHECK_WINNER                                                         # Show the winner if there are no more rounds to play.
                 else:
                     gameCase = GEN_SEQUENCE                                                         # If the sequence was incorrect, generate new sequence.
                     player ^= 1
                     print("player= %d\n" % player)
+                    #print ("Round %d" %numberOfRounds)
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
 
             elif gameCase == CHECK_WINNER:
+                #print ("Checking winner")
                 if SQL.checkScore() == 1:                                                            # if there is a tie
                     gameCase = GEN_SEQUENCE                                                          # there will be an extra round.
-                    numberOfRounds = numberOfRounds + 1
+                    #print ("Extra round: %d" %numberOfRounds)
                     player ^= 1
                     WS2812.setCurrentPlayer(NUMBER_OF_BOARD_PANELS, strip, player)
                 else:
