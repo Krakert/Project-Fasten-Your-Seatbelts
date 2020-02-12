@@ -1,3 +1,4 @@
+#http://domoticx.com/raspberry-pi-servos-aansturen-sgxx-via-gpio/
 
 import RPi.GPIO as GPIO
 import time
